@@ -221,8 +221,53 @@ namespace Aperture {
 
         /* Details with extra parts appended, e.g. "credits"; for what isn't kept in the library */
         public async Json.Object get_extras (MediaType type, int64 id, string[] parts, Cancellable? cancellable = null) throws Error {
-            return yield get_object ("/%s/%lld".printf (type.to_api_string (), id),
-                                     { "append_to_response=" + string.joinv (",", parts) }, cancellable);
+            string[] query = { "append_to_response=" + string.joinv (",", parts) };
+            if ("videos" in parts) {
+                // Videos only come in the metadata language unless asked; many only exist in English
+                query += "include_video_language=%s,en,null".printf (language.split ("-")[0]);
+            }
+            return yield get_object ("/%s/%lld".printf (type.to_api_string (), id), query, cancellable);
+        }
+
+        /**
+         * The YouTube key of the best trailer in details fetched with
+         * append_to_response=videos, or null. Trailers beat teasers, then
+         * @language ("pt") beats English, official videos beat others, and
+         * newer ones win ties.
+         */
+        public static string? pick_trailer (Json.Object details, string language) {
+            var videos = JsonUtil.object (details, "videos");
+            var results = videos != null ? JsonUtil.array (videos, "results") : null;
+            if (results == null) {
+                return null;
+            }
+            string? best = null;
+            var best_score = -1;
+            string best_date = "";
+            results.foreach_element ((a, i, node) => {
+                if (node.get_node_type () != Json.NodeType.OBJECT) {
+                    return;
+                }
+                var v = node.get_object ();
+                var key = JsonUtil.str (v, "key");
+                var type = JsonUtil.str (v, "type");
+                if (JsonUtil.str (v, "site") != "YouTube" || key == null || key == ""
+                    || (type != "Trailer" && type != "Teaser")) {
+                    return;
+                }
+                var lang = JsonUtil.str (v, "iso_639_1");
+                var official = v.has_member ("official") && v.get_boolean_member_with_default ("official", false);
+                var score = (type == "Trailer" ? 100 : 0)
+                    + (lang == language ? 20 : (lang == "en" ? 10 : 0))
+                    + (official ? 1 : 0);
+                var date = JsonUtil.str (v, "published_at") ?? "";
+                if (score > best_score || (score == best_score && date > best_date)) {
+                    best = key;
+                    best_score = score;
+                    best_date = date;
+                }
+            });
+            return best;
         }
 
         public async Json.Object get_details (MediaType type, int64 id, Cancellable? cancellable = null) throws Error {

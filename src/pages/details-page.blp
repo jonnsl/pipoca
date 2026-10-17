@@ -174,6 +174,21 @@ template $ApertureDetailsPage: Adw.NavigationPage {
                           ]
                         }
 
+                        Button trailer_button {
+                          action-name: "details.trailer";
+                          visible: false;
+
+                          child: Adw.ButtonContent {
+                            icon-name: "media-playback-start-symbolic";
+                            label: _("Watch _Trailer");
+                            use-underline: true;
+                          };
+
+                          styles [
+                            "pill",
+                          ]
+                        }
+
                         MenuButton library_button {
                           always-show-arrow: true;
 
@@ -332,6 +347,11 @@ menu details_menu {
     item {
       label: _("_Copy Link");
       action: "details.copy-link";
+    }
+
+    item {
+      label: _("Watch _Trailer");
+      action: "details.trailer";
     }
   }
 }

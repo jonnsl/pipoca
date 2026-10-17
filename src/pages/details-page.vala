@@ -15,6 +15,7 @@ namespace Aperture {
         [GtkChild] private unowned Gtk.Label meta_label;
         [GtkChild] private unowned Gtk.Label network_label;
         [GtkChild] private unowned Gtk.Button primary_button;
+        [GtkChild] private unowned Gtk.Button trailer_button;
         [GtkChild] private unowned Gtk.MenuButton library_button;
         [GtkChild] private unowned Adw.ButtonContent library_button_content;
         [GtkChild] private unowned Gtk.ListBox next_list;
@@ -32,6 +33,8 @@ namespace Aperture {
 
         private Library library;
         private Shelf more_shelf;
+        /* YouTube video key */
+        private string? trailer_key;
         private Cancellable cancellable = new Cancellable ();
         private uint update_id = 0;
 
@@ -65,6 +68,7 @@ namespace Aperture {
                 TitleActions.remove (w, ((DetailsPage) w).title_object);
             });
             install_property_action ("details.notify", "notify-me");
+            install_action ("details.trailer", null, (w) => ((DetailsPage) w).open_trailer ());
         }
 
         construct {
@@ -76,6 +80,7 @@ namespace Aperture {
             library.episodes_changed.connect (on_episodes_changed);
 
             update ();
+            action_set_enabled ("details.trailer", false);
             cast_list.update_relation (Gtk.AccessibleRelation.LABELLED_BY, cast_label, null, -1);
             load_extras.begin ();
             setup_recommendations ();
@@ -108,12 +113,27 @@ namespace Aperture {
             load_recommendations.begin ();
         }
 
-        /* Cast and crew, which aren't kept in the library; hidden when they can't be loaded */
+        private void open_trailer () {
+            if (trailer_key == null) {
+                return;
+            }
+            var url = "https://www.youtube.com/watch?v=" + Uri.escape_string (trailer_key);
+            var launcher = new Gtk.UriLauncher (url);
+            launcher.launch.begin (get_root () as Gtk.Window, null, (obj, res) => {
+                try {
+                    launcher.launch.end (res);
+                } catch (Error e) {
+                    warning ("Can't open %s: %s", url, e.message);
+                }
+            });
+        }
+
+        /* Cast, crew and trailer, which aren't kept in the library; hidden when they can't be loaded */
         private async void load_extras () {
             var t = title_object;
             Json.Object extras;
             try {
-                string[] parts = { t.is_movie ? "credits" : "aggregate_credits" };
+                string[] parts = { t.is_movie ? "credits" : "aggregate_credits", "videos" };
                 extras = yield library.tmdb.get_extras (t.media_type, t.id, parts, cancellable);
             } catch (Error e) {
                 if (!(e is IOError.CANCELLED)) {
@@ -130,6 +150,10 @@ namespace Aperture {
                 cast_list.append (new PersonCard (c));
             }
             cast_box.visible = credits.length > 0;
+
+            trailer_key = TmdbClient.pick_trailer (extras, library.tmdb.language.split ("-")[0]);
+            action_set_enabled ("details.trailer", trailer_key != null);
+            trailer_button.visible = trailer_key != null;
         }
 
         private void setup_recommendations () {

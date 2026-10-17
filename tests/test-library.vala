@@ -713,6 +713,34 @@ void test_credits () {
     assert (Credit.parse (parse_object ("{}"), MediaType.TV).length == 0);
 }
 
+void test_pick_trailer () {
+    var details = parse_object ("""{"videos": {"results": [
+        {"site": "YouTube", "type": "Teaser", "key": "teaser-pt", "iso_639_1": "pt", "official": true},
+        {"site": "Vimeo", "type": "Trailer", "key": "vimeo", "iso_639_1": "pt"},
+        {"site": "YouTube", "type": "Featurette", "key": "featurette", "iso_639_1": "pt"},
+        {"site": "YouTube", "type": "Trailer", "key": "old-en", "iso_639_1": "en", "official": true,
+         "published_at": "2020-01-01T00:00:00.000Z"},
+        {"site": "YouTube", "type": "Trailer", "key": "new-en", "iso_639_1": "en", "official": true,
+         "published_at": "2021-01-01T00:00:00.000Z"},
+        {"site": "YouTube", "type": "Trailer", "key": "fan-en", "iso_639_1": "en", "official": false,
+         "published_at": "2022-01-01T00:00:00.000Z"},
+        {"site": "YouTube", "type": "Trailer", "key": "", "iso_639_1": "pt"}
+    ]}}""");
+    // A trailer beats a teaser in the user's language; official, then newest, among English ones
+    assert (TmdbClient.pick_trailer (details, "pt") == "new-en");
+
+    details = parse_object ("""{"videos": {"results": [
+        {"site": "YouTube", "type": "Trailer", "key": "en", "iso_639_1": "en", "official": true},
+        {"site": "YouTube", "type": "Trailer", "key": "pt", "iso_639_1": "pt", "official": false},
+        {"site": "YouTube", "type": "Trailer", "key": "fr", "iso_639_1": "fr", "official": true}
+    ]}}""");
+    assert (TmdbClient.pick_trailer (details, "pt") == "pt");
+    assert (TmdbClient.pick_trailer (details, "de") == "en");
+
+    assert (TmdbClient.pick_trailer (parse_object ("""{"videos": {"results": []}}"""), "en") == null);
+    assert (TmdbClient.pick_trailer (parse_object ("{}"), "en") == null);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -723,6 +751,7 @@ int main (string[] args) {
     Test.add_func ("/title/from-json", test_from_json);
     Test.add_func ("/tmdb/parse-list", test_parse_list);
     Test.add_func ("/tmdb/credits", test_credits);
+    Test.add_func ("/tmdb/pick-trailer", test_pick_trailer);
     Test.add_func ("/library/show-progress", test_show_progress);
     Test.add_func ("/library/ended-show", test_ended_show);
     Test.add_func ("/library/movie", test_movie);
