@@ -1,0 +1,148 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ApertureSearchDialog: Adw.Dialog {
+  title: _("Add Title");
+  content-width: 600;
+  content-height: 700;
+  focus-widget: search_entry;
+
+  child: Adw.ToastOverlay {
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar {}
+
+      [top]
+      Adw.Clamp {
+        maximum-size: 600;
+
+        child: Box {
+          orientation: vertical;
+          spacing: 12;
+          margin-start: 12;
+          margin-end: 12;
+          margin-bottom: 12;
+
+          SearchEntry search_entry {
+            placeholder-text: _("Search movies and TV shows…");
+            search-delay: 400;
+            search-changed => $on_search_changed();
+            activate => $on_search_activate();
+          }
+
+          Adw.ToggleGroup filter_group {
+            active-name: "all";
+            homogeneous: true;
+
+            Adw.Toggle {
+              name: "all";
+              label: _("All");
+            }
+
+            Adw.Toggle {
+              name: "movie";
+              label: _("Movies");
+            }
+
+            Adw.Toggle {
+              name: "tv";
+              label: _("Shows");
+            }
+          }
+        };
+      }
+
+      content: Stack stack {
+        transition-type: crossfade;
+
+        StackPage {
+          name: "initial";
+
+          child: Adw.StatusPage {
+            icon-name: "edit-find-symbolic";
+            title: _("Search TMDB");
+            description: _("Find movies and TV shows to add to your library");
+
+            styles [
+              "compact",
+            ]
+          };
+        }
+
+        StackPage {
+          name: "loading";
+
+          child: Adw.Spinner {
+            halign: center;
+            valign: center;
+            width-request: 32;
+            height-request: 32;
+          };
+        }
+
+        StackPage {
+          name: "empty";
+
+          child: Adw.StatusPage {
+            icon-name: "edit-find-symbolic";
+            title: _("No Results Found");
+            description: _("Try a different search");
+
+            styles [
+              "compact",
+            ]
+          };
+        }
+
+        StackPage {
+          name: "error";
+
+          child: Adw.StatusPage error_page {
+            icon-name: "network-offline-symbolic";
+            title: _("Can’t Search");
+
+            child: Button {
+              label: _("_Retry");
+              use-underline: true;
+              halign: center;
+              clicked => $on_search_activate();
+
+              styles [
+                "pill",
+              ]
+            };
+
+            styles [
+              "compact",
+            ]
+          };
+        }
+
+        StackPage {
+          name: "results";
+
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            child: Adw.Clamp {
+              maximum-size: 600;
+
+              child: ListBox results_list {
+                selection-mode: none;
+                valign: start;
+                margin-start: 12;
+                margin-end: 12;
+                margin-bottom: 12;
+                row-activated => $on_row_activated();
+
+                styles [
+                  "boxed-list",
+                ]
+              };
+            };
+          };
+        }
+      };
+    };
+  };
+}

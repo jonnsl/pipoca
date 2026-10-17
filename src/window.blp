@@ -6,27 +6,184 @@ template $ApertureWindow: Adw.ApplicationWindow {
   width-request: 360;
   height-request: 294;
 
-  content: Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar {
-      [end]
-      MenuButton {
-        primary: true;
-        icon-name: "open-menu-symbolic";
-        tooltip-text: _("Main Menu");
-        menu-model: primary_menu;
-      }
-    }
+  Adw.Breakpoint {
+    condition ("max-width: 550sp")
 
-    content: Adw.StatusPage {
-      icon-name: "io.github.jonnsl.Aperture-symbolic";
-      title: _("Aperture");
-      description: _("Keep track of your movies and TV shows");
+    setters {
+      switcher_bar.reveal: true;
+      header_bar.title-widget: null;
+    }
+  }
+
+  content: Adw.ToastOverlay toast_overlay {
+    child: Adw.NavigationView navigation_view {
+      Adw.NavigationPage {
+        title: _("Aperture");
+        tag: "main";
+
+        child: Adw.ToolbarView {
+          [top]
+          Adw.HeaderBar header_bar {
+            [start]
+            Button {
+              icon-name: "list-add-symbolic";
+              tooltip-text: _("Add Title");
+              action-name: "win.search";
+            }
+
+            [start]
+            ToggleButton search_button {
+              icon-name: "edit-find-symbolic";
+              tooltip-text: _("Filter Library");
+              active: bind search_bar.search-mode-enabled bidirectional;
+            }
+
+            title-widget: Adw.ViewSwitcher {
+              stack: view_stack;
+              policy: wide;
+            };
+
+            [end]
+            MenuButton {
+              primary: true;
+              icon-name: "open-menu-symbolic";
+              tooltip-text: _("Main Menu");
+              menu-model: primary_menu;
+            }
+          }
+
+          [top]
+          SearchBar search_bar {
+            child: Adw.Clamp {
+              maximum-size: 500;
+
+              child: SearchEntry library_search {
+                placeholder-text: _("Filter library…");
+                hexpand: true;
+              };
+            };
+          }
+
+          [top]
+          Adw.Banner offline_banner {
+            title: _("Offline — showing saved data");
+          }
+
+          content: Box {
+            orientation: vertical;
+
+            Box {
+              spacing: 6;
+              margin-top: 6;
+              margin-bottom: 6;
+              margin-start: 12;
+              margin-end: 12;
+
+              Adw.ToggleGroup media_filter {
+                active-name: "all";
+                valign: center;
+
+                Adw.Toggle {
+                  name: "all";
+                  label: _("All");
+                }
+
+                Adw.Toggle {
+                  name: "movie";
+                  label: _("Movies");
+                }
+
+                Adw.Toggle {
+                  name: "tv";
+                  label: _("Shows");
+                }
+              }
+
+              Box {
+                hexpand: true;
+              }
+
+              MenuButton {
+                icon-name: "view-sort-descending-symbolic";
+                tooltip-text: _("Sort");
+                menu-model: sort_menu;
+                valign: center;
+
+                styles [
+                  "flat",
+                ]
+              }
+            }
+
+            Adw.ViewStack view_stack {
+              vexpand: true;
+
+              Adw.ViewStackPage {
+                name: "watchlist";
+                title: _("Watchlist");
+                icon-name: "bookmark-new-symbolic";
+
+                child: $ApertureLibraryView watchlist_view {};
+              }
+
+              Adw.ViewStackPage {
+                name: "watched";
+                title: _("Watched");
+                icon-name: "object-select-symbolic";
+
+                child: $ApertureLibraryView watched_view {};
+              }
+            }
+          };
+
+          [bottom]
+          Adw.ViewSwitcherBar switcher_bar {
+            stack: view_stack;
+          }
+        };
+      }
     };
   };
 }
 
+menu sort_menu {
+  section {
+    label: _("Sort By");
+
+    item {
+      label: _("Date _Added");
+      action: "win.sort-order";
+      target: "added";
+    }
+
+    item {
+      label: _("_Title");
+      action: "win.sort-order";
+      target: "title";
+    }
+
+    item {
+      label: _("_Release Date");
+      action: "win.sort-order";
+      target: "release";
+    }
+
+    item {
+      label: _("_Last Watched");
+      action: "win.sort-order";
+      target: "watched";
+    }
+  }
+}
+
 menu primary_menu {
+  section {
+    item {
+      label: _("Refresh _Library");
+      action: "win.refresh";
+    }
+  }
+
   section {
     item {
       label: _("_Preferences");

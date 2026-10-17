@@ -1,0 +1,70 @@
+using Gtk 4.0;
+
+template $ApertureEpisodeRow: ListBoxRow {
+  activatable: true;
+
+  child: Box {
+    spacing: 12;
+    margin-top: 12;
+    margin-bottom: 12;
+    margin-start: 12;
+    margin-end: 12;
+
+    $AperturePoster still {
+      size: "w300";
+      image-width: 120;
+      image-height: 68;
+      valign: start;
+      icon-name: "video-x-generic-symbolic";
+
+      styles [
+        "still",
+      ]
+    }
+
+    Box {
+      orientation: vertical;
+      spacing: 3;
+      hexpand: true;
+
+      Label title_label {
+        xalign: 0;
+        wrap: true;
+        wrap-mode: word_char;
+
+        styles [
+          "heading",
+        ]
+      }
+
+      Label meta_label {
+        xalign: 0;
+
+        styles [
+          "caption",
+          "dim-label",
+        ]
+      }
+
+      Label overview_label {
+        xalign: 0;
+        wrap: true;
+        ellipsize: end;
+        lines: 2;
+        margin-top: 3;
+      }
+    }
+
+    ToggleButton watched_button {
+      icon-name: "object-select-symbolic";
+      valign: center;
+      tooltip-text: _("Mark as Watched");
+
+      styles [
+        "flat",
+        "circular",
+        "watched-toggle",
+      ]
+    }
+  };
+}

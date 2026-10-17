@@ -1,6 +1,13 @@
 blueprints = custom_target('blueprints',
   input: files(
+    'dialogs/preferences-dialog.blp',
+    'dialogs/search-dialog.blp',
+    'pages/details-page.blp',
+    'pages/library-view.blp',
+    'pages/season-page.blp',
     'shortcuts-dialog.blp',
+    'widgets/episode-row.blp',
+    'widgets/poster-card.blp',
     'window.blp',
   ),
   output: '.',
@@ -16,12 +23,6 @@ resources = gnome.compile_resources('aperture-resources',
   dependencies: blueprints,
 )
 
-sources = files(
-  'application.vala',
-  'main.vala',
-  'window.vala',
-)
-
 deps = [
   dependency('gtk4', version: '>= 4.18'),
   dependency('libadwaita-1', version: '>= 1.8'),
@@ -31,8 +32,45 @@ deps = [
   meson.get_compiler('vala').find_library('config', dirs: meson.current_source_dir()),
 ]
 
-executable('aperture', sources, resources,
+# Models and services, without UI, shared with the tests
+core_lib = static_library('aperture-core',
+  files(
+    'models/episode.vala',
+    'models/season.vala',
+    'models/title.vala',
+    'services/database.vala',
+    'services/image-cache.vala',
+    'services/library.vala',
+    'services/tmdb-client.vala',
+    'utils.vala',
+  ),
   dependencies: deps,
+  include_directories: config_inc,
+  vala_args: ['--target-glib=2.80'],
+)
+core_dep = declare_dependency(
+  link_with: core_lib,
+  dependencies: deps,
+  include_directories: [config_inc, include_directories('.')],
+)
+
+sources = files(
+  'application.vala',
+  'dialogs/preferences-dialog.vala',
+  'dialogs/search-dialog.vala',
+  'main.vala',
+  'pages/details-page.vala',
+  'pages/library-view.vala',
+  'pages/season-page.vala',
+  'title-actions.vala',
+  'widgets/episode-row.vala',
+  'widgets/poster-card.vala',
+  'widgets/poster.vala',
+  'window.vala',
+)
+
+executable('aperture', sources, resources,
+  dependencies: [deps, core_dep],
   include_directories: config_inc,
   vala_args: [
     '--target-glib=2.80',

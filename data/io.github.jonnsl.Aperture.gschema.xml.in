@@ -13,5 +13,27 @@
       <default>false</default>
       <summary>Window maximized state</summary>
     </key>
+    <key name="sort-order" type="s">
+      <choices>
+        <choice value="added"/>
+        <choice value="title"/>
+        <choice value="release"/>
+        <choice value="watched"/>
+      </choices>
+      <default>'added'</default>
+      <summary>Sort order of the library</summary>
+    </key>
+    <key name="refresh-automatically" type="b">
+      <default>true</default>
+      <summary>Refresh stale titles from TMDB at startup</summary>
+    </key>
+    <key name="use-custom-api-key" type="b">
+      <default>false</default>
+      <summary>Use a custom TMDB API key</summary>
+    </key>
+    <key name="custom-api-key" type="s">
+      <default>''</default>
+      <summary>Custom TMDB API key or read access token</summary>
+    </key>
   </schema>
 </schemalist>

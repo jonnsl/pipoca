@@ -40,6 +40,7 @@ config_inc = include_directories('.')
 subdir('data')
 subdir('src')
 subdir('po')
+subdir('tests')
 
 gnome.post_install(
   glib_compile_schemas: true,

@@ -1,0 +1,53 @@
+using Gtk 4.0;
+
+template $AperturePosterCard: Box {
+  orientation: vertical;
+  spacing: 6;
+  halign: center;
+  valign: start;
+
+  Overlay {
+    halign: center;
+
+    child: $AperturePoster poster {
+      styles [
+        "card",
+      ]
+    };
+
+    [overlay]
+    ProgressBar progress_bar {
+      valign: end;
+      margin-start: 8;
+      margin-end: 8;
+      margin-bottom: 8;
+      visible: false;
+
+      styles [
+        "osd",
+      ]
+    }
+  }
+
+  Label title_label {
+    xalign: 0;
+    ellipsize: end;
+    max-width-chars: 1;
+    hexpand: true;
+
+    styles [
+      "heading",
+    ]
+  }
+
+  Label subtitle_label {
+    xalign: 0;
+    ellipsize: end;
+    max-width-chars: 1;
+
+    styles [
+      "caption",
+      "dim-label",
+    ]
+  }
+}

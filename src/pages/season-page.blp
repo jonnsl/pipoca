@@ -1,0 +1,73 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ApertureSeasonPage: Adw.NavigationPage {
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle window_title {};
+    }
+
+    content: ScrolledWindow {
+      hscrollbar-policy: never;
+
+      child: Adw.Clamp {
+        maximum-size: 800;
+
+        child: Box {
+          orientation: vertical;
+          spacing: 18;
+          margin-top: 12;
+          margin-bottom: 24;
+          margin-start: 12;
+          margin-end: 12;
+
+          Box {
+            spacing: 12;
+
+            Box {
+              orientation: vertical;
+              spacing: 6;
+              hexpand: true;
+              valign: center;
+
+              Label progress_label {
+                xalign: 0;
+
+                styles [
+                  "heading",
+                ]
+              }
+
+              ProgressBar progress_bar {}
+            }
+
+            Button season_button {
+              valign: center;
+              clicked => $on_season_button_clicked();
+
+              styles [
+                "pill",
+              ]
+            }
+          }
+
+          Label overview_label {
+            xalign: 0;
+            wrap: true;
+            selectable: true;
+          }
+
+          ListBox episodes_list {
+            selection-mode: none;
+            row-activated => $on_row_activated();
+
+            styles [
+              "boxed-list",
+            ]
+          }
+        };
+      };
+    };
+  };
+}

@@ -1,1 +1,37 @@
 /* Application-specific styles. Prefer libadwaita style classes; keep this minimal. */
+
+poster {
+  border-radius: 12px;
+  background-color: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+poster.small {
+  border-radius: 6px;
+}
+
+poster.still {
+  border-radius: 8px;
+}
+
+poster.backdrop {
+  border-radius: 0;
+  background: none;
+}
+
+.backdrop-fade {
+  background-image: linear-gradient(to bottom,
+    color-mix(in srgb, var(--window-bg-color) 50%, transparent) 0%,
+    transparent 30%,
+    color-mix(in srgb, var(--window-bg-color) 70%, transparent) 70%,
+    var(--window-bg-color) 100%);
+}
+
+flowboxchild.poster-card {
+  padding: 6px;
+  border-radius: 16px;
+}
+
+togglebutton.watched-toggle:checked {
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+}

@@ -3,6 +3,13 @@
   <gresource prefix="/io/github/jonnsl/Aperture">
     <file preprocess="xml-stripblanks">window.ui</file>
     <file preprocess="xml-stripblanks">shortcuts-dialog.ui</file>
+    <file preprocess="xml-stripblanks">dialogs/preferences-dialog.ui</file>
+    <file preprocess="xml-stripblanks">dialogs/search-dialog.ui</file>
+    <file preprocess="xml-stripblanks">pages/details-page.ui</file>
+    <file preprocess="xml-stripblanks">pages/library-view.ui</file>
+    <file preprocess="xml-stripblanks">pages/season-page.ui</file>
+    <file preprocess="xml-stripblanks">widgets/episode-row.ui</file>
+    <file preprocess="xml-stripblanks">widgets/poster-card.ui</file>
     <file>style.css</file>
   </gresource>
 </gresources>
