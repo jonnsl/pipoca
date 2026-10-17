@@ -44,6 +44,11 @@
       <default>''</default>
       <summary>Local date (YYYY-MM-DD) of the last check for releases to notify about</summary>
     </key>
+    <key name="run-in-background" type="b">
+      <default>false</default>
+      <summary>Keep running when the window is closed</summary>
+      <description>Keep checking for new episodes and releases, and start at login without a window</description>
+    </key>
     <key name="use-custom-api-key" type="b">
       <default>false</default>
       <summary>Use a custom TMDB API key</summary>

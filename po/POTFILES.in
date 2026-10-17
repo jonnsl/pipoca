@@ -18,6 +18,7 @@ src/pages/season-page.blp
 src/pages/season-page.vala
 src/pages/upcoming-view.blp
 src/pages/upcoming-view.vala
+src/services/background.vala
 src/services/database.vala
 src/services/image-cache.vala
 src/services/kodi-client.vala

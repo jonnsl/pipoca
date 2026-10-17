@@ -70,6 +70,7 @@ sources = files(
   'pages/library-view.vala',
   'pages/season-page.vala',
   'pages/upcoming-view.vala',
+  'services/background.vala',
   'title-actions.vala',
   'widgets/episode-row.vala',
   'widgets/poster-card.vala',

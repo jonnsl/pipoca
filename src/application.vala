@@ -1,5 +1,14 @@
 namespace Aperture {
     public class Application : Adw.Application {
+        /* Seconds between checks for stale titles; each title is refreshed at most once a day */
+        private const uint REFRESH_INTERVAL = 60 * 60;
+
+        private Settings settings;
+        private bool services_started;
+        /* Started at login with --background */
+        private bool start_hidden;
+        private bool held;
+
         public Application () {
             Object (
                 application_id: Config.APPLICATION_ID,
@@ -25,6 +34,28 @@ namespace Aperture {
             set_accels_for_action ("win.view::upcoming", { "<primary>2" });
             set_accels_for_action ("win.view::watched", { "<primary>3" });
             set_accels_for_action ("win.view::dropped", { "<primary>4" });
+
+            settings = new Settings (Config.APPLICATION_ID);
+            add_main_option ("background", 0, OptionFlags.NONE, OptionArg.NONE,
+                             _("Start without a window and keep checking for new releases"), null);
+        }
+
+        public override int handle_local_options (VariantDict options) {
+            if (!options.contains ("background")) {
+                return -1;
+            }
+            try {
+                register ();
+            } catch (Error e) {
+                warning ("Can't register the application: %s", e.message);
+                return 1;
+            }
+            // Already running, so there's nothing to start
+            if (get_is_remote ()) {
+                return 0;
+            }
+            start_hidden = true;
+            return -1;
         }
 
         public override void startup () {
@@ -34,24 +65,56 @@ namespace Aperture {
             typeof (Poster).ensure ();
             typeof (PosterCard).ensure ();
             typeof (UpcomingView).ensure ();
+
+            settings.changed["run-in-background"].connect (update_hold);
+            update_hold ();
         }
 
         public override void activate () {
             base.activate ();
-            var first = active_window == null;
-            var win = active_window ?? new Aperture.Window (this);
-            win.present ();
-            if (first) {
-                start_session ();
-                schedule_refresh ();
-                KodiSync.get_default ().start ();
-                Notifier.get_default ().start ();
+            if (start_hidden) {
+                start_hidden = false;
+                // Without the setting, nothing holds the app and it quits right away
+                if (settings.get_boolean ("run-in-background")) {
+                    start_services ();
+                }
+                return;
             }
+            if (active_window == null) {
+                new Aperture.Window (this);
+                start_session ();
+            }
+            active_window.present ();
+            start_services ();
+        }
+
+        /* Keeps running with no window while "Run in Background" is on */
+        private void update_hold () {
+            var wanted = settings.get_boolean ("run-in-background");
+            if (wanted == held) {
+                return;
+            }
+            held = wanted;
+            if (held) {
+                hold ();
+                Background.set_status.begin (_("Checking for new episodes and releases"));
+            } else {
+                release ();
+            }
+        }
+
+        private void start_services () {
+            if (services_started) {
+                return;
+            }
+            services_started = true;
+            schedule_refresh ();
+            KodiSync.get_default ().start ();
+            Notifier.get_default ().start ();
         }
 
         /* What came out since the app was last opened is new */
         private void start_session () {
-            var settings = new Settings (Config.APPLICATION_ID);
             var today = Utils.today ();
             var last = settings.get_string ("last-opened");
             Library.get_default ().new_since = last != "" ? last : today;
@@ -59,17 +122,22 @@ namespace Aperture {
         }
 
         private void schedule_refresh () {
-            var settings = new Settings (Config.APPLICATION_ID);
-            if (!settings.get_boolean ("refresh-automatically")) {
-                return;
-            }
             // Let the window show up first
             Timeout.add_seconds (2, () => {
-                if (NetworkMonitor.get_default ().network_available) {
-                    Library.get_default ().refresh_library.begin (false);
-                }
+                refresh_library ();
                 return Source.REMOVE;
             });
+            // Titles go stale while the app stays open, e.g. in the background
+            Timeout.add_seconds (REFRESH_INTERVAL, () => {
+                refresh_library ();
+                return Source.CONTINUE;
+            });
+        }
+
+        private void refresh_library () {
+            if (settings.get_boolean ("refresh-automatically") && NetworkMonitor.get_default ().network_available) {
+                Library.get_default ().refresh_library.begin (false);
+            }
         }
 
         /* Opens a title by key ("tv:1399"), e.g. from a notification */

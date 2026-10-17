@@ -4,6 +4,7 @@ namespace Aperture {
         [GtkChild] private unowned Adw.SwitchRow refresh_row;
         [GtkChild] private unowned Adw.SwitchRow notify_episodes_row;
         [GtkChild] private unowned Adw.SwitchRow notify_movies_row;
+        [GtkChild] private unowned Adw.SwitchRow background_row;
         [GtkChild] private unowned Adw.SwitchRow custom_key_row;
         [GtkChild] private unowned Adw.PasswordEntryRow api_key_row;
         [GtkChild] private unowned Adw.ActionRow cache_row;
@@ -26,6 +27,9 @@ namespace Aperture {
             settings.bind ("refresh-automatically", refresh_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("notify-new-episodes", notify_episodes_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("notify-movie-releases", notify_movies_row, "active", SettingsBindFlags.DEFAULT);
+            // Turning it on needs permission first, so it isn't bound directly
+            background_row.active = settings.get_boolean ("run-in-background");
+            background_row.notify["active"].connect (on_background_toggled);
             settings.bind ("use-custom-api-key", custom_key_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("custom-api-key", api_key_row, "text", SettingsBindFlags.DEFAULT);
             update_cache_size.begin ();
@@ -38,6 +42,31 @@ namespace Aperture {
             kodi.notify["last-error"].disconnect (update_kodi_status);
             dispose_template (typeof (PreferencesDialog));
             base.dispose ();
+        }
+
+        private void on_background_toggled () {
+            if (background_row.active != settings.get_boolean ("run-in-background")) {
+                set_run_in_background.begin (background_row.active);
+            }
+        }
+
+        private async void set_run_in_background (bool enabled) {
+            background_row.sensitive = false;
+            var allowed = false;
+            try {
+                allowed = yield Background.request (_("Aperture checks for new episodes and releases to notify you about"), enabled);
+            } catch (IOError.CANCELLED e) {
+                // The user dismissed the request
+            } catch (Error e) {
+                warning ("Can't request to run in the background: %s", e.message);
+            }
+            if (enabled && !allowed) {
+                add_toast (new Adw.Toast (_("Aperture isn’t allowed to run in the background")));
+            }
+            // Turning it off always works; autostart is just left in place if removing it failed
+            settings.set_boolean ("run-in-background", enabled && allowed);
+            background_row.active = settings.get_boolean ("run-in-background");
+            background_row.sensitive = true;
         }
 
         private void setup_kodi () {

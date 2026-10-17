@@ -28,6 +28,11 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
         title: _("Movie Releases");
         subtitle: _("When a movie on your watchlist is released");
       }
+
+      Adw.SwitchRow background_row {
+        title: _("Run in Background");
+        subtitle: _("Keep checking for new releases when the window is closed, and start at login");
+      }
     }
 
     Adw.PreferencesGroup {
