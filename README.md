@@ -8,6 +8,12 @@ in Vala with GTK 4, libadwaita and Blueprint.
 
 This app uses the TMDB API but is not endorsed or certified by TMDB.
 
+![Watchlist](docs/screenshots/watchlist.png)
+
+| Details | Upcoming | Watched |
+| --- | --- | --- |
+| ![Details page](docs/screenshots/details.png) | ![Upcoming episodes](docs/screenshots/upcoming.png) | ![Watched](docs/screenshots/watched.png) |
+
 - [Feature list](docs/FEATURES.md)
 - [Screens & UI plan](docs/UI.md)
 - [Library file format](docs/LIBRARY_FORMAT.md) (export/import)
