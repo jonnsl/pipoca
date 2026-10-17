@@ -219,6 +219,12 @@ namespace Aperture {
             return results;
         }
 
+        /* Details with extra parts appended, e.g. "credits"; for what isn't kept in the library */
+        public async Json.Object get_extras (MediaType type, int64 id, string[] parts, Cancellable? cancellable = null) throws Error {
+            return yield get_object ("/%s/%lld".printf (type.to_api_string (), id),
+                                     { "append_to_response=" + string.joinv (",", parts) }, cancellable);
+        }
+
         public async Json.Object get_details (MediaType type, int64 id, Cancellable? cancellable = null) throws Error {
             return yield get_object ("/%s/%lld".printf (type.to_api_string (), id), {}, cancellable);
         }

@@ -24,6 +24,9 @@ namespace Aperture {
         [GtkChild] private unowned Gtk.Label overview_label;
         [GtkChild] private unowned Gtk.Box seasons_box;
         [GtkChild] private unowned Gtk.ListBox seasons_list;
+        [GtkChild] private unowned Gtk.Box cast_box;
+        [GtkChild] private unowned Gtk.Label cast_label;
+        [GtkChild] private unowned Gtk.Box cast_list;
         [GtkChild] private unowned Gtk.Box more_box;
         [GtkChild] private unowned Gtk.ListBox info_list;
 
@@ -73,6 +76,8 @@ namespace Aperture {
             library.episodes_changed.connect (on_episodes_changed);
 
             update ();
+            cast_list.update_relation (Gtk.AccessibleRelation.LABELLED_BY, cast_label, null, -1);
+            load_extras.begin ();
             setup_recommendations ();
             if (title_object.has_details) {
                 stack.visible_child_name = "content";
@@ -99,7 +104,32 @@ namespace Aperture {
 
         public void refresh () {
             load.begin (true);
+            load_extras.begin ();
             load_recommendations.begin ();
+        }
+
+        /* Cast and crew, which aren't kept in the library; hidden when they can't be loaded */
+        private async void load_extras () {
+            var t = title_object;
+            Json.Object extras;
+            try {
+                string[] parts = { t.is_movie ? "credits" : "aggregate_credits" };
+                extras = yield library.tmdb.get_extras (t.media_type, t.id, parts, cancellable);
+            } catch (Error e) {
+                if (!(e is IOError.CANCELLED)) {
+                    debug ("Can't load extras of %s: %s", t.key, e.message);
+                }
+                return;
+            }
+            Gtk.Widget? child;
+            while ((child = cast_list.get_first_child ()) != null) {
+                cast_list.remove (child);
+            }
+            var credits = Credit.parse (extras, t.media_type);
+            foreach (var c in credits) {
+                cast_list.append (new PersonCard (c));
+            }
+            cast_box.visible = credits.length > 0;
         }
 
         private void setup_recommendations () {

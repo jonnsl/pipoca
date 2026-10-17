@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 15:49-0300\n"
+"POT-Creation-Date: 2026-10-17 15:51-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -504,9 +504,25 @@ msgstr "_Tentar novamente"
 msgid "In Library"
 msgstr "Na biblioteca"
 
-#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:217
+#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:247
 msgid "Add to Watchlist"
 msgstr "Adicionar à lista"
+
+#: src/models/credit.vala:31
+msgid "Creator"
+msgstr "Criação"
+
+#: src/models/credit.vala:103
+msgid "Director"
+msgstr "Direção"
+
+#: src/models/credit.vala:105
+msgid "Screenplay"
+msgstr "Roteiro"
+
+#: src/models/credit.vala:107
+msgid "Writer"
+msgstr "Escrita"
 
 #: src/models/episode.vala:23
 #, c-format
@@ -557,7 +573,7 @@ msgstr "Mais opções"
 msgid "Can’t Load Details"
 msgstr "Não foi possível carregar os detalhes"
 
-#: src/pages/details-page.blp:205 src/pages/details-page.vala:222
+#: src/pages/details-page.blp:205 src/pages/details-page.vala:252
 #: src/widgets/episode-row.blp:61 src/widgets/episode-row.vala:88
 msgid "Mark as Watched"
 msgstr "Marcar como assistido"
@@ -570,137 +586,141 @@ msgstr "Sinopse"
 msgid "Seasons"
 msgstr "Temporadas"
 
-#: src/pages/details-page.blp:271
+#: src/pages/details-page.blp:266
+msgid "Cast & Crew"
+msgstr "Elenco e equipe"
+
+#: src/pages/details-page.blp:294
 msgid "Information"
 msgstr "Informações"
 
-#: src/pages/details-page.blp:300
+#: src/pages/details-page.blp:323
 msgid "_Refresh Metadata"
 msgstr "_Atualizar metadados"
 
-#: src/pages/details-page.blp:305 src/title-actions.vala:144
+#: src/pages/details-page.blp:328 src/title-actions.vala:144
 msgid "_Open on TMDB"
 msgstr "_Abrir no TMDB"
 
-#: src/pages/details-page.blp:310
+#: src/pages/details-page.blp:333
 msgid "_Copy Link"
 msgstr "_Copiar link"
 
-#: src/pages/details-page.vala:106
+#: src/pages/details-page.vala:136
 msgid "More Like This"
 msgstr "Mais como este"
 
-#: src/pages/details-page.vala:146
+#: src/pages/details-page.vala:176
 msgid "Can’t refresh metadata"
 msgstr "Não foi possível atualizar os metadados"
 
-#: src/pages/details-page.vala:197
+#: src/pages/details-page.vala:227
 #, c-format
 msgid "%d season"
 msgid_plural "%d seasons"
 msgstr[0] "%d temporada"
 msgstr[1] "%d temporadas"
 
-#: src/pages/details-page.vala:220
+#: src/pages/details-page.vala:250
 msgid "Resume Watching"
 msgstr "Voltar a assistir"
 
-#: src/pages/details-page.vala:222 src/widgets/episode-row.vala:88
+#: src/pages/details-page.vala:252 src/widgets/episode-row.vala:88
 msgid "Mark as Unwatched"
 msgstr "Marcar como não assistido"
 
-#: src/pages/details-page.vala:227
+#: src/pages/details-page.vala:257
 #, c-format
 msgid "Mark %s as Watched"
 msgstr "Marcar %s como assistido"
 
-#: src/pages/details-page.vala:239
+#: src/pages/details-page.vala:269
 msgid "_Notify Me"
 msgstr "_Notificar-me"
 
-#: src/pages/details-page.vala:244 src/title-actions.vala:136
+#: src/pages/details-page.vala:274 src/title-actions.vala:136
 msgid "Resu_me Watching"
 msgstr "_Voltar a assistir"
 
-#: src/pages/details-page.vala:246 src/title-actions.vala:138
+#: src/pages/details-page.vala:276 src/title-actions.vala:138
 msgid "_Drop"
 msgstr "_Abandonar"
 
-#: src/pages/details-page.vala:248 src/title-actions.vala:140
+#: src/pages/details-page.vala:278 src/title-actions.vala:140
 msgid "_Remove from Library"
 msgstr "_Remover da biblioteca"
 
-#: src/pages/details-page.vala:253
+#: src/pages/details-page.vala:283
 msgid "In Watchlist"
 msgstr "Na lista"
 
-#: src/pages/details-page.vala:268 src/pages/details-page.vala:273
+#: src/pages/details-page.vala:298 src/pages/details-page.vala:303
 #, c-format
 msgid "Next: %s"
 msgstr "Próximo: %s"
 
-#: src/pages/details-page.vala:274
+#: src/pages/details-page.vala:304
 #, c-format
 msgid "Airs %s"
 msgstr "Estreia em %s"
 
-#: src/pages/details-page.vala:299
+#: src/pages/details-page.vala:329
 msgid "Original Title"
 msgstr "Título original"
 
-#: src/pages/details-page.vala:300
+#: src/pages/details-page.vala:330
 msgid "Original Language"
 msgstr "Idioma original"
 
-#: src/pages/details-page.vala:301
+#: src/pages/details-page.vala:331
 msgid "Status"
 msgstr "Situação"
 
-#: src/pages/details-page.vala:303
+#: src/pages/details-page.vala:333
 msgid "Release Date"
 msgstr "Data de lançamento"
 
-#: src/pages/details-page.vala:304
+#: src/pages/details-page.vala:334
 msgid "Runtime"
 msgstr "Duração"
 
-#: src/pages/details-page.vala:306
+#: src/pages/details-page.vala:336
 msgid "First Aired"
 msgstr "Primeira exibição"
 
-#: src/pages/details-page.vala:307
+#: src/pages/details-page.vala:337
 msgid "Created By"
 msgstr "Criado por"
 
-#: src/pages/details-page.vala:308
+#: src/pages/details-page.vala:338
 msgid "Network"
 msgstr "Emissora"
 
-#: src/pages/details-page.vala:310
+#: src/pages/details-page.vala:340
 msgid "Episodes"
 msgstr "Episódios"
 
-#: src/pages/details-page.vala:312
+#: src/pages/details-page.vala:342
 msgid "Episode Runtime"
 msgstr "Duração do episódio"
 
-#: src/pages/details-page.vala:314
+#: src/pages/details-page.vala:344
 msgid "Genres"
 msgstr "Gêneros"
 
-#: src/pages/details-page.vala:370
+#: src/pages/details-page.vala:400
 #, c-format
 msgid "%d episode"
 msgid_plural "%d episodes"
 msgstr[0] "%d episódio"
 msgstr[1] "%d episódios"
 
-#: src/pages/details-page.vala:375
+#: src/pages/details-page.vala:405
 #, c-format
 msgid "%d/%d"
 msgstr "%d/%d"
 
-#: src/pages/details-page.vala:382 src/widgets/poster-card.vala:103
+#: src/pages/details-page.vala:412 src/widgets/poster-card.vala:103
 #, c-format
 msgid "%d of %d episodes watched"
 msgstr "%d de %d episódios assistidos"

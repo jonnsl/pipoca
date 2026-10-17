@@ -40,6 +40,7 @@ deps = [
 # Models and services, without UI, shared with the tests
 core_lib = static_library('aperture-core',
   files(
+    'models/credit.vala',
     'models/episode.vala',
     'models/release.vala',
     'models/season.vala',
@@ -78,6 +79,7 @@ sources = files(
   'services/background.vala',
   'title-actions.vala',
   'widgets/episode-row.vala',
+  'widgets/person-card.vala',
   'widgets/poster-card.vala',
   'widgets/poster.vala',
   'widgets/shelf.vala',

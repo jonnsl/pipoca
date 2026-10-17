@@ -6,6 +6,7 @@ src/dialogs/preferences-dialog.blp
 src/dialogs/preferences-dialog.vala
 src/dialogs/search-dialog.blp
 src/dialogs/search-dialog.vala
+src/models/credit.vala
 src/models/episode.vala
 src/models/release.vala
 src/models/season.vala
@@ -36,6 +37,7 @@ src/title-actions.vala
 src/utils.vala
 src/widgets/episode-row.blp
 src/widgets/episode-row.vala
+src/widgets/person-card.vala
 src/widgets/poster-card.blp
 src/widgets/poster-card.vala
 src/widgets/poster.vala

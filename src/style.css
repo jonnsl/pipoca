@@ -50,6 +50,11 @@ button.poster-card {
   border-radius: 16px;
 }
 
+button.person-card {
+  padding: 6px;
+  border-radius: 12px;
+}
+
 togglebutton.watched-toggle:checked {
   background-color: var(--accent-bg-color);
   color: var(--accent-fg-color);

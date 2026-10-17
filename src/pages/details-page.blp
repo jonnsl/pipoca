@@ -257,6 +257,29 @@ template $ApertureDetailsPage: Adw.NavigationPage {
                     }
                   }
 
+                  Box cast_box {
+                    orientation: vertical;
+                    spacing: 12;
+                    visible: false;
+
+                    Label cast_label {
+                      label: _("Cast & Crew");
+                      xalign: 0;
+
+                      styles [
+                        "title-4",
+                      ]
+                    }
+
+                    ScrolledWindow {
+                      vscrollbar-policy: never;
+
+                      child: Box cast_list {
+                        spacing: 6;
+                      };
+                    }
+                  }
+
                   // Filled with a shelf once recommendations load
                   Box more_box {
                     orientation: vertical;

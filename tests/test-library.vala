@@ -677,6 +677,42 @@ void test_parse_list () {
     assert (pages == 0 && titles.length == 0);
 }
 
+void test_credits () {
+    var movie = parse_object ("""{"id": 1, "credits": {
+        "cast": [
+            {"id": 10, "name": "Lead", "character": "Hero", "profile_path": "/lead.jpg"},
+            {"id": 11, "name": "Support", "character": "", "profile_path": null},
+            {"id": 0, "name": "Broken"}
+        ],
+        "crew": [
+            {"id": 20, "name": "Auteur", "job": "Director"},
+            {"id": 21, "name": "Composer", "job": "Original Music Composer"},
+            {"id": 20, "name": "Auteur", "job": "Screenplay"},
+            {"id": 20, "name": "Auteur", "job": "Director"}
+        ]}}""");
+    var credits = Credit.parse (movie, MediaType.MOVIE);
+    assert (credits.length == 3);
+    // Crew first, one entry per person with all their jobs
+    assert (credits[0].person_id == 20 && credits[0].role == "Director, Screenplay");
+    assert (credits[1].name == "Lead" && credits[1].role == "Hero" && credits[1].profile_path == "/lead.jpg");
+    assert (credits[2].role == "" && credits[2].profile_path == null);
+    assert (credits[1].tmdb_url == "https://www.themoviedb.org/person/10");
+
+    var show = parse_object ("""{"id": 2, "created_by": [{"id": 30, "name": "Showrunner"}],
+        "aggregate_credits": {"cast": [
+            {"id": 40, "name": "Regular", "roles": [{"character": "Main", "episode_count": 10},
+                                                    {"character": "Twin", "episode_count": 1}]},
+            {"id": 41, "name": "No Roles", "roles": []}
+        ]}}""");
+    credits = Credit.parse (show, MediaType.TV);
+    assert (credits.length == 3);
+    assert (credits[0].name == "Showrunner" && credits[0].role == "Creator");
+    assert (credits[1].role == "Main" && credits[2].role == "");
+
+    // Missing credits: nothing, no crash
+    assert (Credit.parse (parse_object ("{}"), MediaType.TV).length == 0);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -686,6 +722,7 @@ int main (string[] args) {
     }
     Test.add_func ("/title/from-json", test_from_json);
     Test.add_func ("/tmdb/parse-list", test_parse_list);
+    Test.add_func ("/tmdb/credits", test_credits);
     Test.add_func ("/library/show-progress", test_show_progress);
     Test.add_func ("/library/ended-show", test_ended_show);
     Test.add_func ("/library/movie", test_movie);
