@@ -10,6 +10,7 @@ This app uses the TMDB API but is not endorsed or certified by TMDB.
 
 - [Feature list](docs/FEATURES.md)
 - [Screens & UI plan](docs/UI.md)
+- [Library file format](docs/LIBRARY_FORMAT.md) (export/import)
 
 ## Building
 

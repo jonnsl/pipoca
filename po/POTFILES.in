@@ -17,6 +17,7 @@ src/pages/season-page.blp
 src/pages/season-page.vala
 src/services/database.vala
 src/services/image-cache.vala
+src/services/library-transfer.vala
 src/services/library.vala
 src/services/tmdb-client.vala
 src/shortcuts-dialog.blp

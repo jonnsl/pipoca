@@ -49,5 +49,24 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
         }
       }
     }
+
+    Adw.PreferencesGroup {
+      title: _("Library");
+      description: _("Library files keep your titles and watch history. Importing adds to your library without removing anything.");
+
+      Adw.ButtonRow {
+        title: _("_Export Library…");
+        use-underline: true;
+        start-icon-name: "document-save-symbolic";
+        activated => $on_export_activated();
+      }
+
+      Adw.ButtonRow {
+        title: _("_Import Library…");
+        use-underline: true;
+        start-icon-name: "document-open-symbolic";
+        activated => $on_import_activated();
+      }
+    }
   }
 }

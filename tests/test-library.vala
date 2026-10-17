@@ -176,6 +176,135 @@ void test_from_json () {
     assert (Title.from_json (parser.get_root ().get_object ()) == null);
 }
 
+Json.Object parse_object (string data) {
+    var parser = new Json.Parser ();
+    try {
+        parser.load_from_data (data);
+    } catch (Error e) {
+        error (e.message);
+    }
+    return parser.get_root ().get_object ();
+}
+
+void test_export () {
+    var lib = Library.get_default ();
+    string data;
+    try {
+        data = LibraryTransfer.export_json (lib);
+    } catch (Error e) {
+        error (e.message);
+    }
+    var root = parse_object (data);
+    assert (root.get_string_member ("format") == "aperture-library");
+    assert (root.get_int_member ("version") == 1);
+    var titles = root.get_array_member ("titles");
+    assert (titles.get_length () == lib.titles.get_n_items ());
+
+    Json.Object? show = null;
+    for (uint i = 0; i < titles.get_length (); i++) {
+        var t = titles.get_object_element (i);
+        if (t.get_string_member ("media_type") == "tv" && t.get_int_member ("tmdb_id") == 100) {
+            show = t;
+        }
+    }
+    assert (show != null);
+    assert (show.get_string_member ("name") == "Show 100");
+    var watched = show.get_array_member ("watched");
+    // S1E1, S0E1 (specials), S1E3, S2E1 from test_show_progress
+    assert (watched.get_length () == 4);
+    var first = watched.get_object_element (0);
+    assert (first.has_member ("season") && first.has_member ("episode") && first.has_member ("watched_at"));
+    assert (new DateTime.from_iso8601 (first.get_string_member ("watched_at"), null) != null);
+
+    // Importing our own export changes nothing
+    try {
+        var result = LibraryTransfer.import_json (lib, data);
+        assert (result.titles_added == 0 && result.events_added == 0 && result.titles_skipped == 0);
+    } catch (Error e) {
+        error (e.message);
+    }
+
+    // Removed titles come back with their original date
+    var movie = lib.lookup (MediaType.MOVIE, 300);
+    var added_at = movie.added_at;
+    lib.remove (movie);
+    try {
+        var result = LibraryTransfer.import_json (lib, data);
+        assert (result.titles_added == 1);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (movie.in_library && movie.added_at == added_at);
+}
+
+void test_import () {
+    var lib = Library.get_default ();
+    var data = """{
+        "format": "aperture-library",
+        "version": 1,
+        "titles": [
+            {"media_type": "movie", "tmdb_id": 400, "name": "Imported Movie", "release_date": "1999-03-31",
+             "added_at": "2024-01-02T03:04:05Z", "watched": [{"watched_at": "2024-02-01T20:00:00Z"}]},
+            {"media_type": "tv", "tmdb_id": 100, "name": "Show 100",
+             "watched": [{"season": 1, "episode": 2, "watched_at": "2024-03-01T20:00:00Z"},
+                         {"season": 1, "episode": 2, "watched_at": "2024-03-01T20:00:00Z"},
+                         {"episode": 3, "watched_at": "2024-03-01T20:00:00Z"},
+                         {"season": 1, "episode": 3}]},
+            {"media_type": "person", "tmdb_id": 1},
+            {"media_type": "movie", "tmdb_id": -5},
+            "garbage"
+        ]
+    }""";
+    ImportResult result;
+    try {
+        result = LibraryTransfer.import_json (lib, data);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (result.titles_added == 1);
+    assert (result.titles_skipped == 3);
+    // The movie's event plus one S1E2 event; the duplicate and malformed ones are dropped
+    assert (result.events_added == 2);
+
+    var movie = lib.lookup (MediaType.MOVIE, 400);
+    assert (movie.in_library && movie.name == "Imported Movie" && movie.year == "1999");
+    assert (movie.added_at == new DateTime.utc (2024, 1, 2, 3, 4, 5).to_unix ());
+    assert (movie.status == TitleStatus.WATCHED);
+    assert (!movie.has_details);
+
+    // S1E2 was the only aired episode left, so the show is caught up
+    var show = lib.lookup (MediaType.TV, 100);
+    assert (lib.get_episodes (show, 1)[1].watched);
+    assert (show.watched_count == show.aired_count);
+    assert (show.status == TitleStatus.UP_TO_DATE);
+}
+
+void test_import_errors () {
+    var lib = Library.get_default ();
+    string[] bad = {
+        "not json",
+        "[]",
+        """{"format": "something-else", "version": 1, "titles": []}""",
+        """{"format": "aperture-library", "version": 1}""",
+    };
+    foreach (var data in bad) {
+        try {
+            LibraryTransfer.import_json (lib, data);
+            assert_not_reached ();
+        } catch (Error e) {
+            // Expected
+        }
+    }
+    try {
+        LibraryTransfer.import_json (lib, """{"format": "aperture-library", "version": 99, "titles": []}""");
+        assert_not_reached ();
+    } catch (TransferError.UNSUPPORTED_VERSION e) {
+        // Expected
+    } catch (Error e) {
+        assert_not_reached ();
+    }
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -188,5 +317,8 @@ int main (string[] args) {
     Test.add_func ("/library/ended-show", test_ended_show);
     Test.add_func ("/library/movie", test_movie);
     Test.add_func ("/library/persistence", test_persistence);
+    Test.add_func ("/transfer/export", test_export);
+    Test.add_func ("/transfer/import", test_import);
+    Test.add_func ("/transfer/import-errors", test_import_errors);
     return Test.run ();
 }

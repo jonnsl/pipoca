@@ -94,7 +94,8 @@ namespace Aperture {
             }
         }
 
-        public void add (Title title) {
+        /* Adds a title; with @fetch, its details are downloaded if missing */
+        public void add (Title title, bool fetch = true) {
             var t = intern (title);
             if (t.in_library) {
                 return;
@@ -107,7 +108,7 @@ namespace Aperture {
             titles.append (t);
             update_progress (t);
             title_changed (t);
-            if (!t.has_details) {
+            if (fetch && !t.has_details) {
                 refresh.begin (t, false, null, (obj, res) => {
                     try {
                         refresh.end (res);

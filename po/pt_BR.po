@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 02:24-0300\n"
+"POT-Creation-Date: 2026-10-17 02:33-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -154,6 +154,26 @@ msgstr "Cache de imagens"
 msgid "_Clear"
 msgstr "_Limpar"
 
+#: src/dialogs/preferences-dialog.blp:54
+msgid "Library"
+msgstr "Biblioteca"
+
+#: src/dialogs/preferences-dialog.blp:55
+msgid ""
+"Library files keep your titles and watch history. Importing adds to your "
+"library without removing anything."
+msgstr ""
+"Os arquivos de biblioteca guardam seus títulos e o histórico do que você "
+"assistiu. A importação adiciona à sua biblioteca sem remover nada."
+
+#: src/dialogs/preferences-dialog.blp:58
+msgid "_Export Library…"
+msgstr "_Exportar biblioteca…"
+
+#: src/dialogs/preferences-dialog.blp:65
+msgid "_Import Library…"
+msgstr "_Importar biblioteca…"
+
 #: src/dialogs/preferences-dialog.vala:26
 msgid "Clear Image Cache?"
 msgstr "Limpar o cache de imagens?"
@@ -170,7 +190,48 @@ msgstr "_Cancelar"
 msgid "C_lear"
 msgstr "_Limpar"
 
-#: src/dialogs/preferences-dialog.vala:44
+#: src/dialogs/preferences-dialog.vala:42
+msgid "Library Files"
+msgstr "Arquivos de biblioteca"
+
+#: src/dialogs/preferences-dialog.vala:55
+msgid "Export Library"
+msgstr "Exportar biblioteca"
+
+#: src/dialogs/preferences-dialog.vala:63
+msgid "Library exported"
+msgstr "Biblioteca exportada"
+
+#. Cancelled
+#: src/dialogs/preferences-dialog.vala:67
+msgid "Can’t Export Library"
+msgstr "Não foi possível exportar a biblioteca"
+
+#: src/dialogs/preferences-dialog.vala:80
+msgid "Import Library"
+msgstr "Importar biblioteca"
+
+#: src/dialogs/preferences-dialog.vala:91
+msgid "Library is already up to date"
+msgstr "A biblioteca já está atualizada"
+
+#: src/dialogs/preferences-dialog.vala:93
+#, c-format
+msgid "Imported %d title"
+msgid_plural "Imported %d titles"
+msgstr[0] "%d título importado"
+msgstr[1] "%d títulos importados"
+
+#. Cancelled
+#: src/dialogs/preferences-dialog.vala:104
+msgid "Can’t Import Library"
+msgstr "Não foi possível importar a biblioteca"
+
+#: src/dialogs/preferences-dialog.vala:110
+msgid "_Close"
+msgstr "_Fechar"
+
+#: src/dialogs/preferences-dialog.vala:117
 msgid "Image cache cleared"
 msgstr "Cache de imagens limpo"
 
@@ -452,6 +513,19 @@ msgstr "Todos os episódios de %s serão marcados como não assistidos"
 #: src/pages/season-page.vala:134
 msgid "_Mark Unwatched"
 msgstr "_Marcar como não assistida"
+
+#: src/services/library-transfer.vala:76 src/services/library-transfer.vala:80
+msgid "This isn’t an Aperture library file"
+msgstr "Este não é um arquivo de biblioteca do Aperture"
+
+#: src/services/library-transfer.vala:84
+msgid "This library file was made by a newer version of Aperture"
+msgstr ""
+"Este arquivo de biblioteca foi criado por uma versão mais nova do Aperture"
+
+#: src/services/library-transfer.vala:88
+msgid "This library file has no titles"
+msgstr "Este arquivo de biblioteca não tem títulos"
 
 #: src/services/tmdb-client.vala:99
 msgid "No TMDB API key configured"

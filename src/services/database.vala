@@ -354,6 +354,42 @@ namespace Aperture {
             run (stmt);
         }
 
+        public struct WatchEvent {
+            public int season_number;
+            public int episode_number;
+            public int64 watched_at;
+        }
+
+        public WatchEvent[] load_watch_events (MediaType type, int64 id) throws Error {
+            var stmt = prepare ("""
+                SELECT season_number, episode_number, watched_at FROM watch_events
+                WHERE media_type = ?1 AND tmdb_id = ?2
+                ORDER BY watched_at, season_number, episode_number""");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
+            WatchEvent[] result = {};
+            while (stmt.step () == Sqlite.ROW) {
+                result += WatchEvent () {
+                    season_number = stmt.column_int (0),
+                    episode_number = stmt.column_int (1),
+                    watched_at = stmt.column_int64 (2),
+                };
+            }
+            return result;
+        }
+
+        public bool has_watch_event (MediaType type, int64 id, int season, int episode, int64 watched_at) throws Error {
+            var stmt = prepare ("""
+                SELECT 1 FROM watch_events WHERE media_type = ?1 AND tmdb_id = ?2
+                AND season_number = ?3 AND episode_number = ?4 AND watched_at = ?5 LIMIT 1""");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
+            stmt.bind_int (3, season);
+            stmt.bind_int (4, episode);
+            stmt.bind_int64 (5, watched_at);
+            return stmt.step () == Sqlite.ROW;
+        }
+
         public int64 last_watched_at (MediaType type, int64 id) throws Error {
             var stmt = prepare ("SELECT MAX(watched_at) FROM watch_events WHERE media_type = ?1 AND tmdb_id = ?2");
             stmt.bind_int (1, type);
