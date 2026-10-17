@@ -4,3 +4,4 @@
 /.flatpak-builder/
 /repo/
 *.flatpak
+/po/aperture.pot

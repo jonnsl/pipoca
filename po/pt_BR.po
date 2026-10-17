@@ -1,0 +1,688 @@
+# Brazilian Portuguese translation for Aperture.
+# Copyright (C) 2026 Jonnathan Soares
+# This file is distributed under the same license as the aperture package.
+# Jonnathan Soares <jonnsl@hotmail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: aperture\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-17 02:24-0300\n"
+"PO-Revision-Date: 2026-10-17 02:21-0300\n"
+"Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: data/io.github.jonnsl.Aperture.desktop.in.in:2
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:61
+#: src/window.blp:5 src/window.blp:21
+msgid "Aperture"
+msgstr "Aperture"
+
+#: data/io.github.jonnsl.Aperture.desktop.in.in:3
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:7
+msgid "Keep track of your movies and TV shows"
+msgstr "Acompanhe seus filmes e séries"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/io.github.jonnsl.Aperture.desktop.in.in:10
+msgid "movie;film;tv;series;show;episode;watchlist;tracker;"
+msgstr "movie;film;tv;series;show;episode;watchlist;tracker;filme;série;seriado;episódio;lista;assistir;"
+
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:9
+msgid ""
+"Aperture lets you build a watchlist of movies and TV shows, keep track of "
+"what you have watched, and find out about the latest releases."
+msgstr ""
+"O Aperture permite montar uma lista de filmes e séries para assistir, "
+"acompanhar o que você já assistiu e ficar por dentro dos últimos lançamentos."
+
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:10
+msgid ""
+"Aperture does not let you watch or download content. This app uses the TMDB "
+"API but is not endorsed or certified by TMDB."
+msgstr ""
+"O Aperture não permite assistir nem baixar conteúdo. Este aplicativo usa a "
+"API do TMDB, mas não é endossado nem certificado pelo TMDB."
+
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:13
+msgid "Jonnathan Soares"
+msgstr "Jonnathan Soares"
+
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:30
+msgid "Initial development release."
+msgstr "Versão inicial de desenvolvimento."
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:6
+msgid "Window width"
+msgstr "Largura da janela"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:10
+msgid "Window height"
+msgstr "Altura da janela"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr "Estado maximizado da janela"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:24
+msgid "Sort order of the library"
+msgstr "Ordem de classificação da biblioteca"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:28
+msgid "Refresh stale titles from TMDB at startup"
+msgstr "Atualizar títulos desatualizados a partir do TMDB ao iniciar"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:32
+msgid "Use a custom TMDB API key"
+msgstr "Usar uma chave de API do TMDB personalizada"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:36
+msgid "Custom TMDB API key or read access token"
+msgstr "Chave de API do TMDB ou token de acesso de leitura personalizado"
+
+#. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+#: src/application.vala:67
+msgid "translator-credits"
+msgstr "Jonnathan Soares"
+
+#: src/application.vala:70
+msgid ""
+"This product uses the TMDB API but is not endorsed or certified by TMDB."
+msgstr ""
+"Este produto usa a API do TMDB, mas não é endossado nem certificado pelo "
+"TMDB."
+
+#: src/application.vala:72
+msgid "The Movie Database (TMDB)"
+msgstr "The Movie Database (TMDB)"
+
+#: src/dialogs/preferences-dialog.blp:6 src/shortcuts-dialog.blp:6
+msgid "General"
+msgstr "Geral"
+
+#: src/dialogs/preferences-dialog.blp:10
+msgid "Updates"
+msgstr "Atualizações"
+
+#: src/dialogs/preferences-dialog.blp:13
+msgid "Refresh Library Automatically"
+msgstr "Atualizar biblioteca automaticamente"
+
+#: src/dialogs/preferences-dialog.blp:14
+msgid "Update titles from TMDB at startup, at most once a day"
+msgstr ""
+"Atualiza os títulos a partir do TMDB ao iniciar, no máximo uma vez por dia"
+
+#: src/dialogs/preferences-dialog.blp:20
+msgid "Advanced"
+msgstr "Avançado"
+
+#: src/dialogs/preferences-dialog.blp:24
+msgid "TMDB"
+msgstr "TMDB"
+
+#: src/dialogs/preferences-dialog.blp:25
+msgid ""
+"Aperture comes with an API key. You can use your own key or read access "
+"token instead."
+msgstr ""
+"O Aperture vem com uma chave de API. Você pode usar sua própria chave ou "
+"token de acesso de leitura."
+
+#: src/dialogs/preferences-dialog.blp:28
+msgid "Use Custom API Key"
+msgstr "Usar chave de API personalizada"
+
+#: src/dialogs/preferences-dialog.blp:32
+msgid "API Key"
+msgstr "Chave de API"
+
+#: src/dialogs/preferences-dialog.blp:38
+msgid "Storage"
+msgstr "Armazenamento"
+
+#: src/dialogs/preferences-dialog.blp:41
+msgid "Image Cache"
+msgstr "Cache de imagens"
+
+#: src/dialogs/preferences-dialog.blp:45
+msgid "_Clear"
+msgstr "_Limpar"
+
+#: src/dialogs/preferences-dialog.vala:26
+msgid "Clear Image Cache?"
+msgstr "Limpar o cache de imagens?"
+
+#: src/dialogs/preferences-dialog.vala:27
+msgid "Posters and backdrops will be downloaded again when needed"
+msgstr "Pôsteres e imagens de fundo serão baixados novamente quando necessário"
+
+#: src/dialogs/preferences-dialog.vala:28 src/pages/season-page.vala:133
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: src/dialogs/preferences-dialog.vala:29
+msgid "C_lear"
+msgstr "_Limpar"
+
+#: src/dialogs/preferences-dialog.vala:44
+msgid "Image cache cleared"
+msgstr "Cache de imagens limpo"
+
+#: src/dialogs/search-dialog.blp:5 src/shortcuts-dialog.blp:9 src/window.blp:30
+msgid "Add Title"
+msgstr "Adicionar título"
+
+#: src/dialogs/search-dialog.blp:27
+msgid "Search movies and TV shows…"
+msgstr "Pesquisar filmes e séries…"
+
+#: src/dialogs/search-dialog.blp:39 src/window.blp:88
+msgid "All"
+msgstr "Todos"
+
+#: src/dialogs/search-dialog.blp:44 src/window.blp:93
+msgid "Movies"
+msgstr "Filmes"
+
+#: src/dialogs/search-dialog.blp:49 src/window.blp:98
+msgid "Shows"
+msgstr "Séries"
+
+#: src/dialogs/search-dialog.blp:63
+msgid "Search TMDB"
+msgstr "Pesquisar no TMDB"
+
+#: src/dialogs/search-dialog.blp:64
+msgid "Find movies and TV shows to add to your library"
+msgstr "Encontre filmes e séries para adicionar à sua biblioteca"
+
+#: src/dialogs/search-dialog.blp:88 src/pages/library-view.blp:47
+msgid "No Results Found"
+msgstr "Nenhum resultado encontrado"
+
+#: src/dialogs/search-dialog.blp:89
+msgid "Try a different search"
+msgstr "Tente uma pesquisa diferente"
+
+#: src/dialogs/search-dialog.blp:102
+msgid "Can’t Search"
+msgstr "Não foi possível pesquisar"
+
+#: src/dialogs/search-dialog.blp:105 src/pages/details-page.blp:64
+msgid "_Retry"
+msgstr "_Tentar novamente"
+
+#: src/dialogs/search-dialog.vala:149
+msgid "In Library"
+msgstr "Na biblioteca"
+
+#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:169
+msgid "Add to Watchlist"
+msgstr "Adicionar à lista"
+
+#: src/models/episode.vala:23
+#, c-format
+msgid "S%d E%d"
+msgstr "T%d E%d"
+
+#: src/models/season.vala:24
+#, c-format
+msgid "Season %d"
+msgstr "Temporada %d"
+
+#: src/models/title.vala:33 src/pages/library-view.vala:61
+msgid "Plan to Watch"
+msgstr "Quero assistir"
+
+#: src/models/title.vala:35
+msgctxt "title status"
+msgid "Watching"
+msgstr "Assistindo"
+
+#: src/models/title.vala:37
+msgid "Up to Date"
+msgstr "Em dia"
+
+#: src/models/title.vala:39
+msgctxt "title status"
+msgid "Watched"
+msgstr "Assistido"
+
+#: src/models/title.vala:128
+msgid "Movie"
+msgstr "Filme"
+
+#: src/models/title.vala:128
+msgid "TV Show"
+msgstr "Série"
+
+#: src/pages/details-page.blp:37
+msgid "More Options"
+msgstr "Mais opções"
+
+#: src/pages/details-page.blp:61
+msgid "Can’t Load Details"
+msgstr "Não foi possível carregar os detalhes"
+
+#: src/pages/details-page.blp:206 src/pages/details-page.vala:172
+#: src/widgets/episode-row.blp:61 src/widgets/episode-row.vala:88
+msgid "Mark as Watched"
+msgstr "Marcar como assistido"
+
+#: src/pages/details-page.blp:223
+msgid "Overview"
+msgstr "Sinopse"
+
+#: src/pages/details-page.blp:243
+msgid "Seasons"
+msgstr "Temporadas"
+
+#: src/pages/details-page.blp:266
+msgid "Information"
+msgstr "Informações"
+
+#: src/pages/details-page.blp:295
+msgid "_Refresh Metadata"
+msgstr "_Atualizar metadados"
+
+#: src/pages/details-page.blp:300 src/title-actions.vala:117
+msgid "_Open on TMDB"
+msgstr "_Abrir no TMDB"
+
+#: src/pages/details-page.blp:305
+msgid "_Copy Link"
+msgstr "_Copiar link"
+
+#: src/pages/details-page.blp:314 src/title-actions.vala:113
+msgid "_Remove from Library"
+msgstr "_Remover da biblioteca"
+
+#: src/pages/details-page.vala:102
+msgid "Can’t refresh metadata"
+msgstr "Não foi possível atualizar os metadados"
+
+#: src/pages/details-page.vala:149
+#, c-format
+msgid "%d season"
+msgid_plural "%d seasons"
+msgstr[0] "%d temporada"
+msgstr[1] "%d temporadas"
+
+#: src/pages/details-page.vala:172 src/widgets/episode-row.vala:88
+msgid "Mark as Unwatched"
+msgstr "Marcar como não assistido"
+
+#: src/pages/details-page.vala:177
+#, c-format
+msgid "Mark %s as Watched"
+msgstr "Marcar %s como assistido"
+
+#: src/pages/details-page.vala:186
+msgid "In Watchlist"
+msgstr "Na lista"
+
+#: src/pages/details-page.vala:201 src/pages/details-page.vala:206
+#, c-format
+msgid "Next: %s"
+msgstr "Próximo: %s"
+
+#: src/pages/details-page.vala:207
+#, c-format
+msgid "Airs %s"
+msgstr "Estreia em %s"
+
+#: src/pages/details-page.vala:232
+msgid "Original Title"
+msgstr "Título original"
+
+#: src/pages/details-page.vala:233
+msgid "Original Language"
+msgstr "Idioma original"
+
+#: src/pages/details-page.vala:234
+msgid "Status"
+msgstr "Situação"
+
+#: src/pages/details-page.vala:236
+msgid "Release Date"
+msgstr "Data de lançamento"
+
+#: src/pages/details-page.vala:237
+msgid "Runtime"
+msgstr "Duração"
+
+#: src/pages/details-page.vala:239
+msgid "First Aired"
+msgstr "Primeira exibição"
+
+#: src/pages/details-page.vala:240
+msgid "Created By"
+msgstr "Criado por"
+
+#: src/pages/details-page.vala:241
+msgid "Network"
+msgstr "Emissora"
+
+#: src/pages/details-page.vala:243
+msgid "Episodes"
+msgstr "Episódios"
+
+#: src/pages/details-page.vala:245
+msgid "Episode Runtime"
+msgstr "Duração do episódio"
+
+#: src/pages/details-page.vala:247
+msgid "Genres"
+msgstr "Gêneros"
+
+#: src/pages/details-page.vala:301
+#, c-format
+msgid "%d episode"
+msgid_plural "%d episodes"
+msgstr[0] "%d episódio"
+msgstr[1] "%d episódios"
+
+#: src/pages/details-page.vala:306
+#, c-format
+msgid "%d/%d"
+msgstr "%d/%d"
+
+#: src/pages/details-page.vala:313 src/widgets/poster-card.vala:83
+#, c-format
+msgid "%d of %d episodes watched"
+msgstr "%d de %d episódios assistidos"
+
+#: src/pages/library-view.blp:48
+msgid "Try a different search or filter"
+msgstr "Tente uma pesquisa ou filtro diferente"
+
+#: src/pages/library-view.vala:60
+msgid "Continue Watching"
+msgstr "Continuar assistindo"
+
+#: src/pages/library-view.vala:63
+msgid "Your Watchlist Is Empty"
+msgstr "Sua lista está vazia"
+
+#: src/pages/library-view.vala:64
+msgid "Add movies and shows to keep track of what you want to watch"
+msgstr "Adicione filmes e séries para acompanhar o que você quer assistir"
+
+#: src/pages/library-view.vala:65
+msgid "_Search Movies & Shows"
+msgstr "_Pesquisar filmes e séries"
+
+#: src/pages/library-view.vala:73
+msgid "Nothing Watched Yet"
+msgstr "Nada assistido ainda"
+
+#: src/pages/library-view.vala:74
+msgid "Movies and shows you finish show up here"
+msgstr "Os filmes e séries que você terminar aparecem aqui"
+
+#: src/pages/season-page.vala:92
+#, c-format
+msgid "%d of %d watched"
+msgstr "%d de %d assistidos"
+
+#: src/pages/season-page.vala:95
+msgid "Mark Season Unwatched"
+msgstr "Marcar temporada como não assistida"
+
+#: src/pages/season-page.vala:95
+msgid "Mark Season Watched"
+msgstr "Marcar temporada como assistida"
+
+#. Unmarking loses watch dates, so confirm first
+#: src/pages/season-page.vala:131
+msgid "Mark Season Unwatched?"
+msgstr "Marcar temporada como não assistida?"
+
+#: src/pages/season-page.vala:132
+#, c-format
+msgid "All episodes of %s will be marked as unwatched"
+msgstr "Todos os episódios de %s serão marcados como não assistidos"
+
+#: src/pages/season-page.vala:134
+msgid "_Mark Unwatched"
+msgstr "_Marcar como não assistida"
+
+#: src/services/tmdb-client.vala:99
+msgid "No TMDB API key configured"
+msgstr "Nenhuma chave de API do TMDB configurada"
+
+#: src/shortcuts-dialog.blp:14 src/window.blp:37
+msgid "Filter Library"
+msgstr "Filtrar biblioteca"
+
+#: src/shortcuts-dialog.blp:19
+msgid "Refresh"
+msgstr "Atualizar"
+
+#: src/shortcuts-dialog.blp:24
+msgid "Preferences"
+msgstr "Preferências"
+
+#: src/shortcuts-dialog.blp:29
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de teclado"
+
+#: src/shortcuts-dialog.blp:34
+msgid "Quit"
+msgstr "Sair"
+
+#: src/shortcuts-dialog.blp:40
+msgid "Navigation"
+msgstr "Navegação"
+
+#: src/shortcuts-dialog.blp:43 src/window.blp:123
+msgid "Watchlist"
+msgstr "Para assistir"
+
+#: src/shortcuts-dialog.blp:48 src/window.blp:131
+msgid "Watched"
+msgstr "Assistidos"
+
+#: src/shortcuts-dialog.blp:53
+msgid "Go Back"
+msgstr "Voltar"
+
+#: src/title-actions.vala:19
+msgid "_Undo"
+msgstr "_Desfazer"
+
+#: src/title-actions.vala:31
+msgid "Added to Watchlist"
+msgstr "Adicionado à lista"
+
+#: src/title-actions.vala:37
+#, c-format
+msgid "“%s” removed from library"
+msgstr "“%s” removido da biblioteca"
+
+#: src/title-actions.vala:44
+msgid "Marked as watched"
+msgstr "Marcado como assistido"
+
+#: src/title-actions.vala:44
+msgid "Marked as unwatched"
+msgstr "Marcado como não assistido"
+
+#: src/title-actions.vala:62
+#, c-format
+msgid "%s marked as watched"
+msgstr "%s marcado como assistido"
+
+#: src/title-actions.vala:62
+#, c-format
+msgid "%s marked as unwatched"
+msgstr "%s marcado como não assistido"
+
+#: src/title-actions.vala:64
+#, c-format
+msgid "%d episode marked as watched"
+msgid_plural "%d episodes marked as watched"
+msgstr[0] "%d episódio marcado como assistido"
+msgstr[1] "%d episódios marcados como assistidos"
+
+#: src/title-actions.vala:65
+#, c-format
+msgid "%d episode marked as unwatched"
+msgid_plural "%d episodes marked as unwatched"
+msgstr[0] "%d episódio marcado como não assistido"
+msgstr[1] "%d episódios marcados como não assistidos"
+
+#: src/title-actions.vala:98
+msgid "Link copied"
+msgstr "Link copiado"
+
+#: src/title-actions.vala:106
+msgid "Mark as _Unwatched"
+msgstr "Marcar como _não assistido"
+
+#: src/title-actions.vala:106
+msgid "Mark as _Watched"
+msgstr "Marcar como _assistido"
+
+#: src/title-actions.vala:108
+#, c-format
+msgid "Mark %s as _Watched"
+msgstr "Marcar %s como _assistido"
+
+#: src/title-actions.vala:115
+msgid "_Add to Watchlist"
+msgstr "_Adicionar à lista"
+
+#. Translators: date format, see https://docs.gtk.org/glib/method.DateTime.format.html
+#: src/utils.vala:22
+#, no-c-format
+msgid "%b %-d, %Y"
+msgstr "%-d de %b de %Y"
+
+#. Translators: date format, see https://docs.gtk.org/glib/method.DateTime.format.html
+#: src/utils.vala:35
+#, no-c-format
+msgid "%a, %b %-d"
+msgstr "%a, %-d de %b"
+
+#: src/utils.vala:45
+#, c-format
+msgid "%d min"
+msgstr "%d min"
+
+#: src/utils.vala:48
+#, c-format
+msgid "%d h"
+msgstr "%d h"
+
+#: src/utils.vala:50
+#, c-format
+msgid "%d h %d min"
+msgstr "%d h %d min"
+
+#: src/utils.vala:57
+msgid "Returning Series"
+msgstr "Em exibição"
+
+#: src/utils.vala:59
+msgid "Ended"
+msgstr "Finalizada"
+
+#: src/utils.vala:61
+msgid "Canceled"
+msgstr "Cancelada"
+
+#: src/utils.vala:63
+msgid "In Production"
+msgstr "Em produção"
+
+#: src/utils.vala:65
+msgid "Planned"
+msgstr "Planejada"
+
+#: src/utils.vala:67
+msgid "Pilot"
+msgstr "Piloto"
+
+#: src/utils.vala:69
+msgid "Rumored"
+msgstr "Rumor"
+
+#: src/utils.vala:71
+msgid "Post Production"
+msgstr "Pós-produção"
+
+#: src/utils.vala:73
+msgid "Released"
+msgstr "Lançado"
+
+#: src/widgets/episode-row.vala:43
+msgid "Not aired yet"
+msgstr "Ainda não exibido"
+
+#: src/widgets/episode-row.vala:99
+msgid "Mark Watched _Up to Here"
+msgstr "Marcar como assistido _até aqui"
+
+#: src/widgets/poster-card.vala:75
+#, c-format
+msgid "%s · %s"
+msgstr "%s · %s"
+
+#: src/window.blp:50
+msgid "Main Menu"
+msgstr "Menu principal"
+
+#: src/window.blp:61
+msgid "Filter library…"
+msgstr "Filtrar biblioteca…"
+
+#: src/window.blp:69
+msgid "Offline — showing saved data"
+msgstr "Sem conexão — mostrando dados salvos"
+
+#: src/window.blp:108
+msgid "Sort"
+msgstr "Ordenar"
+
+#: src/window.blp:151
+msgid "Sort By"
+msgstr "Ordenar por"
+
+#: src/window.blp:154
+msgid "Date _Added"
+msgstr "Data de _adição"
+
+#: src/window.blp:160
+msgid "_Title"
+msgstr "_Título"
+
+#: src/window.blp:166
+msgid "_Release Date"
+msgstr "Data de _lançamento"
+
+#: src/window.blp:172
+msgid "_Last Watched"
+msgstr "Assistido por ú_ltimo"
+
+#: src/window.blp:182
+msgid "Refresh _Library"
+msgstr "Atualizar _biblioteca"
+
+#: src/window.blp:189
+msgid "_Preferences"
+msgstr "_Preferências"
+
+#: src/window.blp:194
+msgid "_Keyboard Shortcuts"
+msgstr "_Atalhos de teclado"
+
+#: src/window.blp:199
+msgid "_About Aperture"
+msgstr "_Sobre o Aperture"

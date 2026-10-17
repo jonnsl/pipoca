@@ -32,11 +32,11 @@ namespace Aperture {
             case PLAN_TO_WATCH:
                 return _("Plan to Watch");
             case WATCHING:
-                return _("Watching");
+                return C_("title status", "Watching");
             case UP_TO_DATE:
                 return _("Up to Date");
             case WATCHED:
-                return _("Watched");
+                return C_("title status", "Watched");
             default:
                 return "";
             }

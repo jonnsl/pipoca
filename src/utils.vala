@@ -18,6 +18,7 @@ namespace Aperture.Utils {
             return "";
         }
         // Translators: date format, see https://docs.gtk.org/glib/method.DateTime.format.html
+        // xgettext:no-c-format
         return dt.format (_("%b %-d, %Y"));
     }
 
@@ -30,6 +31,7 @@ namespace Aperture.Utils {
         var now = new DateTime.now_local ();
         if (dt.get_year () == now.get_year ()) {
             // Translators: date format, see https://docs.gtk.org/glib/method.DateTime.format.html
+            // xgettext:no-c-format
             return dt.format (_("%a, %b %-d"));
         }
         return format_date (date);
@@ -46,6 +48,32 @@ namespace Aperture.Utils {
             return _("%d h").printf (minutes / 60);
         }
         return _("%d h %d min").printf (minutes / 60, minutes % 60);
+    }
+
+    /* TMDB only returns statuses in English */
+    public string? tmdb_status_label (string? status) {
+        switch (status) {
+        case "Returning Series":
+            return _("Returning Series");
+        case "Ended":
+            return _("Ended");
+        case "Canceled":
+            return _("Canceled");
+        case "In Production":
+            return _("In Production");
+        case "Planned":
+            return _("Planned");
+        case "Pilot":
+            return _("Pilot");
+        case "Rumored":
+            return _("Rumored");
+        case "Post Production":
+            return _("Post Production");
+        case "Released":
+            return _("Released");
+        default:
+            return status;
+        }
     }
 
     /* The ISO 639-1 codes TMDB titles commonly use */

@@ -147,7 +147,7 @@ namespace Aperture {
             } else {
                 string? seasons = t.number_of_seasons > 0
                     ? ngettext ("%d season", "%d seasons", t.number_of_seasons).printf (t.number_of_seasons) : null;
-                network_label.label = Utils.join_dot ({ t.networks, t.tmdb_status, seasons });
+                network_label.label = Utils.join_dot ({ t.networks, Utils.tmdb_status_label (t.tmdb_status), seasons });
                 network_label.visible = network_label.label != "";
             }
 
@@ -231,7 +231,7 @@ namespace Aperture {
             info_list.remove_all ();
             add_info (_("Original Title"), t.original_name);
             add_info (_("Original Language"), Utils.language_name (t.original_language));
-            add_info (_("Status"), t.tmdb_status);
+            add_info (_("Status"), Utils.tmdb_status_label (t.tmdb_status));
             if (t.is_movie) {
                 add_info (_("Release Date"), Utils.format_date (t.release_date));
                 add_info (_("Runtime"), Utils.format_runtime (t.runtime));
