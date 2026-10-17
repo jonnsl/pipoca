@@ -24,7 +24,7 @@ milestones are ordered by how much value they add relative to their cost.
   fixes a common Ticket Booth complaint: a finished season stayed marked
   "watched" after new episodes aired.
 - **Watch event**: the user watched a movie or episode at a given time. These
-  events drive progress, history and re-watches.
+  events drive progress and the *Last Watched* sort order.
 
 ## M1 — Track your library
 
@@ -80,33 +80,16 @@ milestones are ordered by how much value they add relative to their cost.
     Discover shelf based on the library.
 20. **Cast & crew** row on the details page.
 21. **Trailers:** button that opens the YouTube trailer in the browser.
-22. **Where to watch:** streaming/rent/buy providers for the user's region
-    (TMDB watch providers, JustWatch attribution required).
 
-## M4 — Personal data
+## M4 — Data portability
 
-23. **Personal rating** (1–10 stars) and **private notes** per title.
-24. **Watch history:** list of watch events by date, editable (change or remove
-    a watch date).
-25. **Re-watches:** watch a movie/episode more than once and keep a count.
-26. **Statistics** (optional): hours watched, titles per month, top genres.
-27. **Custom lists** (optional): user-named collections like "Halloween" or
-    "With the kids".
-
-## M5 — Data portability
-
-28. **Export/import** the library as a documented JSON file.
-29. **Import from Ticket Booth:** read its export archive (`.zip` with
-    movies/series/seasons/episodes JSON) so users of the discontinued app can
-    move over.
-30. **Import from Trakt / Letterboxd CSV** (optional).
-31. **Manual entries:** add titles that aren't on TMDB (home videos, festival
-    films) with custom poster and info.
+22. **Export/import** the library as a documented JSON file.
 
 ## Preferences
 
-- **Metadata language** (TMDB `language`) and **region** (release dates, watch
-  providers). The default comes from the system locale.
+- **Metadata language** (TMDB `language`) and **region** (release dates). The
+  default comes from the system locale. *Not implemented yet: both are always
+  taken from the locale, with no preference to change them.*
 - **TMDB API key:** optional user-supplied key that overrides the bundled one.
 - **Updates:** turn background refresh on/off; turn notifications on/off; run in
   background.
