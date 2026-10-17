@@ -24,9 +24,11 @@ namespace Aperture {
         [GtkChild] private unowned Gtk.Label overview_label;
         [GtkChild] private unowned Gtk.Box seasons_box;
         [GtkChild] private unowned Gtk.ListBox seasons_list;
+        [GtkChild] private unowned Gtk.Box more_box;
         [GtkChild] private unowned Gtk.ListBox info_list;
 
         private Library library;
+        private Shelf more_shelf;
         private Cancellable cancellable = new Cancellable ();
         private uint update_id = 0;
 
@@ -71,6 +73,7 @@ namespace Aperture {
             library.episodes_changed.connect (on_episodes_changed);
 
             update ();
+            setup_recommendations ();
             if (title_object.has_details) {
                 stack.visible_child_name = "content";
                 if (library.is_stale (title_object)) {
@@ -96,6 +99,32 @@ namespace Aperture {
 
         public void refresh () {
             load.begin (true);
+            load_recommendations.begin ();
+        }
+
+        private void setup_recommendations () {
+            more_shelf = new Shelf (DiscoverList.recommendations (_("More Like This"), title_object));
+            more_shelf.title_activated.connect ((t) => {
+                var win = Window.of (this);
+                if (win != null) {
+                    win.show_title (t);
+                }
+            });
+            more_shelf.see_all.connect ((list) => {
+                var nav = (Adw.NavigationView) get_ancestor (typeof (Adw.NavigationView));
+                nav.push (new DiscoverListPage (list));
+            });
+            more_box.append (more_shelf);
+            load_recommendations.begin ();
+        }
+
+        /* Shown only when there are some; offline, the page works without them */
+        private async void load_recommendations () {
+            yield more_shelf.load ();
+            // Unless the page was closed meanwhile
+            if (!cancellable.is_cancelled ()) {
+                more_box.visible = more_shelf.has_items;
+            }
         }
 
         private async void load (bool force) {

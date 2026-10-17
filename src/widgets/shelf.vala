@@ -7,6 +7,8 @@ namespace Aperture {
         public MediaType? media_type;
         /* Whether release dates depend on the user's country */
         public bool regional;
+        /* Leave out titles in the library, for suggestions */
+        public bool exclude_library;
 
         public DiscoverList (string title, string path, MediaType? media_type, bool regional = false) {
             this.title = title;
@@ -26,13 +28,22 @@ namespace Aperture {
             };
         }
 
+        /* TMDB's recommendations based on @t */
+        public static DiscoverList recommendations (string title, Title t) {
+            return new DiscoverList (title, "/%s/%lld/recommendations".printf (t.media_type.to_api_string (), t.id),
+                                     t.media_type);
+        }
+
         /* A page of the list (from 1), as the library's canonical titles */
         public async GenericArray<Title> fetch (int page, Cancellable? cancellable, out int total_pages) throws Error {
             var library = Library.get_default ();
             var titles = yield library.tmdb.get_list (path, media_type, regional, page, cancellable, out total_pages);
             var result = new GenericArray<Title> ();
             foreach (var t in titles) {
-                result.add (library.intern (t));
+                var canonical = library.intern (t);
+                if (!exclude_library || !canonical.in_library) {
+                    result.add (canonical);
+                }
             }
             return result;
         }
@@ -54,6 +65,8 @@ namespace Aperture {
         private Adw.TimedAnimation? scroll_animation;
 
         public DiscoverList list { get; construct; }
+        /* Whether the last load found anything */
+        public bool has_items { get; private set; }
 
         public signal void title_activated (Title title);
         public signal void see_all (DiscoverList list);
@@ -101,7 +114,13 @@ namespace Aperture {
                 }
                 scroller.hadjustment.value = 0;
                 see_all_button.sensitive = total_pages > 1;
-                stack.visible_child_name = "content";
+                has_items = titles.length > 0;
+                if (has_items) {
+                    stack.visible_child_name = "content";
+                } else {
+                    error_label.label = _("Nothing to show yet");
+                    stack.visible_child_name = "error";
+                }
                 return true;
             } catch (IOError.CANCELLED e) {
                 return true;

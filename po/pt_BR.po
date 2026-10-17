@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 15:41-0300\n"
+"POT-Creation-Date: 2026-10-17 15:49-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -504,7 +504,7 @@ msgstr "_Tentar novamente"
 msgid "In Library"
 msgstr "Na biblioteca"
 
-#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:188
+#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:217
 msgid "Add to Watchlist"
 msgstr "Adicionar à lista"
 
@@ -557,7 +557,7 @@ msgstr "Mais opções"
 msgid "Can’t Load Details"
 msgstr "Não foi possível carregar os detalhes"
 
-#: src/pages/details-page.blp:205 src/pages/details-page.vala:193
+#: src/pages/details-page.blp:205 src/pages/details-page.vala:222
 #: src/widgets/episode-row.blp:61 src/widgets/episode-row.vala:88
 msgid "Mark as Watched"
 msgstr "Marcar como assistido"
@@ -570,133 +570,137 @@ msgstr "Sinopse"
 msgid "Seasons"
 msgstr "Temporadas"
 
-#: src/pages/details-page.blp:265
+#: src/pages/details-page.blp:271
 msgid "Information"
 msgstr "Informações"
 
-#: src/pages/details-page.blp:294
+#: src/pages/details-page.blp:300
 msgid "_Refresh Metadata"
 msgstr "_Atualizar metadados"
 
-#: src/pages/details-page.blp:299 src/title-actions.vala:144
+#: src/pages/details-page.blp:305 src/title-actions.vala:144
 msgid "_Open on TMDB"
 msgstr "_Abrir no TMDB"
 
-#: src/pages/details-page.blp:304
+#: src/pages/details-page.blp:310
 msgid "_Copy Link"
 msgstr "_Copiar link"
 
-#: src/pages/details-page.vala:117
+#: src/pages/details-page.vala:106
+msgid "More Like This"
+msgstr "Mais como este"
+
+#: src/pages/details-page.vala:146
 msgid "Can’t refresh metadata"
 msgstr "Não foi possível atualizar os metadados"
 
-#: src/pages/details-page.vala:168
+#: src/pages/details-page.vala:197
 #, c-format
 msgid "%d season"
 msgid_plural "%d seasons"
 msgstr[0] "%d temporada"
 msgstr[1] "%d temporadas"
 
-#: src/pages/details-page.vala:191
+#: src/pages/details-page.vala:220
 msgid "Resume Watching"
 msgstr "Voltar a assistir"
 
-#: src/pages/details-page.vala:193 src/widgets/episode-row.vala:88
+#: src/pages/details-page.vala:222 src/widgets/episode-row.vala:88
 msgid "Mark as Unwatched"
 msgstr "Marcar como não assistido"
 
-#: src/pages/details-page.vala:198
+#: src/pages/details-page.vala:227
 #, c-format
 msgid "Mark %s as Watched"
 msgstr "Marcar %s como assistido"
 
-#: src/pages/details-page.vala:210
+#: src/pages/details-page.vala:239
 msgid "_Notify Me"
 msgstr "_Notificar-me"
 
-#: src/pages/details-page.vala:215 src/title-actions.vala:136
+#: src/pages/details-page.vala:244 src/title-actions.vala:136
 msgid "Resu_me Watching"
 msgstr "_Voltar a assistir"
 
-#: src/pages/details-page.vala:217 src/title-actions.vala:138
+#: src/pages/details-page.vala:246 src/title-actions.vala:138
 msgid "_Drop"
 msgstr "_Abandonar"
 
-#: src/pages/details-page.vala:219 src/title-actions.vala:140
+#: src/pages/details-page.vala:248 src/title-actions.vala:140
 msgid "_Remove from Library"
 msgstr "_Remover da biblioteca"
 
-#: src/pages/details-page.vala:224
+#: src/pages/details-page.vala:253
 msgid "In Watchlist"
 msgstr "Na lista"
 
-#: src/pages/details-page.vala:239 src/pages/details-page.vala:244
+#: src/pages/details-page.vala:268 src/pages/details-page.vala:273
 #, c-format
 msgid "Next: %s"
 msgstr "Próximo: %s"
 
-#: src/pages/details-page.vala:245
+#: src/pages/details-page.vala:274
 #, c-format
 msgid "Airs %s"
 msgstr "Estreia em %s"
 
-#: src/pages/details-page.vala:270
+#: src/pages/details-page.vala:299
 msgid "Original Title"
 msgstr "Título original"
 
-#: src/pages/details-page.vala:271
+#: src/pages/details-page.vala:300
 msgid "Original Language"
 msgstr "Idioma original"
 
-#: src/pages/details-page.vala:272
+#: src/pages/details-page.vala:301
 msgid "Status"
 msgstr "Situação"
 
-#: src/pages/details-page.vala:274
+#: src/pages/details-page.vala:303
 msgid "Release Date"
 msgstr "Data de lançamento"
 
-#: src/pages/details-page.vala:275
+#: src/pages/details-page.vala:304
 msgid "Runtime"
 msgstr "Duração"
 
-#: src/pages/details-page.vala:277
+#: src/pages/details-page.vala:306
 msgid "First Aired"
 msgstr "Primeira exibição"
 
-#: src/pages/details-page.vala:278
+#: src/pages/details-page.vala:307
 msgid "Created By"
 msgstr "Criado por"
 
-#: src/pages/details-page.vala:279
+#: src/pages/details-page.vala:308
 msgid "Network"
 msgstr "Emissora"
 
-#: src/pages/details-page.vala:281
+#: src/pages/details-page.vala:310
 msgid "Episodes"
 msgstr "Episódios"
 
-#: src/pages/details-page.vala:283
+#: src/pages/details-page.vala:312
 msgid "Episode Runtime"
 msgstr "Duração do episódio"
 
-#: src/pages/details-page.vala:285
+#: src/pages/details-page.vala:314
 msgid "Genres"
 msgstr "Gêneros"
 
-#: src/pages/details-page.vala:341
+#: src/pages/details-page.vala:370
 #, c-format
 msgid "%d episode"
 msgid_plural "%d episodes"
 msgstr[0] "%d episódio"
 msgstr[1] "%d episódios"
 
-#: src/pages/details-page.vala:346
+#: src/pages/details-page.vala:375
 #, c-format
 msgid "%d/%d"
 msgstr "%d/%d"
 
-#: src/pages/details-page.vala:353 src/widgets/poster-card.vala:103
+#: src/pages/details-page.vala:382 src/widgets/poster-card.vala:103
 #, c-format
 msgid "%d of %d episodes watched"
 msgstr "%d de %d episódios assistidos"
@@ -713,12 +717,22 @@ msgstr "Não foi possível carregar mais títulos"
 msgid "You’re Offline"
 msgstr "Você está offline"
 
-#: src/pages/discover-view.blp:36 src/pages/discover-view.vala:73
+#: src/pages/discover-view.blp:36 src/pages/discover-view.vala:127
 msgid "Connect to the internet to discover movies and shows"
 msgstr "Conecte-se à internet para descobrir filmes e séries"
 
+#: src/pages/discover-view.vala:81
+#, c-format
+msgid "Because You Watched %s"
+msgstr "Porque você assistiu %s"
+
+#: src/pages/discover-view.vala:81
+#, c-format
+msgid "Because You Added %s"
+msgstr "Porque você adicionou %s"
+
 #. Nothing at all usually means no connection to TMDB
-#: src/pages/discover-view.vala:65
+#: src/pages/discover-view.vala:119
 msgid "Can’t reach TMDB right now"
 msgstr "Não foi possível acessar o TMDB agora"
 
@@ -1121,32 +1135,36 @@ msgstr "Avançar"
 msgid "See _All"
 msgstr "Ver _tudo"
 
-#: src/widgets/shelf.vala:20
+#: src/widgets/shelf.vala:22
 msgid "Trending This Week"
 msgstr "Em alta esta semana"
 
-#: src/widgets/shelf.vala:21
+#: src/widgets/shelf.vala:23
 msgid "Popular Movies"
 msgstr "Filmes populares"
 
-#: src/widgets/shelf.vala:22
+#: src/widgets/shelf.vala:24
 msgid "Popular Shows"
 msgstr "Séries populares"
 
-#: src/widgets/shelf.vala:23
+#: src/widgets/shelf.vala:25
 msgid "Now in Theaters"
 msgstr "Em cartaz nos cinemas"
 
-#: src/widgets/shelf.vala:24
+#: src/widgets/shelf.vala:26
 msgid "Upcoming Movies"
 msgstr "Próximos filmes"
 
-#: src/widgets/shelf.vala:25
+#: src/widgets/shelf.vala:27
 msgid "Airing Today"
 msgstr "No ar hoje"
 
+#: src/widgets/shelf.vala:121
+msgid "Nothing to show yet"
+msgstr "Nada para mostrar ainda"
+
 #. Keep what was loaded before, if anything
-#: src/widgets/shelf.vala:112
+#: src/widgets/shelf.vala:131
 msgid "Can’t load this list"
 msgstr "Não foi possível carregar esta lista"
 
