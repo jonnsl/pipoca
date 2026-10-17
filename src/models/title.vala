@@ -95,6 +95,8 @@ namespace Aperture {
         /* Next episode that hasn't aired yet */
         public Episode? upcoming_episode { get; set; }
         public int64 last_watched_at { get; set; }
+        /* Has an episode or release since the user last opened the app */
+        public bool has_new { get; set; }
         public TitleStatus status { get; set; default = TitleStatus.NONE; }
 
         public Title (MediaType media_type, int64 id) {

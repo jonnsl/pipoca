@@ -503,6 +503,18 @@ namespace Aperture {
             return result;
         }
 
+        /* Whether a regular episode the user hasn't watched aired after @since */
+        public bool has_new_episodes (int64 show_id, string since) throws Error {
+            var stmt = prepare ("""
+                SELECT 1 FROM episodes e
+                WHERE e.show_id = ?1 AND e.season_number > 0 AND e.air_date > ?3 AND %s AND NOT %s LIMIT 1
+            """.printf (AIRED_EXPR, WATCHED_EXPR));
+            stmt.bind_int64 (1, show_id);
+            stmt.bind_text (2, Utils.today ());
+            stmt.bind_text (3, since);
+            return stmt.step () == Sqlite.ROW;
+        }
+
         /* The next regular episode that hasn't aired yet */
         public Episode? find_upcoming_episode (int64 show_id) throws Error {
             var stmt = prepare ("""

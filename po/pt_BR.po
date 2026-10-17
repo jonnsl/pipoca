@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 15:18-0300\n"
+"POT-Creation-Date: 2026-10-17 15:20-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: data/io.github.jonnsl.Aperture.desktop.in.in:2
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:65
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:75
 #: src/window.blp:5 src/window.blp:21
 msgid "Aperture"
 msgstr "Aperture"
@@ -78,52 +78,60 @@ msgid "Refresh stale titles from TMDB at startup"
 msgstr "Atualizar títulos desatualizados a partir do TMDB ao iniciar"
 
 #: data/io.github.jonnsl.Aperture.gschema.xml.in:32
+msgid "Local date (YYYY-MM-DD) the window was last opened"
+msgstr "Data local (AAAA-MM-DD) em que a janela foi aberta pela última vez"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:33
+msgid "Titles with episodes or releases after this date get a “New” badge"
+msgstr "Títulos com episódios ou lançamentos após esta data recebem o selo “Novo”"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:37
 msgid "Use a custom TMDB API key"
 msgstr "Usar uma chave de API do TMDB personalizada"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:36
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:41
 msgid "Custom TMDB API key or read access token"
 msgstr "Chave de API do TMDB ou token de acesso de leitura personalizado"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:40
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:45
 msgid "Sync from Kodi"
 msgstr "Sincronizar com o Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:41
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:46
 msgid "Import titles and watch history from Kodi periodically"
 msgstr "Importar títulos e histórico do Kodi periodicamente"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:45
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:50
 msgid "Address of Kodi’s web server, e.g. http://192.168.1.10:8080"
 msgstr ""
 "Endereço do servidor web do Kodi, por exemplo, http://192.168.1.10:8080"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:49
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:54
 msgid "Username for Kodi’s web server"
 msgstr "Nome de usuário do servidor web do Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:54
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:59
 msgid "Minutes between Kodi syncs"
 msgstr "Minutos entre sincronizações com o Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:58
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:63
 msgid "When the last successful Kodi sync finished (Unix time)"
 msgstr ""
 "Quando terminou a última sincronização com o Kodi bem-sucedida (horário Unix)"
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.vala:71
+#: src/application.vala:81
 msgid "translator-credits"
 msgstr "Jonnathan Soares"
 
-#: src/application.vala:74
+#: src/application.vala:84
 msgid ""
 "This product uses the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
 "Este produto usa a API do TMDB, mas não é endossado nem certificado pelo "
 "TMDB."
 
-#: src/application.vala:76
+#: src/application.vala:86
 msgid "The Movie Database (TMDB)"
 msgstr "The Movie Database (TMDB)"
 
@@ -454,11 +462,11 @@ msgctxt "title status"
 msgid "Dropped"
 msgstr "Abandonado"
 
-#: src/models/title.vala:138
+#: src/models/title.vala:140
 msgid "Movie"
 msgstr "Filme"
 
-#: src/models/title.vala:138
+#: src/models/title.vala:140
 msgid "TV Show"
 msgstr "Série"
 
@@ -605,7 +613,7 @@ msgstr[1] "%d episódios"
 msgid "%d/%d"
 msgstr "%d/%d"
 
-#: src/pages/details-page.vala:332 src/widgets/poster-card.vala:93
+#: src/pages/details-page.vala:332 src/widgets/poster-card.vala:97
 #, c-format
 msgid "%d of %d episodes watched"
 msgstr "%d de %d episódios assistidos"
@@ -681,7 +689,8 @@ msgstr "Nenhum lançamento próximo"
 
 #: src/pages/upcoming-view.blp:35
 msgid "Add shows that are still airing to see their next episodes here"
-msgstr "Adicione séries que ainda estão no ar para ver seus próximos episódios aqui"
+msgstr ""
+"Adicione séries que ainda estão no ar para ver seus próximos episódios aqui"
 
 #: src/pages/upcoming-view.vala:108
 msgid "Today"
@@ -939,16 +948,29 @@ msgstr "Ainda não exibido"
 msgid "Mark Watched _Up to Here"
 msgstr "Marcar como assistido _até aqui"
 
+#: src/widgets/poster-card.blp:20
+msgctxt "badge"
+msgid "New"
+msgstr "Novo"
+
 #. Where it was left off
-#: src/widgets/poster-card.vala:80
+#: src/widgets/poster-card.vala:81
 #, c-format
 msgid "%d of %d episodes"
 msgstr "%d de %d episódios"
 
-#: src/widgets/poster-card.vala:84
+#: src/widgets/poster-card.vala:85
 #, c-format
 msgid "%s · %s"
 msgstr "%s · %s"
+
+#: src/widgets/poster-card.vala:91
+msgid "Released since you last opened Aperture"
+msgstr "Lançado desde a última vez que você abriu o Aperture"
+
+#: src/widgets/poster-card.vala:92
+msgid "New episodes since you last opened Aperture"
+msgstr "Novos episódios desde a última vez que você abriu o Aperture"
 
 #: src/window.blp:50
 msgid "Main Menu"

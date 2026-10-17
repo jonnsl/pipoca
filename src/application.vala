@@ -41,9 +41,19 @@ namespace Aperture {
             var win = active_window ?? new Aperture.Window (this);
             win.present ();
             if (first) {
+                start_session ();
                 schedule_refresh ();
                 KodiSync.get_default ().start ();
             }
+        }
+
+        /* What came out since the app was last opened is new */
+        private void start_session () {
+            var settings = new Settings (Config.APPLICATION_ID);
+            var today = Utils.today ();
+            var last = settings.get_string ("last-opened");
+            Library.get_default ().new_since = last != "" ? last : today;
+            settings.set_string ("last-opened", today);
         }
 
         private void schedule_refresh () {

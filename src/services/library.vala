@@ -15,6 +15,8 @@ namespace Aperture {
         public Database db { get; private set; }
         private HashTable<string, Title> titles_by_key = new HashTable<string, Title> (str_hash, str_equal);
         private HashTable<string, Cancellable> refreshing = new HashTable<string, Cancellable> (str_hash, str_equal);
+        /* Titles whose "new" badge the user has seen this session */
+        private GenericSet<string> seen = new GenericSet<string> (str_hash, str_equal);
 
         public TmdbClient tmdb { get; private set; }
 
@@ -22,6 +24,23 @@ namespace Aperture {
         public ListStore titles { get; private set; }
 
         public bool refreshing_library { get; private set; }
+
+        /**
+         * Episodes and releases after this date ("YYYY-MM-DD") are new, so
+         * their titles get a badge; null for none. The app sets it to the day
+         * the user last opened it.
+         */
+        public string? new_since {
+            get { return _new_since; }
+            set {
+                _new_since = value;
+                seen.remove_all ();
+                for (uint i = 0; i < titles.get_n_items (); i++) {
+                    update_progress ((Title) titles.get_item (i));
+                }
+            }
+        }
+        private string? _new_since;
 
         /* Emitted when a title's status, progress or library membership changes */
         public signal void title_changed (Title title);
@@ -169,11 +188,30 @@ namespace Aperture {
                 if (t.in_library && t.is_dropped) {
                     t.status = TitleStatus.DROPPED;
                 }
+                t.has_new = is_new (t);
             } catch (Error e) {
                 warning ("Can't compute progress of %s: %s", t.key, e.message);
             } finally {
                 t.thaw_notify ();
             }
+        }
+
+        private bool is_new (Title t) throws Error {
+            if (new_since == null || !t.in_library || t.is_dropped || t.key in seen) {
+                return false;
+            }
+            if (t.is_movie) {
+                var date = t.release_date;
+                return t.status == TitleStatus.PLAN_TO_WATCH && date != null && date.length == 10
+                    && date > new_since && date <= Utils.today ();
+            }
+            return db.has_new_episodes (t.id, new_since);
+        }
+
+        /* Clears a title's "new" badge until the next session */
+        public void mark_seen (Title t) {
+            seen.add (t.key);
+            t.has_new = false;
         }
 
         public void set_movie_watched (Title t, bool watched) {

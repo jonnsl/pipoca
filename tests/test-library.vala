@@ -526,6 +526,47 @@ void test_releases () {
     lib.set_movie_watched (movie, false);
 }
 
+void test_new_badges () {
+    var lib = Library.get_default ();
+    var show = make_show (900, "Returning Series");
+    lib.add (show);
+    var movie = new Title (MediaType.MOVIE, 901);
+    movie.name = "Released Movie";
+    movie.release_date = "2020-06-01";
+    movie.refreshed_at = new DateTime.now_utc ().to_unix ();
+    lib.add (lib.intern (movie));
+    assert (!show.has_new && !movie.has_new);
+
+    // S2E1 aired 2021-01-01; the S2E2 in 2099 hasn't aired, so it isn't new
+    lib.new_since = "2020-12-31";
+    assert (show.has_new);
+    assert (!movie.has_new);
+    lib.new_since = "2021-01-01";
+    assert (!show.has_new);
+
+    // Watching what's new clears the badge
+    lib.new_since = "2020-12-31";
+    lib.set_episodes_watched (show, lib.get_episodes (show, 2), true);
+    assert (!show.has_new);
+
+    // So does seeing the title, until the next session
+    lib.new_since = "2019-12-31";
+    assert (show.has_new && movie.has_new);
+    lib.mark_seen (show);
+    assert (!show.has_new && movie.has_new);
+    lib.new_since = "2019-12-31";
+    assert (show.has_new);
+
+    // Watched movies and dropped titles aren't new
+    lib.set_movie_watched (movie, true);
+    assert (!movie.has_new);
+    lib.set_dropped (show, true);
+    assert (!show.has_new);
+
+    lib.new_since = null;
+    assert (!show.has_new);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -545,5 +586,6 @@ int main (string[] args) {
     Test.add_func ("/kodi/parsing", test_kodi_parsing);
     Test.add_func ("/library/dropped", test_dropped);
     Test.add_func ("/library/releases", test_releases);
+    Test.add_func ("/library/new-badges", test_new_badges);
     return Test.run ();
 }

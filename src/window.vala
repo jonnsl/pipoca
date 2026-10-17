@@ -104,7 +104,9 @@ namespace Aperture {
         }
 
         public void show_title (Title title) {
-            var t = Library.get_default ().intern (title);
+            var library = Library.get_default ();
+            var t = library.intern (title);
+            library.mark_seen (t);
             navigation_view.push (new DetailsPage (t));
         }
 

@@ -3,6 +3,7 @@ namespace Aperture {
     public class PosterCard : Gtk.Box {
         [GtkChild] private unowned Poster poster;
         [GtkChild] private unowned Gtk.ProgressBar progress_bar;
+        [GtkChild] private unowned Gtk.Label new_badge;
         [GtkChild] private unowned Gtk.Label title_label;
         [GtkChild] private unowned Gtk.Label subtitle_label;
         private Gtk.PopoverMenu context_menu;
@@ -86,6 +87,9 @@ namespace Aperture {
             } else {
                 subtitle_label.label = title.describe ();
             }
+            new_badge.visible = title.has_new;
+            new_badge.tooltip_text = title.is_movie ? _("Released since you last opened Aperture")
+                                                    : _("New episodes since you last opened Aperture");
             var fraction = title.progress_fraction;
             progress_bar.visible = fraction >= 0
                 && (title.status == TitleStatus.WATCHING || title.status == TitleStatus.DROPPED);

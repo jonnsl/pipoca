@@ -31,6 +31,13 @@ flowboxchild.poster-card {
   border-radius: 16px;
 }
 
+.new-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+}
+
 togglebutton.watched-toggle:checked {
   background-color: var(--accent-bg-color);
   color: var(--accent-fg-color);

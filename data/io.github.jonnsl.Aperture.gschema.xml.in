@@ -27,6 +27,11 @@
       <default>true</default>
       <summary>Refresh stale titles from TMDB at startup</summary>
     </key>
+    <key name="last-opened" type="s">
+      <default>''</default>
+      <summary>Local date (YYYY-MM-DD) the window was last opened</summary>
+      <description>Titles with episodes or releases after this date get a “New” badge</description>
+    </key>
     <key name="use-custom-api-key" type="b">
       <default>false</default>
       <summary>Use a custom TMDB API key</summary>
