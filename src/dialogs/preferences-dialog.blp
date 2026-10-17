@@ -7,6 +7,16 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
     icon-name: "preferences-system-symbolic";
 
     Adw.PreferencesGroup {
+      title: _("Content");
+
+      Adw.ComboRow language_row {
+        title: _("Metadata Language");
+        subtitle: _("Language of titles, overviews and episode names");
+        enable-search: true;
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("Updates");
 
       Adw.SwitchRow refresh_row {

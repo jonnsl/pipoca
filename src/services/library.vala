@@ -9,6 +9,8 @@ namespace Aperture {
         private const int64 REFRESH_INTERVAL = TimeSpan.DAY / TimeSpan.SECOND;
         /* Seasons near the end are refreshed every time; earlier ones only when they change */
         private const int RECENT_SEASONS = 2;
+        /* Meta key for the TMDB language the stored metadata was fetched in */
+        private const string LANGUAGE_KEY = "metadata_language";
 
         private static Library? instance;
 
@@ -62,6 +64,10 @@ namespace Aperture {
                     titles_by_key[t.key] = t;
                     update_progress (t);
                     titles.append (t);
+                }
+                // Libraries from before the language was recorded are in the current one
+                if (db.get_meta (LANGUAGE_KEY) == null) {
+                    db.set_meta (LANGUAGE_KEY, tmdb.language);
                 }
             } catch (Error e) {
                 critical ("Can't open the library database: %s", e.message);
@@ -128,7 +134,7 @@ namespace Aperture {
             update_progress (t);
             title_changed (t);
             if (fetch && !t.has_details) {
-                refresh.begin (t, false, null, (obj, res) => {
+                refresh.begin (t, false, null, false, (obj, res) => {
                     try {
                         refresh.end (res);
                     } catch (Error e) {
@@ -387,7 +393,8 @@ namespace Aperture {
          * Fetches a title's metadata (and a show's seasons) from TMDB.
          * Concurrent calls for the same title share one request.
          */
-        public async void refresh (Title t, bool force = false, Cancellable? cancellable = null) throws Error {
+        public async void refresh (Title t, bool force = false, Cancellable? cancellable = null,
+                                   bool all_seasons = false) throws Error {
             if (!force && !is_stale (t)) {
                 return;
             }
@@ -409,7 +416,7 @@ namespace Aperture {
                 var details = yield tmdb.get_details (t.media_type, t.id, c);
                 t.update_from_json (details);
                 if (!t.is_movie) {
-                    yield refresh_seasons (t, details, c);
+                    yield refresh_seasons (t, details, c, all_seasons);
                 }
                 t.refreshed_at = new DateTime.now_utc ().to_unix ();
                 save (t);
@@ -427,7 +434,8 @@ namespace Aperture {
 
         private signal void refresh_finished (Title t);
 
-        private async void refresh_seasons (Title show, Json.Object details, Cancellable c) throws Error {
+        /* With @all, every season is fetched, e.g. for another language; otherwise only those that may have changed */
+        private async void refresh_seasons (Title show, Json.Object details, Cancellable c, bool all) throws Error {
             var seasons = new GenericArray<Season> ();
             var arr = JsonUtil.array (details, "seasons");
             if (arr != null) {
@@ -445,7 +453,7 @@ namespace Aperture {
             }
             int[] wanted = {};
             foreach (var s in seasons) {
-                if (!stored.contains (s.season_number)
+                if (all || !stored.contains (s.season_number)
                     || stored[s.season_number] != s.episode_count
                     || s.season_number > max_season - RECENT_SEASONS) {
                     wanted += s.season_number;
@@ -477,15 +485,31 @@ namespace Aperture {
             }
         }
 
+        /* Whether the stored metadata is in another language than TMDB requests use now */
+        public bool needs_relocalizing () {
+            try {
+                return db.get_meta (LANGUAGE_KEY) != tmdb.language;
+            } catch (Error e) {
+                warning ("Can't read the library language: %s", e.message);
+                return false;
+            }
+        }
+
         /**
          * Refreshes stale titles in the library, at most once a day each.
          * Shows that are still airing go first since they change the most.
+         *
+         * After the metadata language changes, everything is refreshed
+         * instead, every season included, until a refresh gets through.
          */
         public async void refresh_library (bool force = false) {
             if (refreshing_library) {
                 return;
             }
             refreshing_library = true;
+            var language = tmdb.language;
+            var relocalize = needs_relocalizing ();
+            force = force || relocalize;
             var queue = new GenericArray<Title> ();
             for (uint i = 0; i < titles.get_n_items (); i++) {
                 var t = (Title) titles.get_item (i);
@@ -515,7 +539,7 @@ namespace Aperture {
                 while (pending < 4 && next < queue.length && failures < 5) {
                     var t = queue[next++];
                     pending++;
-                    refresh.begin (t, true, null, (obj, res) => {
+                    refresh.begin (t, true, null, relocalize, (obj, res) => {
                         try {
                             refresh.end (res);
                         } catch (Error e) {
@@ -533,6 +557,14 @@ namespace Aperture {
             };
             start_more ();
             yield;
+            // Only once all of it is in the new language; the next refresh tries again
+            if (relocalize && failures == 0) {
+                try {
+                    db.set_meta (LANGUAGE_KEY, language);
+                } catch (Error e) {
+                    warning ("Can't save the library language: %s", e.message);
+                }
+            }
             refreshing_library = false;
         }
 

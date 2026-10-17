@@ -9,7 +9,7 @@ namespace Aperture {
      * Watch events for movies use -1 as season and episode number.
      */
     public class Database : Object {
-        private const int SCHEMA_VERSION = 4;
+        private const int SCHEMA_VERSION = 5;
 
         private Sqlite.Database db;
 
@@ -59,6 +59,10 @@ namespace Aperture {
                             PRIMARY KEY (media_type, tmdb_id, season_number, episode_number)
                         );
                     """);
+                }
+                if (version < 5) {
+                    // Facts about the stored data, e.g. the language its metadata is in
+                    exec ("CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)");
                 }
                 exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
                 commit ();
@@ -174,6 +178,19 @@ namespace Aperture {
         private static string? dup_str (Sqlite.Statement stmt, int col) {
             unowned string? s = stmt.column_text (col);
             return s;
+        }
+
+        public string? get_meta (string key) throws Error {
+            var stmt = prepare ("SELECT value FROM meta WHERE key = ?1");
+            stmt.bind_text (1, key);
+            return stmt.step () == Sqlite.ROW ? dup_str (stmt, 0) : null;
+        }
+
+        public void set_meta (string key, string value) throws Error {
+            var stmt = prepare ("INSERT OR REPLACE INTO meta (key, value) VALUES (?1, ?2)");
+            stmt.bind_text (1, key);
+            stmt.bind_text (2, value);
+            run (stmt);
         }
 
         /* ---- Titles ---- */

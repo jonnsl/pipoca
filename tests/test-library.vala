@@ -741,6 +741,33 @@ void test_pick_trailer () {
     assert (TmdbClient.pick_trailer (parse_object ("{}"), "en") == null);
 }
 
+void test_metadata_language () {
+    var lib = Library.get_default ();
+    var settings = new Settings (Config.APPLICATION_ID);
+    var system = TmdbClient.detect_language ();
+    assert (lib.tmdb.language == system);
+    // The stored metadata starts out in the current language
+    assert (!lib.needs_relocalizing ());
+
+    settings.set_string ("metadata-language", "ja-JP");
+    assert (lib.tmdb.language == "ja-JP" && lib.tmdb.region == "JP");
+    assert (lib.needs_relocalizing ());
+
+    // Back to the system language: nothing to redo
+    settings.set_string ("metadata-language", "");
+    assert (lib.tmdb.language == system);
+    assert (!lib.needs_relocalizing ());
+
+    try {
+        lib.db.set_meta ("test", "a");
+        lib.db.set_meta ("test", "b");
+        assert (lib.db.get_meta ("test") == "b");
+        assert (lib.db.get_meta ("missing") == null);
+    } catch (Error e) {
+        error (e.message);
+    }
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -752,6 +779,7 @@ int main (string[] args) {
     Test.add_func ("/tmdb/parse-list", test_parse_list);
     Test.add_func ("/tmdb/credits", test_credits);
     Test.add_func ("/tmdb/pick-trailer", test_pick_trailer);
+    Test.add_func ("/tmdb/metadata-language", test_metadata_language);
     Test.add_func ("/library/show-progress", test_show_progress);
     Test.add_func ("/library/ended-show", test_ended_show);
     Test.add_func ("/library/movie", test_movie);

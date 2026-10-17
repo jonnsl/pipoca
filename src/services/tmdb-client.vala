@@ -35,7 +35,8 @@ namespace Aperture {
         private int active = 0;
         private Queue<Waiter> waiting = new Queue<Waiter> ();
 
-        public string language { get; set; }
+        /* TMDB language tag, e.g. "pt-BR": the metadata-language setting, or the system's */
+        public string language { get; private set; }
 
         construct {
             session = (Soup.Session) Object.new (typeof (Soup.Session),
@@ -43,11 +44,20 @@ namespace Aperture {
                                                  "max-conns-per-host", MAX_ACTIVE,
                                                  "timeout", 30);
             settings = new Settings (Config.APPLICATION_ID);
-            language = detect_language ();
+            settings.changed["metadata-language"].connect (update_language);
+            update_language ();
+        }
+
+        private void update_language () {
+            var chosen = settings.get_string ("metadata-language");
+            var value = chosen != "" ? chosen : detect_language ();
+            if (value != language) {
+                language = value;
+            }
         }
 
         /* TMDB wants "pt-BR" style tags; derive one from the locale */
-        private static string detect_language () {
+        public static string detect_language () {
             foreach (var name in Intl.get_language_names ()) {
                 if (name == "C" || name == "POSIX") {
                     continue;

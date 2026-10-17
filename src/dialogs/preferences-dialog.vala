@@ -1,6 +1,7 @@
 namespace Aperture {
     [GtkTemplate (ui = "/io/github/jonnsl/Aperture/dialogs/preferences-dialog.ui")]
     public class PreferencesDialog : Adw.PreferencesDialog {
+        [GtkChild] private unowned Adw.ComboRow language_row;
         [GtkChild] private unowned Adw.SwitchRow refresh_row;
         [GtkChild] private unowned Adw.SwitchRow notify_episodes_row;
         [GtkChild] private unowned Adw.SwitchRow notify_movies_row;
@@ -17,13 +18,59 @@ namespace Aperture {
         [GtkChild] private unowned Adw.Spinner kodi_spinner;
         [GtkChild] private unowned Gtk.Button kodi_sync_button;
 
+        /* TMDB languages with translations, as tag and the language's own name */
+        private const string[] LANGUAGES = {
+            "ar-SA", "العربية",
+            "bg-BG", "Български",
+            "ca-ES", "Català",
+            "cs-CZ", "Čeština",
+            "da-DK", "Dansk",
+            "de-DE", "Deutsch",
+            "el-GR", "Ελληνικά",
+            "en-US", "English (US)",
+            "en-GB", "English (UK)",
+            "es-ES", "Español (España)",
+            "es-MX", "Español (México)",
+            "fa-IR", "فارسی",
+            "fi-FI", "Suomi",
+            "fr-FR", "Français (France)",
+            "fr-CA", "Français (Canada)",
+            "he-IL", "עברית",
+            "hi-IN", "हिन्दी",
+            "hu-HU", "Magyar",
+            "id-ID", "Bahasa Indonesia",
+            "it-IT", "Italiano",
+            "ja-JP", "日本語",
+            "ko-KR", "한국어",
+            "nb-NO", "Norsk bokmål",
+            "nl-NL", "Nederlands",
+            "pl-PL", "Polski",
+            "pt-BR", "Português (Brasil)",
+            "pt-PT", "Português (Portugal)",
+            "ro-RO", "Română",
+            "ru-RU", "Русский",
+            "sk-SK", "Slovenčina",
+            "sr-RS", "Српски",
+            "sv-SE", "Svenska",
+            "th-TH", "ไทย",
+            "tr-TR", "Türkçe",
+            "uk-UA", "Українська",
+            "vi-VN", "Tiếng Việt",
+            "zh-CN", "中文（中国）",
+            "zh-TW", "中文（台灣）",
+            "zh-HK", "中文（香港）",
+        };
+
         /* Minutes for each kodi_interval_row choice */
         private const int[] KODI_INTERVALS = { 15, 60, 360, 1440 };
 
         private Settings settings;
+        /* Tag for each language_row choice; "" for the system language */
+        private string[] language_tags = {};
 
         construct {
             settings = new Settings (Config.APPLICATION_ID);
+            setup_language ();
             settings.bind ("refresh-automatically", refresh_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("notify-new-episodes", notify_episodes_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("notify-movie-releases", notify_movies_row, "active", SettingsBindFlags.DEFAULT);
@@ -42,6 +89,58 @@ namespace Aperture {
             kodi.notify["last-error"].disconnect (update_kodi_status);
             dispose_template (typeof (PreferencesDialog));
             base.dispose ();
+        }
+
+        private string language_name (string tag) {
+            for (var i = 0; i + 1 < LANGUAGES.length; i += 2) {
+                if (LANGUAGES[i] == tag) {
+                    return LANGUAGES[i + 1];
+                }
+            }
+            return tag;
+        }
+
+        private void setup_language () {
+            var names = new Gtk.StringList (null);
+            names.append (_("System (%s)").printf (language_name (TmdbClient.detect_language ())));
+            language_tags += "";
+            for (var i = 0; i + 1 < LANGUAGES.length; i += 2) {
+                names.append (LANGUAGES[i + 1]);
+                language_tags += LANGUAGES[i];
+            }
+            // Set by hand to something not listed
+            var current = settings.get_string ("metadata-language");
+            if (current != "" && !(current in language_tags)) {
+                names.append (current);
+                language_tags += current;
+            }
+            language_row.model = names;
+            language_row.expression = new Gtk.PropertyExpression (typeof (Gtk.StringObject), null, "string");
+            for (var i = 0; i < language_tags.length; i++) {
+                if (language_tags[i] == current) {
+                    language_row.selected = i;
+                }
+            }
+            language_row.notify["selected"].connect (on_language_selected);
+        }
+
+        private void on_language_selected () {
+            var tag = language_tags[language_row.selected];
+            if (tag == settings.get_string ("metadata-language")) {
+                return;
+            }
+            settings.set_string ("metadata-language", tag);
+            var library = Library.get_default ();
+            if (!library.needs_relocalizing ()) {
+                return;
+            }
+            // Titles already stored are in the old language until refreshed
+            if (NetworkMonitor.get_default ().network_available) {
+                library.refresh_library.begin (false);
+                add_toast (new Adw.Toast (_("Updating titles to the new language…")));
+            } else {
+                add_toast (new Adw.Toast (_("Titles will be updated to the new language when you’re online")));
+            }
         }
 
         private void on_background_toggled () {

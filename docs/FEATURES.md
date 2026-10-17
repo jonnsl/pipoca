@@ -88,8 +88,9 @@ milestones are ordered by how much value they add relative to their cost.
 ## Preferences
 
 - **Metadata language** (TMDB `language`) and **region** (release dates). The
-  default comes from the system locale. *Not implemented yet: both are always
-  taken from the locale, with no preference to change them.*
+  default comes from the system locale. Changing the language refreshes the
+  library in it. *Region isn't implemented yet: it always comes from the
+  metadata language.*
 - **TMDB API key:** optional user-supplied key that overrides the bundled one.
 - **Updates:** turn background refresh on/off; turn notifications on/off; run in
   background.
