@@ -17,6 +17,7 @@ namespace Aperture {
         [GtkChild] private unowned Adw.ActionRow kodi_status_row;
         [GtkChild] private unowned Adw.Spinner kodi_spinner;
         [GtkChild] private unowned Gtk.Button kodi_sync_button;
+        [GtkChild] private unowned Adw.ButtonRow imdb_row;
 
         /* TMDB languages with translations, as tag and the language's own name */
         private const string[] LANGUAGES = {
@@ -65,6 +66,8 @@ namespace Aperture {
         private const int[] KODI_INTERVALS = { 15, 60, 360, 1440 };
 
         private Settings settings;
+        /* Imports keep going after the dialog is closed */
+        private bool disposed;
         /* Tag for each language_row choice; "" for the system language */
         private string[] language_tags = {};
 
@@ -84,6 +87,7 @@ namespace Aperture {
         }
 
         public override void dispose () {
+            disposed = true;
             var kodi = KodiSync.get_default ();
             kodi.notify["syncing"].disconnect (update_kodi_status);
             kodi.notify["last-error"].disconnect (update_kodi_status);
@@ -347,6 +351,119 @@ namespace Aperture {
                 // Cancelled
             } catch (Error e) {
                 show_error (_("Can’t Import Library"), e.message);
+            }
+        }
+
+        [GtkCallback]
+        private void on_imdb_activated () {
+            import_imdb.begin ();
+        }
+
+        private async void import_imdb () {
+            var csv = new Gtk.FileFilter () { name = _("IMDb Exports") };
+            csv.add_mime_type ("text/csv");
+            csv.add_suffix ("csv");
+            var filters = new ListStore (typeof (Gtk.FileFilter));
+            filters.append (csv);
+            var dialog = new Gtk.FileDialog () {
+                title = _("Import from IMDb"),
+                filters = filters,
+            };
+            var library = Library.get_default ();
+            try {
+                var file = yield dialog.open (get_root () as Gtk.Window, null);
+                uint8[] contents;
+                yield file.load_contents_async (null, out contents, null);
+                GenericArray<ImdbItem> items;
+                var kind = ImdbImport.parse ((string) contents, out items);
+                if (items.length == 0) {
+                    add_toast (new Adw.Toast (_("This export has no titles")));
+                    return;
+                }
+                // A list can be the watchlist or titles seen; only the user knows
+                var as_watched = true;
+                if (kind == ImdbFileKind.LIST) {
+                    var choice = yield ask_list_kind ();
+                    if (choice == "cancel") {
+                        return;
+                    }
+                    as_watched = choice == "watched";
+                }
+
+                var title = imdb_row.title;
+                imdb_row.sensitive = false;
+                try {
+                    yield ImdbImport.find_all (library.tmdb, items, (done, total) => {
+                        if (!disposed) {
+                            imdb_row.title = _("Looking up titles… %d of %d").printf (done, total);
+                        }
+                    }, null);
+                } finally {
+                    if (!disposed) {
+                        imdb_row.title = title;
+                        imdb_row.sensitive = true;
+                    }
+                }
+
+                var matches = new GenericArray<ImdbMatch> ();
+                foreach (var item in items) {
+                    if (item.match != null) {
+                        matches.add (item.match);
+                    }
+                }
+                var result = ImdbImport.apply (library, matches, as_watched);
+                string message;
+                if (result.titles_added == 0 && result.events_added == 0) {
+                    message = _("Library is already up to date");
+                } else {
+                    message = _("%s, %s").printf (
+                        ngettext ("%d title added", "%d titles added", result.titles_added).printf (result.titles_added),
+                        ngettext ("%d watch marked", "%d watches marked", result.events_added).printf (result.events_added));
+                }
+                var unmatched = items.length - matches.length;
+                if (unmatched > 0) {
+                    message = _("%s · %s").printf (message,
+                        ngettext ("%d not found on TMDB", "%d not found on TMDB", unmatched).printf (unmatched));
+                }
+                show_toast (message);
+                if (result.titles_added > 0) {
+                    // Imported titles only have the basics; fetch the rest
+                    library.refresh_library.begin (false);
+                }
+            } catch (Gtk.DialogError.DISMISSED e) {
+                // Cancelled
+            } catch (Error e) {
+                if (disposed) {
+                    show_toast (_("Can’t import from IMDb: %s").printf (e.message));
+                } else {
+                    show_error (_("Can’t Import from IMDb"), e.message);
+                }
+            }
+        }
+
+        /* "watched", "watchlist" or "cancel" */
+        private async string ask_list_kind () {
+            var alert = new Adw.AlertDialog (_("Import IMDb List?"),
+                                             _("Mark the titles in this list as watched, on the day they were added to it, or add them to your watchlist"));
+            alert.add_response ("cancel", _("_Cancel"));
+            alert.add_response ("watchlist", _("Add to _Watchlist"));
+            alert.add_response ("watched", _("Mark as W_atched"));
+            alert.set_response_appearance ("watched", Adw.ResponseAppearance.SUGGESTED);
+            alert.default_response = "watched";
+            alert.close_response = "cancel";
+            return yield alert.choose (this, null);
+        }
+
+        /* On the dialog, or the window once the dialog is closed */
+        private void show_toast (string message) {
+            if (!disposed) {
+                add_toast (new Adw.Toast (message));
+                return;
+            }
+            var app = GLib.Application.get_default () as Gtk.Application;
+            var win = app != null ? app.active_window as Window : null;
+            if (win != null) {
+                win.add_toast (new Adw.Toast (message));
             }
         }
 

@@ -84,6 +84,9 @@ milestones are ordered by how much value they add relative to their cost.
 ## M4 — Data portability
 
 22. **Export/import** the library as a documented JSON file.
+23. **Import from IMDb:** read IMDb's ratings and list CSV exports. Rated movies
+    and episodes count as watched on the day they were rated; a list can be
+    imported as watched or as the watchlist.
 
 ## Preferences
 

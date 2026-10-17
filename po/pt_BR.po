@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 16:16-0300\n"
+"POT-Creation-Date: 2026-10-17 16:43-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -80,7 +80,8 @@ msgstr "Idioma de títulos, sinopses e nomes de episódios"
 
 #: data/io.github.jonnsl.Aperture.gschema.xml.in:29
 msgid "A TMDB language tag such as “pt-BR”; empty for the system language"
-msgstr "Uma etiqueta de idioma do TMDB, como “pt-BR”; vazia para o idioma do sistema"
+msgstr ""
+"Uma etiqueta de idioma do TMDB, como “pt-BR”; vazia para o idioma do sistema"
 
 #: data/io.github.jonnsl.Aperture.gschema.xml.in:33
 msgid "Refresh stale titles from TMDB at startup"
@@ -354,116 +355,130 @@ msgstr "_Exportar biblioteca…"
 msgid "_Import Library…"
 msgstr "_Importar biblioteca…"
 
-#: src/dialogs/preferences-dialog.vala:105
+#: src/dialogs/preferences-dialog.blp:158
+msgid "Import from I_MDb…"
+msgstr "Importar do I_MDb…"
+
+#: src/dialogs/preferences-dialog.blp:161
+msgid "Import a ratings or list export from IMDb"
+msgstr "Importar uma exportação de avaliações ou lista do IMDb"
+
+#: src/dialogs/preferences-dialog.vala:109
 #, c-format
 msgid "System (%s)"
 msgstr "Sistema (%s)"
 
-#: src/dialogs/preferences-dialog.vala:140
+#: src/dialogs/preferences-dialog.vala:144
 msgid "Updating titles to the new language…"
 msgstr "Atualizando títulos para o novo idioma…"
 
-#: src/dialogs/preferences-dialog.vala:142
+#: src/dialogs/preferences-dialog.vala:146
 msgid "Titles will be updated to the new language when you’re online"
-msgstr "Os títulos serão atualizados para o novo idioma quando você estiver online"
+msgstr ""
+"Os títulos serão atualizados para o novo idioma quando você estiver online"
 
-#: src/dialogs/preferences-dialog.vala:156
+#: src/dialogs/preferences-dialog.vala:160
 msgid "Aperture checks for new episodes and releases to notify you about"
 msgstr "O Aperture verifica novos episódios e lançamentos para notificar você"
 
-#: src/dialogs/preferences-dialog.vala:163
+#: src/dialogs/preferences-dialog.vala:167
 msgid "Aperture isn’t allowed to run in the background"
 msgstr "O Aperture não tem permissão para executar em segundo plano"
 
-#: src/dialogs/preferences-dialog.vala:210
+#: src/dialogs/preferences-dialog.vala:214
 msgid "Password saved"
 msgstr "Senha salva"
 
-#: src/dialogs/preferences-dialog.vala:212
+#: src/dialogs/preferences-dialog.vala:216
 msgid "Can’t Save Password"
 msgstr "Não foi possível salvar a senha"
 
-#: src/dialogs/preferences-dialog.vala:221
+#: src/dialogs/preferences-dialog.vala:225
 msgid "Syncing…"
 msgstr "Sincronizando…"
 
-#: src/dialogs/preferences-dialog.vala:223
+#: src/dialogs/preferences-dialog.vala:227
 #, c-format
 msgid "Failed: %s"
 msgstr "Falhou: %s"
 
-#: src/dialogs/preferences-dialog.vala:225
+#: src/dialogs/preferences-dialog.vala:229
 msgid "Never"
 msgstr "Nunca"
 
 #. Translators: date and time of the last sync, see https://docs.gtk.org/glib/method.DateTime.format.html
-#: src/dialogs/preferences-dialog.vala:230
+#: src/dialogs/preferences-dialog.vala:234
 #, no-c-format
 msgid "%b %-d, %Y at %H:%M"
 msgstr "%-d de %b de %Y às %H:%M"
 
-#: src/dialogs/preferences-dialog.vala:252
-#: src/dialogs/preferences-dialog.vala:336
+#: src/dialogs/preferences-dialog.vala:256
+#: src/dialogs/preferences-dialog.vala:340
+#: src/dialogs/preferences-dialog.vala:417
 msgid "Library is already up to date"
 msgstr "A biblioteca já está atualizada"
 
-#: src/dialogs/preferences-dialog.vala:254
+#: src/dialogs/preferences-dialog.vala:258
+#: src/dialogs/preferences-dialog.vala:419
 #, c-format
 msgid "%s, %s"
 msgstr "%s, %s"
 
-#: src/dialogs/preferences-dialog.vala:255
+#: src/dialogs/preferences-dialog.vala:259
+#: src/dialogs/preferences-dialog.vala:420
 #, c-format
 msgid "%d title added"
 msgid_plural "%d titles added"
 msgstr[0] "%d título adicionado"
 msgstr[1] "%d títulos adicionados"
 
-#: src/dialogs/preferences-dialog.vala:256
+#: src/dialogs/preferences-dialog.vala:260
+#: src/dialogs/preferences-dialog.vala:421
 #, c-format
 msgid "%d watch marked"
 msgid_plural "%d watches marked"
 msgstr[0] "%d visualização marcada"
 msgstr[1] "%d visualizações marcadas"
 
-#: src/dialogs/preferences-dialog.vala:271
+#: src/dialogs/preferences-dialog.vala:275
 msgid "Clear Image Cache?"
 msgstr "Limpar o cache de imagens?"
 
-#: src/dialogs/preferences-dialog.vala:272
+#: src/dialogs/preferences-dialog.vala:276
 msgid "Posters and backdrops will be downloaded again when needed"
 msgstr "Pôsteres e imagens de fundo serão baixados novamente quando necessário"
 
-#: src/dialogs/preferences-dialog.vala:273 src/pages/season-page.vala:133
+#: src/dialogs/preferences-dialog.vala:277
+#: src/dialogs/preferences-dialog.vala:448 src/pages/season-page.vala:133
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: src/dialogs/preferences-dialog.vala:274
+#: src/dialogs/preferences-dialog.vala:278
 msgid "C_lear"
 msgstr "_Limpar"
 
-#: src/dialogs/preferences-dialog.vala:287
+#: src/dialogs/preferences-dialog.vala:291
 msgid "Library Files"
 msgstr "Arquivos de biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:300
+#: src/dialogs/preferences-dialog.vala:304
 msgid "Export Library"
 msgstr "Exportar biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:308
+#: src/dialogs/preferences-dialog.vala:312
 msgid "Library exported"
 msgstr "Biblioteca exportada"
 
 #. Cancelled
-#: src/dialogs/preferences-dialog.vala:312
+#: src/dialogs/preferences-dialog.vala:316
 msgid "Can’t Export Library"
 msgstr "Não foi possível exportar a biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:325
+#: src/dialogs/preferences-dialog.vala:329
 msgid "Import Library"
 msgstr "Importar biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:338
+#: src/dialogs/preferences-dialog.vala:342
 #, c-format
 msgid "Imported %d title"
 msgid_plural "Imported %d titles"
@@ -471,15 +486,73 @@ msgstr[0] "%d título importado"
 msgstr[1] "%d títulos importados"
 
 #. Cancelled
-#: src/dialogs/preferences-dialog.vala:349
+#: src/dialogs/preferences-dialog.vala:353
 msgid "Can’t Import Library"
 msgstr "Não foi possível importar a biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:355
+#: src/dialogs/preferences-dialog.vala:363
+msgid "IMDb Exports"
+msgstr "Exportações do IMDb"
+
+#: src/dialogs/preferences-dialog.vala:369
+msgid "Import from IMDb"
+msgstr "Importar do IMDb"
+
+#: src/dialogs/preferences-dialog.vala:380
+msgid "This export has no titles"
+msgstr "Esta exportação não tem títulos"
+
+#: src/dialogs/preferences-dialog.vala:398
+#, c-format
+msgid "Looking up titles… %d of %d"
+msgstr "Procurando títulos… %d de %d"
+
+#: src/dialogs/preferences-dialog.vala:425 src/widgets/poster-card.vala:90
+#, c-format
+msgid "%s · %s"
+msgstr "%s · %s"
+
+#: src/dialogs/preferences-dialog.vala:426
+#, c-format
+msgid "%d not found on TMDB"
+msgid_plural "%d not found on TMDB"
+msgstr[0] "%d não encontrado no TMDB"
+msgstr[1] "%d não encontrados no TMDB"
+
+#: src/dialogs/preferences-dialog.vala:437
+#, c-format
+msgid "Can’t import from IMDb: %s"
+msgstr "Não foi possível importar do IMDb: %s"
+
+#: src/dialogs/preferences-dialog.vala:439
+msgid "Can’t Import from IMDb"
+msgstr "Não foi possível importar do IMDb"
+
+#: src/dialogs/preferences-dialog.vala:446
+msgid "Import IMDb List?"
+msgstr "Importar lista do IMDb?"
+
+#: src/dialogs/preferences-dialog.vala:447
+msgid ""
+"Mark the titles in this list as watched, on the day they were added to it, "
+"or add them to your watchlist"
+msgstr ""
+"Marque os títulos desta lista como assistidos, no dia em que foram "
+"adicionados a ela, ou adicione-os à sua lista"
+
+#: src/dialogs/preferences-dialog.vala:449
+msgid "Add to _Watchlist"
+msgstr "Adicionar à _lista"
+
+#: src/dialogs/preferences-dialog.vala:450
+msgid "Mark as W_atched"
+msgstr "Marcar como _assistido"
+
+#: src/dialogs/preferences-dialog.vala:472
 msgid "_Close"
 msgstr "_Fechar"
 
-#: src/dialogs/preferences-dialog.vala:362
+#: src/dialogs/preferences-dialog.vala:479
 msgid "Image cache cleared"
 msgstr "Cache de imagens limpo"
 
@@ -892,6 +965,14 @@ msgstr "Notificar-me"
 msgid "The request was denied"
 msgstr "A solicitação foi negada"
 
+#: src/services/imdb-import.vala:52 src/services/imdb-import.vala:59
+msgid "This isn’t an IMDb export"
+msgstr "Isto não é uma exportação do IMDb"
+
+#: src/services/imdb-import.vala:70
+msgid "This isn’t an IMDb ratings or list export"
+msgstr "Isto não é uma exportação de avaliações ou lista do IMDb"
+
 #: src/services/kodi-client.vala:52
 msgid "No Kodi address configured"
 msgstr "Nenhum endereço do Kodi configurado"
@@ -1163,11 +1244,6 @@ msgstr "Novo"
 #, c-format
 msgid "%d of %d episodes"
 msgstr "%d de %d episódios"
-
-#: src/widgets/poster-card.vala:90
-#, c-format
-msgid "%s · %s"
-msgstr "%s · %s"
 
 #: src/widgets/poster-card.vala:97
 msgid "Released since you last opened Aperture"

@@ -768,6 +768,111 @@ void test_metadata_language () {
     }
 }
 
+void test_csv () {
+    var rows = ImdbImport.parse_csv ("\uFEFFa,\"b, \"\"quoted\"\"\",c\r\n\r\n\"multi\nline\",,last");
+    assert (rows.length == 2);
+    assert (rows[0].length == 3 && rows[0][0] == "a" && rows[0][1] == "b, \"quoted\"" && rows[0][2] == "c");
+    assert (rows[1].length == 3 && rows[1][0] == "multi\nline" && rows[1][1] == "" && rows[1][2] == "last");
+}
+
+void test_imdb_parse () {
+    var ratings = "Const,Your Rating,Date Rated,Title,Original Title,URL,Title Type,IMDb Rating,Runtime (mins),Year,Genres,Num Votes,Release Date,Directors\n"
+        + "tt0111161,10,2024-05-14,The Shawshank Redemption,The Shawshank Redemption,https://www.imdb.com/title/tt0111161/,Movie,9.3,142,1994,Drama,3000000,1994-09-23,Frank Darabont\n"
+        + "tt0111161,10,2024-05-14,Duplicate,,,Movie,,,,,,,\n"
+        + "nm0000001,8,2024-05-15,A Person,,,,,,,,,,\n"
+        + "tt11280740,9,2023-01-02,\"Severance: Good News About Hell\",,,TV Episode,,,,,,,\n";
+    GenericArray<ImdbItem> items;
+    try {
+        assert (ImdbImport.parse (ratings, out items) == ImdbFileKind.RATINGS);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (items.length == 2);
+    assert (items[0].imdb_id == "tt0111161" && items[0].title == "The Shawshank Redemption");
+    assert (new DateTime.from_unix_local (items[0].date).format ("%F %H") == "2024-05-14 12");
+    assert (items[1].title == "Severance: Good News About Hell");
+
+    var list = "Position,Const,Created,Modified,Description,Title,Original Title,URL,Title Type,IMDb Rating,Runtime (mins),Year,Genres,Num Votes,Release Date,Directors,Your Rating,Date Rated\n"
+        + "1,tt1234567,2025-02-03,2025-02-03,\"Notes, with a comma\nand a line\",Some Movie,,,Movie,,,,,,,,,\n";
+    try {
+        assert (ImdbImport.parse (list, out items) == ImdbFileKind.LIST);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (items.length == 1 && items[0].imdb_id == "tt1234567" && items[0].date > 0);
+
+    string[] bad = { "", "a,b,c\n1,2,3\n", "Const,Title\ntt1,X\n" };
+    foreach (var data in bad) {
+        try {
+            ImdbImport.parse (data, out items);
+            assert_not_reached ();
+        } catch (Error e) {
+            // Expected
+        }
+    }
+}
+
+void test_imdb_apply () {
+    var lib = Library.get_default ();
+    var item = new ImdbItem () { imdb_id = "tt1", date = 1700000000 };
+    var movie = ImdbImport.match_from_find (item, parse_object ("""{"movie_results": [
+        {"id": 1100, "title": "IMDb Movie", "release_date": "2001-01-01", "poster_path": "/p.jpg"}],
+        "tv_results": [], "tv_episode_results": []}"""));
+    assert (movie.media_type == MediaType.MOVIE && movie.tmdb_id == 1100 && !movie.is_episode);
+    var episode = ImdbImport.match_from_find (item, parse_object ("""{"movie_results": [], "tv_results": [],
+        "tv_episode_results": [{"id": 9, "show_id": 1101, "season_number": 2, "episode_number": 3}]}"""));
+    assert (episode.media_type == MediaType.TV && episode.tmdb_id == 1101 && episode.season == 2 && episode.episode == 3);
+    var show = ImdbImport.match_from_find (item, parse_object ("""{"tv_results": [{"id": 1102, "name": "IMDb Show"}]}"""));
+    assert (show.media_type == MediaType.TV && !show.is_episode);
+    assert (ImdbImport.match_from_find (item, parse_object ("""{"movie_results": [], "tv_results": []}""")) == null);
+
+    // The episode's show comes first, without its info
+    show.tmdb_id = 1101;
+    var matches = new GenericArray<ImdbMatch> ();
+    matches.add (movie);
+    matches.add (episode);
+    matches.add (show);
+    ImportResult r;
+    try {
+        r = ImdbImport.apply (lib, matches, true);
+    } catch (Error e) {
+        error (e.message);
+    }
+    // Rated shows are added without marking episodes
+    assert (r.titles_added == 2 && r.events_added == 2);
+    assert (lib.lookup (MediaType.TV, 1101).name == "IMDb Show");
+    var m = lib.lookup (MediaType.MOVIE, 1100);
+    assert (m.in_library && m.name == "IMDb Movie" && m.poster_path == "/p.jpg");
+    assert (m.added_at == 1700000000 && m.movie_watched && m.last_watched_at == 1700000000);
+    try {
+        assert (lib.db.has_watch_events (MediaType.TV, 1101, 2, 3));
+        assert (lib.db.load_watch_events (MediaType.TV, 1101).length == 1);
+    } catch (Error e) {
+        error (e.message);
+    }
+
+    // Importing again changes nothing, even with another date
+    movie.date = 1800000000;
+    try {
+        r = ImdbImport.apply (lib, matches, true);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 0 && r.events_added == 0);
+
+    // A watchlist only adds titles
+    var item2 = new ImdbItem () { imdb_id = "tt2", date = 0 };
+    var listed = new GenericArray<ImdbMatch> ();
+    listed.add (ImdbImport.match_from_find (item2, parse_object ("""{"movie_results": [{"id": 1103, "title": "Later"}]}""")));
+    try {
+        r = ImdbImport.apply (lib, listed, false);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 1 && r.events_added == 0);
+    assert (lib.lookup (MediaType.MOVIE, 1103).status == TitleStatus.PLAN_TO_WATCH);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -793,5 +898,8 @@ int main (string[] args) {
     Test.add_func ("/library/releases", test_releases);
     Test.add_func ("/library/new-badges", test_new_badges);
     Test.add_func ("/notifier/pending", test_notifications);
+    Test.add_func ("/imdb/csv", test_csv);
+    Test.add_func ("/imdb/parse", test_imdb_parse);
+    Test.add_func ("/imdb/apply", test_imdb_apply);
     return Test.run ();
 }

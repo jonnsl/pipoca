@@ -284,14 +284,19 @@ namespace Aperture {
             return yield get_object ("/%s/%lld".printf (type.to_api_string (), id), {}, cancellable);
         }
 
+        /* TMDB's /find response for another database's id, e.g. "imdb_id" */
+        public async Json.Object find (string source, string external_id, Cancellable? cancellable = null) throws Error {
+            return yield get_object ("/find/" + Uri.escape_string (external_id),
+                                     { "external_source=" + source }, cancellable);
+        }
+
         /**
          * Finds the TMDB id of a title from another database's id.
          * @source is "imdb_id" or "tvdb_id". Returns 0 when not found.
          */
         public async int64 find_by_external_id (string source, string external_id, MediaType type,
                                                Cancellable? cancellable = null) throws Error {
-            var obj = yield get_object ("/find/" + Uri.escape_string (external_id),
-                                        { "external_source=" + source }, cancellable);
+            var obj = yield find (source, external_id, cancellable);
             var results = JsonUtil.array (obj, type == MediaType.MOVIE ? "movie_results" : "tv_results");
             if (results == null || results.get_length () == 0) {
                 return 0;

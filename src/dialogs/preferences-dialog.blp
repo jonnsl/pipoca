@@ -153,6 +153,14 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
         start-icon-name: "document-open-symbolic";
         activated => $on_import_activated();
       }
+
+      Adw.ButtonRow imdb_row {
+        title: _("Import from I_MDb…");
+        use-underline: true;
+        start-icon-name: "document-open-symbolic";
+        tooltip-text: _("Import a ratings or list export from IMDb");
+        activated => $on_imdb_activated();
+      }
     }
   }
 }

@@ -26,6 +26,7 @@ src/pages/upcoming-view.vala
 src/services/background.vala
 src/services/database.vala
 src/services/image-cache.vala
+src/services/imdb-import.vala
 src/services/kodi-client.vala
 src/services/kodi-sync.vala
 src/services/library-transfer.vala
