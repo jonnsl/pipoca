@@ -1,0 +1,6 @@
+/build/
+/_build/
+/.flatpak/
+/.flatpak-builder/
+/repo/
+*.flatpak

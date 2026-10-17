@@ -1,0 +1,48 @@
+{
+  "id": "io.github.jonnsl.Aperture.Devel",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "50",
+  "sdk": "org.gnome.Sdk",
+  "sdk-extensions": ["org.freedesktop.Sdk.Extension.vala"],
+  "command": "aperture",
+  "finish-args": [
+    "--share=network",
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--device=dri"
+  ],
+  "build-options": {
+    "append-path": "/usr/lib/sdk/vala/bin",
+    "prepend-ld-library-path": "/usr/lib/sdk/vala/lib"
+  },
+  "cleanup": [
+    "/include", "/lib/pkgconfig", "/man", "/share/doc", "/share/gtk-doc",
+    "/share/man", "/share/pkgconfig", "/share/vala", "*.la", "*.a"
+  ],
+  "modules": [
+    {
+      "name": "blueprint-compiler",
+      "buildsystem": "meson",
+      "cleanup": ["*"],
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.gnome.org/GNOME/blueprint-compiler.git",
+          "tag": "v0.22.2"
+        }
+      ]
+    },
+    {
+      "name": "aperture",
+      "buildsystem": "meson",
+      "config-opts": ["-Dprofile=development"],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "../.."
+        }
+      ]
+    }
+  ]
+}

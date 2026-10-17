@@ -1,0 +1,11 @@
+option('profile',
+  type: 'combo',
+  choices: ['default', 'development'],
+  value: 'default',
+  description: 'Build profile; "development" uses a .Devel app id and styling',
+)
+option('tmdb_api_key',
+  type: 'string',
+  value: '',
+  description: 'TMDB API read access token bundled with the build (users can override it in Preferences)',
+)

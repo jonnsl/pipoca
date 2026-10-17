@@ -1,0 +1,7 @@
+data/io.github.jonnsl.Aperture.desktop.in.in
+data/io.github.jonnsl.Aperture.metainfo.xml.in.in
+data/io.github.jonnsl.Aperture.gschema.xml.in
+src/application.vala
+src/window.vala
+src/window.blp
+src/shortcuts-dialog.blp
