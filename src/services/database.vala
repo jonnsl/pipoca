@@ -9,7 +9,7 @@ namespace Aperture {
      * Watch events for movies use -1 as season and episode number.
      */
     public class Database : Object {
-        private const int SCHEMA_VERSION = 1;
+        private const int SCHEMA_VERSION = 2;
 
         private Sqlite.Database db;
 
@@ -30,6 +30,29 @@ namespace Aperture {
                 return;
             }
             begin ();
+            try {
+                if (version < 1) {
+                    create_v1 ();
+                }
+                if (version < 2) {
+                    // Titles a Kodi sync has seen, so removed ones aren't added back
+                    exec ("""
+                        CREATE TABLE kodi_seen (
+                            media_type INTEGER NOT NULL,
+                            tmdb_id INTEGER NOT NULL,
+                            PRIMARY KEY (media_type, tmdb_id)
+                        );
+                    """);
+                }
+                exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
+                commit ();
+            } catch (Error e) {
+                rollback ();
+                throw e;
+            }
+        }
+
+        private void create_v1 () throws Error {
             exec ("""
                 CREATE TABLE titles (
                     media_type INTEGER NOT NULL,
@@ -85,8 +108,6 @@ namespace Aperture {
                 );
                 CREATE INDEX watch_events_title ON watch_events (media_type, tmdb_id, season_number, episode_number);
             """);
-            exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
-            commit ();
         }
 
         public void exec (string sql) throws Error {
@@ -388,6 +409,27 @@ namespace Aperture {
             stmt.bind_int (4, episode);
             stmt.bind_int64 (5, watched_at);
             return stmt.step () == Sqlite.ROW;
+        }
+
+        /* Whether the movie or episode has been watched at all */
+        public bool has_watch_events (MediaType type, int64 id, int season, int episode) throws Error {
+            var stmt = prepare ("""
+                SELECT 1 FROM watch_events WHERE media_type = ?1 AND tmdb_id = ?2
+                AND season_number = ?3 AND episode_number = ?4 LIMIT 1""");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
+            stmt.bind_int (3, season);
+            stmt.bind_int (4, episode);
+            return stmt.step () == Sqlite.ROW;
+        }
+
+        /* Records that a Kodi sync has seen a title; returns false if it already had */
+        public bool mark_kodi_seen (MediaType type, int64 id) throws Error {
+            var stmt = prepare ("INSERT OR IGNORE INTO kodi_seen (media_type, tmdb_id) VALUES (?1, ?2)");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
+            run (stmt);
+            return db.changes () > 0;
         }
 
         public int64 last_watched_at (MediaType type, int64 id) throws Error {

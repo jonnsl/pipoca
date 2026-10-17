@@ -35,5 +35,27 @@
       <default>''</default>
       <summary>Custom TMDB API key or read access token</summary>
     </key>
+    <key name="kodi-enabled" type="b">
+      <default>false</default>
+      <summary>Sync from Kodi</summary>
+      <description>Import titles and watch history from Kodi periodically</description>
+    </key>
+    <key name="kodi-address" type="s">
+      <default>''</default>
+      <summary>Address of Kodi’s web server, e.g. http://192.168.1.10:8080</summary>
+    </key>
+    <key name="kodi-username" type="s">
+      <default>''</default>
+      <summary>Username for Kodi’s web server</summary>
+    </key>
+    <key name="kodi-sync-interval" type="i">
+      <range min="5" max="1440"/>
+      <default>60</default>
+      <summary>Minutes between Kodi syncs</summary>
+    </key>
+    <key name="kodi-last-sync" type="x">
+      <default>0</default>
+      <summary>When the last successful Kodi sync finished (Unix time)</summary>
+    </key>
   </schema>
 </schemalist>

@@ -14,6 +14,62 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
         subtitle: _("Update titles from TMDB at startup, at most once a day");
       }
     }
+
+    Adw.PreferencesGroup {
+      title: _("Kodi");
+      description: _("Import movies, shows and watch history from Kodi’s library. Aperture only reads from Kodi and never changes anything there.");
+
+      Adw.SwitchRow kodi_enabled_row {
+        title: _("Sync Automatically");
+      }
+
+      Adw.ComboRow kodi_interval_row {
+        title: _("Sync Every");
+        sensitive: bind kodi_enabled_row.active;
+
+        model: StringList {
+          strings [
+            _("15 Minutes"),
+            _("Hour"),
+            _("6 Hours"),
+            _("Day"),
+          ]
+        };
+      }
+
+      Adw.EntryRow kodi_address_row {
+        title: _("Address");
+        input-purpose: url;
+        tooltip-text: _("Kodi’s web server, e.g. http://192.168.1.10:8080");
+      }
+
+      Adw.EntryRow kodi_username_row {
+        title: _("Username");
+      }
+
+      Adw.PasswordEntryRow kodi_password_row {
+        title: _("Password");
+        show-apply-button: true;
+        apply => $on_kodi_password_apply();
+      }
+
+      Adw.ActionRow kodi_status_row {
+        title: _("Last Sync");
+
+        [suffix]
+        Adw.Spinner kodi_spinner {
+          visible: false;
+        }
+
+        [suffix]
+        Button kodi_sync_button {
+          label: _("Sync _Now");
+          use-underline: true;
+          valign: center;
+          clicked => $on_kodi_sync_clicked();
+        }
+      }
+    }
   }
 
   Adw.PreferencesPage {

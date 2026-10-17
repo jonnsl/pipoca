@@ -39,6 +39,7 @@ namespace Aperture {
             win.present ();
             if (first) {
                 schedule_refresh ();
+                KodiSync.get_default ().start ();
             }
         }
 

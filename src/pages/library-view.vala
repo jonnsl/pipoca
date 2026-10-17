@@ -22,6 +22,7 @@ namespace Aperture {
         private Gtk.CustomFilter filter;
         private Gtk.CustomSorter sorter;
         private Gtk.FilterListModel all_of_kind;
+        private uint refilter_id = 0;
 
         public LibraryKind kind { get; private set; }
 
@@ -45,6 +46,10 @@ namespace Aperture {
 
         public override void dispose () {
             library.title_changed.disconnect (on_title_changed);
+            if (refilter_id != 0) {
+                Source.remove (refilter_id);
+                refilter_id = 0;
+            }
             dispose_template (typeof (LibraryView));
             base.dispose ();
         }
@@ -174,6 +179,17 @@ namespace Aperture {
         }
 
         private void on_title_changed () {
+            // Imports change many titles at once; update the grids once for all of them
+            if (refilter_id == 0) {
+                refilter_id = Idle.add (() => {
+                    refilter_id = 0;
+                    update_sections ();
+                    return Source.REMOVE;
+                });
+            }
+        }
+
+        private void update_sections () {
             // Status and progress drive sections and sort order
             all_of_kind.filter.changed (Gtk.FilterChange.DIFFERENT);
             foreach (var s in sections) {

@@ -5,6 +5,17 @@ namespace Aperture {
         [GtkChild] private unowned Adw.SwitchRow custom_key_row;
         [GtkChild] private unowned Adw.PasswordEntryRow api_key_row;
         [GtkChild] private unowned Adw.ActionRow cache_row;
+        [GtkChild] private unowned Adw.SwitchRow kodi_enabled_row;
+        [GtkChild] private unowned Adw.ComboRow kodi_interval_row;
+        [GtkChild] private unowned Adw.EntryRow kodi_address_row;
+        [GtkChild] private unowned Adw.EntryRow kodi_username_row;
+        [GtkChild] private unowned Adw.PasswordEntryRow kodi_password_row;
+        [GtkChild] private unowned Adw.ActionRow kodi_status_row;
+        [GtkChild] private unowned Adw.Spinner kodi_spinner;
+        [GtkChild] private unowned Gtk.Button kodi_sync_button;
+
+        /* Minutes for each kodi_interval_row choice */
+        private const int[] KODI_INTERVALS = { 15, 60, 360, 1440 };
 
         private Settings settings;
 
@@ -14,6 +25,108 @@ namespace Aperture {
             settings.bind ("use-custom-api-key", custom_key_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("custom-api-key", api_key_row, "text", SettingsBindFlags.DEFAULT);
             update_cache_size.begin ();
+            setup_kodi ();
+        }
+
+        public override void dispose () {
+            var kodi = KodiSync.get_default ();
+            kodi.notify["syncing"].disconnect (update_kodi_status);
+            kodi.notify["last-error"].disconnect (update_kodi_status);
+            dispose_template (typeof (PreferencesDialog));
+            base.dispose ();
+        }
+
+        private void setup_kodi () {
+            settings.bind ("kodi-enabled", kodi_enabled_row, "active", SettingsBindFlags.DEFAULT);
+            settings.bind ("kodi-address", kodi_address_row, "text", SettingsBindFlags.DEFAULT);
+            settings.bind ("kodi-username", kodi_username_row, "text", SettingsBindFlags.DEFAULT);
+
+            var minutes = settings.get_int ("kodi-sync-interval");
+            kodi_interval_row.selected = 1;
+            for (var i = 0; i < KODI_INTERVALS.length; i++) {
+                if (KODI_INTERVALS[i] == minutes) {
+                    kodi_interval_row.selected = i;
+                }
+            }
+            kodi_interval_row.notify["selected"].connect (() => {
+                settings.set_int ("kodi-sync-interval", KODI_INTERVALS[kodi_interval_row.selected]);
+            });
+
+            var kodi = KodiSync.get_default ();
+            kodi.notify["syncing"].connect (update_kodi_status);
+            kodi.notify["last-error"].connect (update_kodi_status);
+            update_kodi_status ();
+            load_kodi_password.begin ();
+        }
+
+        private async void load_kodi_password () {
+            try {
+                kodi_password_row.text = (yield KodiSync.get_default ().get_password ()) ?? "";
+            } catch (Error e) {
+                warning ("Can't read the Kodi password from the keyring: %s", e.message);
+            }
+        }
+
+        [GtkCallback]
+        private void on_kodi_password_apply () {
+            save_kodi_password.begin (kodi_password_row.text);
+        }
+
+        private async void save_kodi_password (string password) {
+            try {
+                yield KodiSync.get_default ().set_password (password);
+                add_toast (new Adw.Toast (_("Password saved")));
+            } catch (Error e) {
+                show_error (_("Can’t Save Password"), e.message);
+            }
+        }
+
+        private void update_kodi_status () {
+            var kodi = KodiSync.get_default ();
+            kodi_spinner.visible = kodi.syncing;
+            kodi_sync_button.sensitive = !kodi.syncing;
+            if (kodi.syncing) {
+                kodi_status_row.subtitle = _("Syncing…");
+            } else if (kodi.last_error != null) {
+                kodi_status_row.subtitle = _("Failed: %s").printf (kodi.last_error);
+            } else if (kodi.last_sync == 0) {
+                kodi_status_row.subtitle = _("Never");
+            } else {
+                var time = new DateTime.from_unix_local (kodi.last_sync);
+                // Translators: date and time of the last sync, see https://docs.gtk.org/glib/method.DateTime.format.html
+                // xgettext:no-c-format
+                kodi_status_row.subtitle = time.format (_("%b %-d, %Y at %H:%M"));
+            }
+        }
+
+        [GtkCallback]
+        private void on_kodi_sync_clicked () {
+            sync_kodi.begin ();
+        }
+
+        private async void sync_kodi () {
+            // A password typed but not applied yet is what the user means to use
+            if (kodi_password_row.text != "") {
+                try {
+                    yield KodiSync.get_default ().set_password (kodi_password_row.text);
+                } catch (Error e) {
+                    warning ("Can't save the Kodi password: %s", e.message);
+                }
+            }
+            try {
+                var result = yield KodiSync.get_default ().sync ();
+                string message;
+                if (result.titles_added == 0 && result.events_added == 0) {
+                    message = _("Library is already up to date");
+                } else {
+                    message = _("%s, %s").printf (
+                        ngettext ("%d title added", "%d titles added", result.titles_added).printf (result.titles_added),
+                        ngettext ("%d watch marked", "%d watches marked", result.events_added).printf (result.events_added));
+                }
+                add_toast (new Adw.Toast (message));
+            } catch (Error e) {
+                // Shown in the status row
+            }
         }
 
         private async void update_cache_size () {

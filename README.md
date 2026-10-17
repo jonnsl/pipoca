@@ -15,7 +15,7 @@ This app uses the TMDB API but is not endorsed or certified by TMDB.
 ## Building
 
 Dependencies: `meson`, `valac`, `blueprint-compiler`, `gtk4 >= 4.18`,
-`libadwaita-1 >= 1.8`, `libsoup-3.0`, `json-glib-1.0`, `sqlite3`.
+`libadwaita-1 >= 1.8`, `libsoup-3.0`, `json-glib-1.0`, `sqlite3`, `libsecret-1`.
 
 ```sh
 meson setup build -Dprofile=development -Dtmdb_api_key=YOUR_TMDB_READ_TOKEN

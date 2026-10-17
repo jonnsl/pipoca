@@ -305,6 +305,119 @@ void test_import_errors () {
     }
 }
 
+KodiItem kodi_item (MediaType type, int64 kodi_id, int64 tmdb_id, string title, int playcount, int64 last_played) {
+    return new KodiItem () {
+        media_type = type,
+        kodi_id = kodi_id,
+        tmdb_id = tmdb_id,
+        title = title,
+        year = 2020,
+        playcount = playcount,
+        last_played = last_played,
+        date_added = 1600000000,
+    };
+}
+
+KodiItem kodi_episode (int64 show_kodi_id, int season, int episode, int playcount, int64 last_played) {
+    var e = kodi_item (MediaType.TV, show_kodi_id, 0, "", playcount, last_played);
+    e.season = season;
+    e.episode = episode;
+    return e;
+}
+
+void test_kodi_import () {
+    var lib = Library.get_default ();
+    var movies = new GenericArray<KodiItem> ();
+    movies.add (kodi_item (MediaType.MOVIE, 1, 500, "Kodi Movie", 2, 1700000000));
+    movies.add (kodi_item (MediaType.MOVIE, 2, 501, "Unwatched Kodi Movie", 0, 1700000000));
+    movies.add (kodi_item (MediaType.MOVIE, 3, 0, "Unmatched", 1, 0));
+    var shows = new GenericArray<KodiItem> ();
+    shows.add (kodi_item (MediaType.TV, 7, 600, "Kodi Show", 0, 0));
+    // Already in the library from earlier tests; Kodi's numbering is used as is
+    shows.add (kodi_item (MediaType.TV, 8, 100, "Show 100", 0, 0));
+    var episodes = new GenericArray<KodiItem> ();
+    episodes.add (kodi_episode (7, 1, 1, 1, 1700000100));
+    episodes.add (kodi_episode (7, 1, 2, 0, 0));
+    episodes.add (kodi_episode (8, 1, 1, 1, 1700000200));  // already watched in Aperture
+    episodes.add (kodi_episode (99, 1, 1, 1, 1700000300)); // show Kodi didn't list
+
+    KodiSyncResult r;
+    try {
+        r = KodiImport.apply (lib, movies, shows, episodes);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 3);
+    assert (r.titles_unmatched == 1);
+    // Watched movie + the new show's S1E1; Show 100 S1E1 already had an event
+    assert (r.events_added == 2);
+
+    var movie = lib.lookup (MediaType.MOVIE, 500);
+    assert (movie.in_library && movie.name == "Kodi Movie" && movie.year == "2020");
+    assert (movie.added_at == 1600000000);
+    assert (movie.status == TitleStatus.WATCHED && movie.last_watched_at == 1700000000);
+    assert (lib.lookup (MediaType.MOVIE, 501).status == TitleStatus.PLAN_TO_WATCH);
+
+    try {
+        var events = lib.db.load_watch_events (MediaType.TV, 600);
+        assert (events.length == 1 && events[0].season_number == 1 && events[0].episode_number == 1);
+        assert (events[0].watched_at == 1700000100);
+    } catch (Error e) {
+        error (e.message);
+    }
+
+    // Syncing again changes nothing
+    try {
+        r = KodiImport.apply (lib, movies, shows, episodes);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 0 && r.events_added == 0);
+
+    // A title the user removed stays removed and gets no new events,
+    // even though Kodi still has it as watched
+    lib.set_movie_watched (movie, false);
+    lib.remove (movie);
+    var shows2 = new GenericArray<KodiItem> ();
+    try {
+        r = KodiImport.apply (lib, movies, shows2, new GenericArray<KodiItem> ());
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 0 && r.events_added == 0);
+    assert (!movie.in_library);
+
+    // Watching something in Kodi later is picked up by the next sync
+    var unwatched = lib.lookup (MediaType.MOVIE, 501);
+    movies[1].playcount = 1;
+    try {
+        r = KodiImport.apply (lib, movies, shows2, new GenericArray<KodiItem> ());
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.events_added == 1 && unwatched.status == TitleStatus.WATCHED);
+}
+
+void test_kodi_parsing () {
+    try {
+        assert (KodiClient.make_endpoint ("192.168.1.151:8080") == "http://192.168.1.151:8080/jsonrpc");
+        assert (KodiClient.make_endpoint (" http://kodi.local:8080/ ") == "http://kodi.local:8080/jsonrpc");
+        assert (KodiClient.make_endpoint ("https://kodi.local/jsonrpc") == "https://kodi.local/jsonrpc");
+    } catch (Error e) {
+        error (e.message);
+    }
+    try {
+        KodiClient.make_endpoint ("  ");
+        assert_not_reached ();
+    } catch (Error e) {
+        // Expected
+    }
+    var expected = new DateTime.local (2022, 6, 4, 1, 11, 31).to_unix ();
+    assert (KodiClient.parse_time ("2022-06-04 01:11:31") == expected);
+    assert (KodiClient.parse_time ("") == 0);
+    assert (KodiClient.parse_time (null) == 0);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -320,5 +433,7 @@ int main (string[] args) {
     Test.add_func ("/transfer/export", test_export);
     Test.add_func ("/transfer/import", test_import);
     Test.add_func ("/transfer/import-errors", test_import_errors);
+    Test.add_func ("/kodi/import", test_kodi_import);
+    Test.add_func ("/kodi/parsing", test_kodi_parsing);
     return Test.run ();
 }
