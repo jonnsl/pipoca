@@ -470,6 +470,62 @@ void test_dropped () {
     assert (show.dropped_at == 0 && show.status == TitleStatus.WATCHING);
 }
 
+void test_releases () {
+    var lib = Library.get_default ();
+    var today = Utils.today ();
+    var show = make_show (800, "Returning Series");
+    var s3 = new GenericArray<Episode> ();
+    s3.add (ep (800, 3, 2, Utils.days_from_today (1)));
+    s3.add (ep (800, 3, 1, today));
+    try {
+        lib.db.save_episodes (800, 3, s3);
+    } catch (Error e) {
+        error (e.message);
+    }
+    lib.add (show);
+
+    var movie = new Title (MediaType.MOVIE, 801);
+    movie.name = "Upcoming Movie";
+    movie.release_date = Utils.days_from_today (3);
+    movie.refreshed_at = new DateTime.now_utc ().to_unix ();
+    lib.add (lib.intern (movie));
+
+    var releases = lib.get_releases (today, Utils.days_from_today (7));
+    var mine = new GenericArray<Release> ();
+    foreach (var r in releases) {
+        if (r.title == show || r.title == movie) {
+            mine.add (r);
+        }
+    }
+    assert (mine.length == 3);
+    assert (mine[0].episode.episode_number == 1 && mine[0].date == today);
+    assert (mine[1].episode.episode_number == 2);
+    assert (mine[2].title == movie && mine[2].episode == null);
+    // Ordered by date across titles
+    for (var i = 1; i < releases.length; i++) {
+        assert (releases[i - 1].date <= releases[i].date);
+    }
+
+    // Open-ended includes the far future; past episodes are left out
+    var count_2099 = 0;
+    foreach (var r in lib.get_releases (today)) {
+        assert (r.date >= today);
+        if (r.title == show && r.date == "2099-01-01") {
+            count_2099++;
+        }
+    }
+    assert (count_2099 == 1);
+
+    // Watched movies and dropped shows are left out
+    lib.set_movie_watched (movie, true);
+    lib.set_dropped (show, true);
+    foreach (var r in lib.get_releases (today)) {
+        assert (r.title != show && r.title != movie);
+    }
+    lib.set_dropped (show, false);
+    lib.set_movie_watched (movie, false);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -488,5 +544,6 @@ int main (string[] args) {
     Test.add_func ("/kodi/import", test_kodi_import);
     Test.add_func ("/kodi/parsing", test_kodi_parsing);
     Test.add_func ("/library/dropped", test_dropped);
+    Test.add_func ("/library/releases", test_releases);
     return Test.run ();
 }

@@ -482,6 +482,27 @@ namespace Aperture {
             return any.length > 0 ? any[0] : null;
         }
 
+        /**
+         * Regular episodes of shows in the library (not dropped) airing from
+         * @from to @until inclusive, or with no end when @until is null.
+         */
+        public GenericArray<Episode> load_episodes_airing (string from, string? until) throws Error {
+            var stmt = prepare ("""
+                SELECT %s, %s, e.show_id FROM episodes e
+                JOIN titles t ON t.media_type = 1 AND t.tmdb_id = e.show_id
+                WHERE t.in_library = 1 AND t.dropped_at = 0 AND e.season_number > 0
+                AND e.air_date >= ?1 AND (?2 IS NULL OR e.air_date <= ?2)
+                ORDER BY e.air_date, e.show_id, e.season_number, e.episode_number
+            """.printf (EPISODE_COLUMNS, WATCHED_EXPR));
+            stmt.bind_text (1, from);
+            bind_str (stmt, 2, until);
+            var result = new GenericArray<Episode> ();
+            while (stmt.step () == Sqlite.ROW) {
+                result.add (episode_from_row (stmt.column_int64 (8), stmt));
+            }
+            return result;
+        }
+
         /* The next regular episode that hasn't aired yet */
         public Episode? find_upcoming_episode (int64 show_id) throws Error {
             var stmt = prepare ("""

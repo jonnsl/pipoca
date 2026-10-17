@@ -21,8 +21,9 @@ namespace Aperture {
             set_accels_for_action ("win.filter", { "<primary>f" });
             set_accels_for_action ("win.refresh", { "F5", "<primary>r" });
             set_accels_for_action ("win.view::watchlist", { "<primary>1" });
-            set_accels_for_action ("win.view::watched", { "<primary>2" });
-            set_accels_for_action ("win.view::dropped", { "<primary>3" });
+            set_accels_for_action ("win.view::upcoming", { "<primary>2" });
+            set_accels_for_action ("win.view::watched", { "<primary>3" });
+            set_accels_for_action ("win.view::dropped", { "<primary>4" });
         }
 
         public override void startup () {
@@ -31,6 +32,7 @@ namespace Aperture {
             typeof (LibraryView).ensure ();
             typeof (Poster).ensure ();
             typeof (PosterCard).ensure ();
+            typeof (UpcomingView).ensure ();
         }
 
         public override void activate () {

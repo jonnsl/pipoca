@@ -117,7 +117,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 }
               }
 
-              MenuButton {
+              MenuButton sort_button {
                 icon-name: "view-sort-descending-symbolic";
                 tooltip-text: _("Sort");
                 menu-model: sort_menu;
@@ -139,6 +139,14 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 icon-name: "bookmark-new-symbolic";
 
                 child: $ApertureLibraryView watchlist_view {};
+              }
+
+              Adw.ViewStackPage {
+                name: "upcoming";
+                title: _("Upcoming");
+                icon-name: "x-office-calendar-symbolic";
+
+                child: $ApertureUpcomingView upcoming_view {};
               }
 
               Adw.ViewStackPage {

@@ -287,6 +287,47 @@ namespace Aperture {
             }
         }
 
+        /**
+         * Episodes of shows in the library and releases of movies on the
+         * watchlist from @from to @until ("YYYY-MM-DD", inclusive; null for no
+         * end), by date. Dropped titles are left out.
+         */
+        public GenericArray<Release> get_releases (string from, string? until = null) {
+            var result = new GenericArray<Release> ();
+            try {
+                foreach (var e in db.load_episodes_airing (from, until)) {
+                    var show = titles_by_key[Title.make_key (MediaType.TV, e.show_id)];
+                    if (show != null) {
+                        result.add (new Release (show, e));
+                    }
+                }
+            } catch (Error e) {
+                critical ("Can't load upcoming episodes: %s", e.message);
+            }
+            for (uint i = 0; i < titles.get_n_items (); i++) {
+                var t = (Title) titles.get_item (i);
+                // Imported titles may only have a year until they're refreshed
+                var date = t.release_date;
+                if (t.is_movie && t.status == TitleStatus.PLAN_TO_WATCH && date != null && date.length == 10
+                    && date >= from && (until == null || date <= until)) {
+                    result.add (new Release (t));
+                }
+            }
+            result.sort ((a, b) => {
+                var c = strcmp (a.date, b.date);
+                if (c == 0) {
+                    c = a.title.name.collate (b.title.name);
+                }
+                if (c == 0 && a.episode != null && b.episode != null) {
+                    c = a.episode.season_number != b.episode.season_number
+                        ? a.episode.season_number - b.episode.season_number
+                        : a.episode.episode_number - b.episode.episode_number;
+                }
+                return c;
+            });
+            return result;
+        }
+
         /* ---- Refreshing from TMDB ---- */
 
         public bool is_stale (Title t) {

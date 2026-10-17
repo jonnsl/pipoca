@@ -4,6 +4,11 @@ namespace Aperture.Utils {
         return new DateTime.now_local ().format ("%F");
     }
 
+    /* The local date @days from today as "YYYY-MM-DD" */
+    public string days_from_today (int days) {
+        return new DateTime.now_local ().add_days (days).format ("%F");
+    }
+
     public DateTime? parse_date (string? date) {
         if (date == null || date.length < 10) {
             return null;

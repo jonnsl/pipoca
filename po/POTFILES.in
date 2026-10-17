@@ -7,6 +7,7 @@ src/dialogs/preferences-dialog.vala
 src/dialogs/search-dialog.blp
 src/dialogs/search-dialog.vala
 src/models/episode.vala
+src/models/release.vala
 src/models/season.vala
 src/models/title.vala
 src/pages/details-page.blp
@@ -15,6 +16,8 @@ src/pages/library-view.blp
 src/pages/library-view.vala
 src/pages/season-page.blp
 src/pages/season-page.vala
+src/pages/upcoming-view.blp
+src/pages/upcoming-view.vala
 src/services/database.vala
 src/services/image-cache.vala
 src/services/kodi-client.vala

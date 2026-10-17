@@ -8,8 +8,10 @@ namespace Aperture {
         [GtkChild] private unowned Adw.Banner offline_banner;
         [GtkChild] private unowned Adw.ToggleGroup media_filter;
         [GtkChild] private unowned Gtk.MenuButton show_status_button;
+        [GtkChild] private unowned Gtk.MenuButton sort_button;
         [GtkChild] private unowned Adw.ViewStack view_stack;
         [GtkChild] private unowned LibraryView watchlist_view;
+        [GtkChild] private unowned UpcomingView upcoming_view;
         [GtkChild] private unowned LibraryView watched_view;
         [GtkChild] private unowned LibraryView dropped_view;
 
@@ -53,6 +55,9 @@ namespace Aperture {
                 settings.bind ("sort-order", view, "sort-order", SettingsBindFlags.GET);
                 view.title_activated.connect (show_title);
             }
+            media_filter.bind_property ("active-name", upcoming_view, "media-filter", BindingFlags.SYNC_CREATE);
+            library_search.bind_property ("text", upcoming_view, "search-text", BindingFlags.SYNC_CREATE);
+            upcoming_view.title_activated.connect (show_title);
 
             // Show status only means something for finished shows
             view_stack.notify["visible-child-name"].connect (update_show_status);
@@ -83,6 +88,8 @@ namespace Aperture {
             show_status_button.update_property (Gtk.AccessibleProperty.LABEL,
                                                 _("Show status: %s").printf (label), -1);
             show_status_button.visible = view_stack.visible_child_name == "watched";
+            // Upcoming is always by date
+            sort_button.visible = view_stack.visible_child_name != "upcoming";
             show_status_button.sensitive = media_filter.active_name != "movie";
             // Movies have no show status, so the filter is off while only movies are listed
             watched_view.show_status = show_status_button.sensitive ? status : "";
