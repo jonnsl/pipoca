@@ -32,6 +32,12 @@ namespace Aperture {
 
         public Title title_object { get; construct; }
 
+        /* Backs the "Notify Me" check item */
+        public bool notify_me {
+            get { return title_object.notify_enabled; }
+            set { library.set_notify (title_object, value); }
+        }
+
         public DetailsPage (Title title) {
             Object (title_object: title);
         }
@@ -53,6 +59,7 @@ namespace Aperture {
             install_action ("details.remove", null, (w) => {
                 TitleActions.remove (w, ((DetailsPage) w).title_object);
             });
+            install_property_action ("details.notify", "notify-me");
         }
 
         construct {
@@ -60,6 +67,7 @@ namespace Aperture {
             top_overlay.set_measure_overlay (content_clamp, true);
             title_object.bind_property ("name", this, "title", BindingFlags.SYNC_CREATE);
             title_object.notify.connect (queue_update);
+            title_object.notify["notify-enabled"].connect (on_notify_enabled_changed);
             library.episodes_changed.connect (on_episodes_changed);
 
             update ();
@@ -76,6 +84,7 @@ namespace Aperture {
         public override void dispose () {
             cancellable.cancel ();
             title_object.notify.disconnect (queue_update);
+            title_object.notify["notify-enabled"].disconnect (on_notify_enabled_changed);
             library.episodes_changed.disconnect (on_episodes_changed);
             if (update_id != 0) {
                 Source.remove (update_id);
@@ -127,6 +136,10 @@ namespace Aperture {
                     return Source.REMOVE;
                 });
             }
+        }
+
+        private void on_notify_enabled_changed () {
+            notify_property ("notify-me");
         }
 
         private void on_episodes_changed (Title show) {
@@ -191,12 +204,20 @@ namespace Aperture {
             library_button.visible = t.in_library;
             library_button_content.icon_name = t.is_dropped ? "media-playback-stop-symbolic" : "object-select-symbolic";
             var menu = new Menu ();
-            if (t.is_dropped) {
-                menu.append (_("Resu_me Watching"), "details.resume");
-            } else {
-                menu.append (_("_Drop"), "details.drop");
+            // Nothing to notify about for dropped titles or movies already watched
+            if (!t.is_dropped && !(t.is_movie && t.movie_watched)) {
+                var notify_section = new Menu ();
+                notify_section.append (_("_Notify Me"), "details.notify");
+                menu.append_section (null, notify_section);
             }
-            menu.append (_("_Remove from Library"), "details.remove");
+            var library_section = new Menu ();
+            if (t.is_dropped) {
+                library_section.append (_("Resu_me Watching"), "details.resume");
+            } else {
+                library_section.append (_("_Drop"), "details.drop");
+            }
+            library_section.append (_("_Remove from Library"), "details.remove");
+            menu.append_section (null, library_section);
             library_button.menu_model = menu;
             switch (t.status) {
             case TitleStatus.PLAN_TO_WATCH:

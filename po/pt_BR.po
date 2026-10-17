@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 15:20-0300\n"
+"POT-Creation-Date: 2026-10-17 15:23-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: data/io.github.jonnsl.Aperture.desktop.in.in:2
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:75
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:95
 #: src/window.blp:5 src/window.blp:21
 msgid "Aperture"
 msgstr "Aperture"
@@ -83,55 +83,68 @@ msgstr "Data local (AAAA-MM-DD) em que a janela foi aberta pela última vez"
 
 #: data/io.github.jonnsl.Aperture.gschema.xml.in:33
 msgid "Titles with episodes or releases after this date get a “New” badge"
-msgstr "Títulos com episódios ou lançamentos após esta data recebem o selo “Novo”"
+msgstr ""
+"Títulos com episódios ou lançamentos após esta data recebem o selo “Novo”"
 
 #: data/io.github.jonnsl.Aperture.gschema.xml.in:37
+msgid "Notify about new episodes"
+msgstr "Notificar sobre novos episódios"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:41
+msgid "Notify about movie releases"
+msgstr "Notificar sobre estreias de filmes"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:45
+msgid "Local date (YYYY-MM-DD) of the last check for releases to notify about"
+msgstr "Data local (AAAA-MM-DD) da última verificação de lançamentos a notificar"
+
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:49
 msgid "Use a custom TMDB API key"
 msgstr "Usar uma chave de API do TMDB personalizada"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:41
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:53
 msgid "Custom TMDB API key or read access token"
 msgstr "Chave de API do TMDB ou token de acesso de leitura personalizado"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:45
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:57
 msgid "Sync from Kodi"
 msgstr "Sincronizar com o Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:46
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:58
 msgid "Import titles and watch history from Kodi periodically"
 msgstr "Importar títulos e histórico do Kodi periodicamente"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:50
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:62
 msgid "Address of Kodi’s web server, e.g. http://192.168.1.10:8080"
 msgstr ""
 "Endereço do servidor web do Kodi, por exemplo, http://192.168.1.10:8080"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:54
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:66
 msgid "Username for Kodi’s web server"
 msgstr "Nome de usuário do servidor web do Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:59
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:71
 msgid "Minutes between Kodi syncs"
 msgstr "Minutos entre sincronizações com o Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:63
+#: data/io.github.jonnsl.Aperture.gschema.xml.in:75
 msgid "When the last successful Kodi sync finished (Unix time)"
 msgstr ""
 "Quando terminou a última sincronização com o Kodi bem-sucedida (horário Unix)"
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.vala:81
+#: src/application.vala:101
 msgid "translator-credits"
 msgstr "Jonnathan Soares"
 
-#: src/application.vala:84
+#: src/application.vala:104
 msgid ""
 "This product uses the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
 "Este produto usa a API do TMDB, mas não é endossado nem certificado pelo "
 "TMDB."
 
-#: src/application.vala:86
+#: src/application.vala:106
 msgid "The Movie Database (TMDB)"
 msgstr "The Movie Database (TMDB)"
 
@@ -153,10 +166,34 @@ msgstr ""
 "Atualiza os títulos a partir do TMDB ao iniciar, no máximo uma vez por dia"
 
 #: src/dialogs/preferences-dialog.blp:19
+msgid "Notifications"
+msgstr "Notificações"
+
+#: src/dialogs/preferences-dialog.blp:20
+msgid "Titles can be left out with Notify Me on their page"
+msgstr "Títulos podem ser deixados de fora com Notificar-me em sua página"
+
+#: src/dialogs/preferences-dialog.blp:23
+msgid "New Episodes"
+msgstr "Novos episódios"
+
+#: src/dialogs/preferences-dialog.blp:24
+msgid "When an episode of a show in your library airs"
+msgstr "Quando um episódio de uma série da sua biblioteca for ao ar"
+
+#: src/dialogs/preferences-dialog.blp:28
+msgid "Movie Releases"
+msgstr "Estreias de filmes"
+
+#: src/dialogs/preferences-dialog.blp:29
+msgid "When a movie on your watchlist is released"
+msgstr "Quando um filme da sua lista estrear"
+
+#: src/dialogs/preferences-dialog.blp:34
 msgid "Kodi"
 msgstr "Kodi"
 
-#: src/dialogs/preferences-dialog.blp:20
+#: src/dialogs/preferences-dialog.blp:35
 msgid ""
 "Import movies, shows and watch history from Kodi’s library. Aperture only "
 "reads from Kodi and never changes anything there."
@@ -164,63 +201,63 @@ msgstr ""
 "Importa filmes, séries e o histórico do que você assistiu da biblioteca do "
 "Kodi. O Aperture apenas lê do Kodi e nunca altera nada lá."
 
-#: src/dialogs/preferences-dialog.blp:23
+#: src/dialogs/preferences-dialog.blp:38
 msgid "Sync Automatically"
 msgstr "Sincronizar automaticamente"
 
-#: src/dialogs/preferences-dialog.blp:27
+#: src/dialogs/preferences-dialog.blp:42
 msgid "Sync Every"
 msgstr "Sincronizar a cada"
 
-#: src/dialogs/preferences-dialog.blp:32
+#: src/dialogs/preferences-dialog.blp:47
 msgid "15 Minutes"
 msgstr "15 minutos"
 
-#: src/dialogs/preferences-dialog.blp:33
+#: src/dialogs/preferences-dialog.blp:48
 msgid "Hour"
 msgstr "Hora"
 
-#: src/dialogs/preferences-dialog.blp:34
+#: src/dialogs/preferences-dialog.blp:49
 msgid "6 Hours"
 msgstr "6 horas"
 
-#: src/dialogs/preferences-dialog.blp:35
+#: src/dialogs/preferences-dialog.blp:50
 msgid "Day"
 msgstr "Dia"
 
-#: src/dialogs/preferences-dialog.blp:41
+#: src/dialogs/preferences-dialog.blp:56
 msgid "Address"
 msgstr "Endereço"
 
-#: src/dialogs/preferences-dialog.blp:43
+#: src/dialogs/preferences-dialog.blp:58
 msgid "Kodi’s web server, e.g. http://192.168.1.10:8080"
 msgstr "Servidor web do Kodi, por exemplo, http://192.168.1.10:8080"
 
-#: src/dialogs/preferences-dialog.blp:47
+#: src/dialogs/preferences-dialog.blp:62
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: src/dialogs/preferences-dialog.blp:51
+#: src/dialogs/preferences-dialog.blp:66
 msgid "Password"
 msgstr "Senha"
 
-#: src/dialogs/preferences-dialog.blp:57
+#: src/dialogs/preferences-dialog.blp:72
 msgid "Last Sync"
 msgstr "Última sincronização"
 
-#: src/dialogs/preferences-dialog.blp:66
+#: src/dialogs/preferences-dialog.blp:81
 msgid "Sync _Now"
 msgstr "Sincronizar _agora"
 
-#: src/dialogs/preferences-dialog.blp:76
+#: src/dialogs/preferences-dialog.blp:91
 msgid "Advanced"
 msgstr "Avançado"
 
-#: src/dialogs/preferences-dialog.blp:80
+#: src/dialogs/preferences-dialog.blp:95
 msgid "TMDB"
 msgstr "TMDB"
 
-#: src/dialogs/preferences-dialog.blp:81
+#: src/dialogs/preferences-dialog.blp:96
 msgid ""
 "Aperture comes with an API key. You can use your own key or read access "
 "token instead."
@@ -228,31 +265,31 @@ msgstr ""
 "O Aperture vem com uma chave de API. Você pode usar sua própria chave ou "
 "token de acesso de leitura."
 
-#: src/dialogs/preferences-dialog.blp:84
+#: src/dialogs/preferences-dialog.blp:99
 msgid "Use Custom API Key"
 msgstr "Usar chave de API personalizada"
 
-#: src/dialogs/preferences-dialog.blp:88
+#: src/dialogs/preferences-dialog.blp:103
 msgid "API Key"
 msgstr "Chave de API"
 
-#: src/dialogs/preferences-dialog.blp:94
+#: src/dialogs/preferences-dialog.blp:109
 msgid "Storage"
 msgstr "Armazenamento"
 
-#: src/dialogs/preferences-dialog.blp:97
+#: src/dialogs/preferences-dialog.blp:112
 msgid "Image Cache"
 msgstr "Cache de imagens"
 
-#: src/dialogs/preferences-dialog.blp:101
+#: src/dialogs/preferences-dialog.blp:116
 msgid "_Clear"
 msgstr "_Limpar"
 
-#: src/dialogs/preferences-dialog.blp:110
+#: src/dialogs/preferences-dialog.blp:125
 msgid "Library"
 msgstr "Biblioteca"
 
-#: src/dialogs/preferences-dialog.blp:111
+#: src/dialogs/preferences-dialog.blp:126
 msgid ""
 "Library files keep your titles and watch history. Importing adds to your "
 "library without removing anything."
@@ -260,103 +297,103 @@ msgstr ""
 "Os arquivos de biblioteca guardam seus títulos e o histórico do que você "
 "assistiu. A importação adiciona à sua biblioteca sem remover nada."
 
-#: src/dialogs/preferences-dialog.blp:114
+#: src/dialogs/preferences-dialog.blp:129
 msgid "_Export Library…"
 msgstr "_Exportar biblioteca…"
 
-#: src/dialogs/preferences-dialog.blp:121
+#: src/dialogs/preferences-dialog.blp:136
 msgid "_Import Library…"
 msgstr "_Importar biblioteca…"
 
-#: src/dialogs/preferences-dialog.vala:78
+#: src/dialogs/preferences-dialog.vala:82
 msgid "Password saved"
 msgstr "Senha salva"
 
-#: src/dialogs/preferences-dialog.vala:80
+#: src/dialogs/preferences-dialog.vala:84
 msgid "Can’t Save Password"
 msgstr "Não foi possível salvar a senha"
 
-#: src/dialogs/preferences-dialog.vala:89
+#: src/dialogs/preferences-dialog.vala:93
 msgid "Syncing…"
 msgstr "Sincronizando…"
 
-#: src/dialogs/preferences-dialog.vala:91
+#: src/dialogs/preferences-dialog.vala:95
 #, c-format
 msgid "Failed: %s"
 msgstr "Falhou: %s"
 
-#: src/dialogs/preferences-dialog.vala:93
+#: src/dialogs/preferences-dialog.vala:97
 msgid "Never"
 msgstr "Nunca"
 
 #. Translators: date and time of the last sync, see https://docs.gtk.org/glib/method.DateTime.format.html
-#: src/dialogs/preferences-dialog.vala:98
+#: src/dialogs/preferences-dialog.vala:102
 #, no-c-format
 msgid "%b %-d, %Y at %H:%M"
 msgstr "%-d de %b de %Y às %H:%M"
 
-#: src/dialogs/preferences-dialog.vala:120
-#: src/dialogs/preferences-dialog.vala:204
+#: src/dialogs/preferences-dialog.vala:124
+#: src/dialogs/preferences-dialog.vala:208
 msgid "Library is already up to date"
 msgstr "A biblioteca já está atualizada"
 
-#: src/dialogs/preferences-dialog.vala:122
+#: src/dialogs/preferences-dialog.vala:126
 #, c-format
 msgid "%s, %s"
 msgstr "%s, %s"
 
-#: src/dialogs/preferences-dialog.vala:123
+#: src/dialogs/preferences-dialog.vala:127
 #, c-format
 msgid "%d title added"
 msgid_plural "%d titles added"
 msgstr[0] "%d título adicionado"
 msgstr[1] "%d títulos adicionados"
 
-#: src/dialogs/preferences-dialog.vala:124
+#: src/dialogs/preferences-dialog.vala:128
 #, c-format
 msgid "%d watch marked"
 msgid_plural "%d watches marked"
 msgstr[0] "%d visualização marcada"
 msgstr[1] "%d visualizações marcadas"
 
-#: src/dialogs/preferences-dialog.vala:139
+#: src/dialogs/preferences-dialog.vala:143
 msgid "Clear Image Cache?"
 msgstr "Limpar o cache de imagens?"
 
-#: src/dialogs/preferences-dialog.vala:140
+#: src/dialogs/preferences-dialog.vala:144
 msgid "Posters and backdrops will be downloaded again when needed"
 msgstr "Pôsteres e imagens de fundo serão baixados novamente quando necessário"
 
-#: src/dialogs/preferences-dialog.vala:141 src/pages/season-page.vala:133
+#: src/dialogs/preferences-dialog.vala:145 src/pages/season-page.vala:133
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: src/dialogs/preferences-dialog.vala:142
+#: src/dialogs/preferences-dialog.vala:146
 msgid "C_lear"
 msgstr "_Limpar"
 
-#: src/dialogs/preferences-dialog.vala:155
+#: src/dialogs/preferences-dialog.vala:159
 msgid "Library Files"
 msgstr "Arquivos de biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:168
+#: src/dialogs/preferences-dialog.vala:172
 msgid "Export Library"
 msgstr "Exportar biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:176
+#: src/dialogs/preferences-dialog.vala:180
 msgid "Library exported"
 msgstr "Biblioteca exportada"
 
 #. Cancelled
-#: src/dialogs/preferences-dialog.vala:180
+#: src/dialogs/preferences-dialog.vala:184
 msgid "Can’t Export Library"
 msgstr "Não foi possível exportar a biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:193
+#: src/dialogs/preferences-dialog.vala:197
 msgid "Import Library"
 msgstr "Importar biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:206
+#: src/dialogs/preferences-dialog.vala:210
 #, c-format
 msgid "Imported %d title"
 msgid_plural "Imported %d titles"
@@ -364,15 +401,15 @@ msgstr[0] "%d título importado"
 msgstr[1] "%d títulos importados"
 
 #. Cancelled
-#: src/dialogs/preferences-dialog.vala:217
+#: src/dialogs/preferences-dialog.vala:221
 msgid "Can’t Import Library"
 msgstr "Não foi possível importar a biblioteca"
 
-#: src/dialogs/preferences-dialog.vala:223
+#: src/dialogs/preferences-dialog.vala:227
 msgid "_Close"
 msgstr "_Fechar"
 
-#: src/dialogs/preferences-dialog.vala:230
+#: src/dialogs/preferences-dialog.vala:234
 msgid "Image cache cleared"
 msgstr "Cache de imagens limpo"
 
@@ -425,7 +462,7 @@ msgstr "_Tentar novamente"
 msgid "In Library"
 msgstr "Na biblioteca"
 
-#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:175
+#: src/dialogs/search-dialog.vala:149 src/pages/details-page.vala:188
 msgid "Add to Watchlist"
 msgstr "Adicionar à lista"
 
@@ -462,11 +499,11 @@ msgctxt "title status"
 msgid "Dropped"
 msgstr "Abandonado"
 
-#: src/models/title.vala:140
+#: src/models/title.vala:150
 msgid "Movie"
 msgstr "Filme"
 
-#: src/models/title.vala:140
+#: src/models/title.vala:150
 msgid "TV Show"
 msgstr "Série"
 
@@ -478,7 +515,7 @@ msgstr "Mais opções"
 msgid "Can’t Load Details"
 msgstr "Não foi possível carregar os detalhes"
 
-#: src/pages/details-page.blp:205 src/pages/details-page.vala:180
+#: src/pages/details-page.blp:205 src/pages/details-page.vala:193
 #: src/widgets/episode-row.blp:61 src/widgets/episode-row.vala:88
 msgid "Mark as Watched"
 msgstr "Marcar como assistido"
@@ -507,113 +544,117 @@ msgstr "_Abrir no TMDB"
 msgid "_Copy Link"
 msgstr "_Copiar link"
 
-#: src/pages/details-page.vala:108
+#: src/pages/details-page.vala:117
 msgid "Can’t refresh metadata"
 msgstr "Não foi possível atualizar os metadados"
 
-#: src/pages/details-page.vala:155
+#: src/pages/details-page.vala:168
 #, c-format
 msgid "%d season"
 msgid_plural "%d seasons"
 msgstr[0] "%d temporada"
 msgstr[1] "%d temporadas"
 
-#: src/pages/details-page.vala:178
+#: src/pages/details-page.vala:191
 msgid "Resume Watching"
 msgstr "Voltar a assistir"
 
-#: src/pages/details-page.vala:180 src/widgets/episode-row.vala:88
+#: src/pages/details-page.vala:193 src/widgets/episode-row.vala:88
 msgid "Mark as Unwatched"
 msgstr "Marcar como não assistido"
 
-#: src/pages/details-page.vala:185
+#: src/pages/details-page.vala:198
 #, c-format
 msgid "Mark %s as Watched"
 msgstr "Marcar %s como assistido"
 
-#: src/pages/details-page.vala:195 src/title-actions.vala:136
+#: src/pages/details-page.vala:210
+msgid "_Notify Me"
+msgstr "_Notificar-me"
+
+#: src/pages/details-page.vala:215 src/title-actions.vala:136
 msgid "Resu_me Watching"
 msgstr "_Voltar a assistir"
 
-#: src/pages/details-page.vala:197 src/title-actions.vala:138
+#: src/pages/details-page.vala:217 src/title-actions.vala:138
 msgid "_Drop"
 msgstr "_Abandonar"
 
-#: src/pages/details-page.vala:199 src/title-actions.vala:140
+#: src/pages/details-page.vala:219 src/title-actions.vala:140
 msgid "_Remove from Library"
 msgstr "_Remover da biblioteca"
 
-#: src/pages/details-page.vala:203
+#: src/pages/details-page.vala:224
 msgid "In Watchlist"
 msgstr "Na lista"
 
-#: src/pages/details-page.vala:218 src/pages/details-page.vala:223
+#: src/pages/details-page.vala:239 src/pages/details-page.vala:244
 #, c-format
 msgid "Next: %s"
 msgstr "Próximo: %s"
 
-#: src/pages/details-page.vala:224
+#: src/pages/details-page.vala:245
 #, c-format
 msgid "Airs %s"
 msgstr "Estreia em %s"
 
-#: src/pages/details-page.vala:249
+#: src/pages/details-page.vala:270
 msgid "Original Title"
 msgstr "Título original"
 
-#: src/pages/details-page.vala:250
+#: src/pages/details-page.vala:271
 msgid "Original Language"
 msgstr "Idioma original"
 
-#: src/pages/details-page.vala:251
+#: src/pages/details-page.vala:272
 msgid "Status"
 msgstr "Situação"
 
-#: src/pages/details-page.vala:253
+#: src/pages/details-page.vala:274
 msgid "Release Date"
 msgstr "Data de lançamento"
 
-#: src/pages/details-page.vala:254
+#: src/pages/details-page.vala:275
 msgid "Runtime"
 msgstr "Duração"
 
-#: src/pages/details-page.vala:256
+#: src/pages/details-page.vala:277
 msgid "First Aired"
 msgstr "Primeira exibição"
 
-#: src/pages/details-page.vala:257
+#: src/pages/details-page.vala:278
 msgid "Created By"
 msgstr "Criado por"
 
-#: src/pages/details-page.vala:258
+#: src/pages/details-page.vala:279
 msgid "Network"
 msgstr "Emissora"
 
-#: src/pages/details-page.vala:260
+#: src/pages/details-page.vala:281
 msgid "Episodes"
 msgstr "Episódios"
 
-#: src/pages/details-page.vala:262
+#: src/pages/details-page.vala:283
 msgid "Episode Runtime"
 msgstr "Duração do episódio"
 
-#: src/pages/details-page.vala:264
+#: src/pages/details-page.vala:285
 msgid "Genres"
 msgstr "Gêneros"
 
-#: src/pages/details-page.vala:320
+#: src/pages/details-page.vala:341
 #, c-format
 msgid "%d episode"
 msgid_plural "%d episodes"
 msgstr[0] "%d episódio"
 msgstr[1] "%d episódios"
 
-#: src/pages/details-page.vala:325
+#: src/pages/details-page.vala:346
 #, c-format
 msgid "%d/%d"
 msgstr "%d/%d"
 
-#: src/pages/details-page.vala:332 src/widgets/poster-card.vala:97
+#: src/pages/details-page.vala:353 src/widgets/poster-card.vala:97
 #, c-format
 msgid "%d of %d episodes watched"
 msgstr "%d de %d episódios assistidos"
@@ -712,6 +753,10 @@ msgstr "Mais tarde"
 msgid "Movie release"
 msgstr "Estreia de filme"
 
+#: src/pages/upcoming-view.vala:184
+msgid "Notify Me"
+msgstr "Notificar-me"
+
 #: src/services/kodi-client.vala:52
 msgid "No Kodi address configured"
 msgstr "Nenhum endereço do Kodi configurado"
@@ -740,18 +785,39 @@ msgstr "Senha do Kodi no Aperture"
 msgid "A sync is already running"
 msgstr "Uma sincronização já está em andamento"
 
-#: src/services/library-transfer.vala:79 src/services/library-transfer.vala:83
+#: src/services/library-transfer.vala:82 src/services/library-transfer.vala:86
 msgid "This isn’t an Aperture library file"
 msgstr "Este não é um arquivo de biblioteca do Aperture"
 
-#: src/services/library-transfer.vala:87
+#: src/services/library-transfer.vala:90
 msgid "This library file was made by a newer version of Aperture"
 msgstr ""
 "Este arquivo de biblioteca foi criado por uma versão mais nova do Aperture"
 
-#: src/services/library-transfer.vala:91
+#: src/services/library-transfer.vala:94
 msgid "This library file has no titles"
 msgstr "Este arquivo de biblioteca não tem títulos"
+
+#: src/services/notifier.vala:119
+msgid "Released today"
+msgstr "Estreia hoje"
+
+#: src/services/notifier.vala:120
+#, c-format
+msgid "Released on %s"
+msgstr "Estreou em %s"
+
+#: src/services/notifier.vala:122
+#, c-format
+msgid "New episode: %s"
+msgstr "Novo episódio: %s"
+
+#: src/services/notifier.vala:124
+#, c-format
+msgid "%d new episode"
+msgid_plural "%d new episodes"
+msgstr[0] "%d novo episódio"
+msgstr[1] "%d novos episódios"
 
 #: src/services/tmdb-client.vala:99
 msgid "No TMDB API key configured"

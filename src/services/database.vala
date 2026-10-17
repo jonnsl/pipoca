@@ -9,7 +9,7 @@ namespace Aperture {
      * Watch events for movies use -1 as season and episode number.
      */
     public class Database : Object {
-        private const int SCHEMA_VERSION = 3;
+        private const int SCHEMA_VERSION = 4;
 
         private Sqlite.Database db;
 
@@ -46,6 +46,19 @@ namespace Aperture {
                 }
                 if (version < 3) {
                     exec ("ALTER TABLE titles ADD COLUMN dropped_at INTEGER NOT NULL DEFAULT 0");
+                }
+                if (version < 4) {
+                    // Per-title "Notify Me", and the releases already notified (movies use -1 for both numbers)
+                    exec ("""
+                        ALTER TABLE titles ADD COLUMN notify INTEGER NOT NULL DEFAULT 1;
+                        CREATE TABLE notified (
+                            media_type INTEGER NOT NULL,
+                            tmdb_id INTEGER NOT NULL,
+                            season_number INTEGER NOT NULL,
+                            episode_number INTEGER NOT NULL,
+                            PRIMARY KEY (media_type, tmdb_id, season_number, episode_number)
+                        );
+                    """);
                 }
                 exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
                 commit ();
@@ -169,7 +182,7 @@ namespace Aperture {
             media_type, tmdb_id, name, original_name, original_language, overview,
             poster_path, backdrop_path, release_date, runtime, genres, vote_average,
             tmdb_status, creators, networks, number_of_seasons, number_of_episodes,
-            in_library, added_at, refreshed_at, dropped_at""";
+            in_library, added_at, refreshed_at, dropped_at, notify""";
 
         private static Title title_from_row (Sqlite.Statement stmt) {
             var t = new Title ((MediaType) stmt.column_int (0), stmt.column_int64 (1));
@@ -192,6 +205,7 @@ namespace Aperture {
             t.added_at = stmt.column_int64 (18);
             t.refreshed_at = stmt.column_int64 (19);
             t.dropped_at = stmt.column_int64 (20);
+            t.notify_enabled = stmt.column_int (21) != 0;
             return t;
         }
 
@@ -212,7 +226,7 @@ namespace Aperture {
         }
 
         public void save_title (Title t) throws Error {
-            var stmt = prepare ("INSERT OR REPLACE INTO titles (%s) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21)".printf (TITLE_COLUMNS));
+            var stmt = prepare ("INSERT OR REPLACE INTO titles (%s) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22)".printf (TITLE_COLUMNS));
             stmt.bind_int (1, t.media_type);
             stmt.bind_int64 (2, t.id);
             stmt.bind_text (3, t.name);
@@ -234,6 +248,7 @@ namespace Aperture {
             stmt.bind_int64 (19, t.added_at);
             stmt.bind_int64 (20, t.refreshed_at);
             stmt.bind_int64 (21, t.dropped_at);
+            stmt.bind_int (22, t.notify_enabled ? 1 : 0);
             run (stmt);
         }
 
@@ -433,6 +448,17 @@ namespace Aperture {
             var stmt = prepare ("INSERT OR IGNORE INTO kodi_seen (media_type, tmdb_id) VALUES (?1, ?2)");
             stmt.bind_int (1, type);
             stmt.bind_int64 (2, id);
+            run (stmt);
+            return db.changes () > 0;
+        }
+
+        /* Records that a release was notified; returns false if it already was */
+        public bool mark_notified (MediaType type, int64 id, int season, int episode) throws Error {
+            var stmt = prepare ("INSERT OR IGNORE INTO notified (media_type, tmdb_id, season_number, episode_number) VALUES (?1, ?2, ?3, ?4)");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
+            stmt.bind_int (3, season);
+            stmt.bind_int (4, episode);
             run (stmt);
             return db.changes () > 0;
         }

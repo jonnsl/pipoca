@@ -9,4 +9,5 @@ Categories=GTK;GNOME;AudioVideo;Video;
 # Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 Keywords=movie;film;tv;series;show;episode;watchlist;tracker;
 StartupNotify=true
+X-GNOME-UsesNotifications=true
 DBusActivatable=false

@@ -567,6 +567,92 @@ void test_new_badges () {
     assert (!show.has_new);
 }
 
+/* Releases of one title among the pending notifications */
+GenericArray<Release> pending_for (Title t) {
+    var result = new GenericArray<Release> ();
+    foreach (var r in Notifier.get_default ().take_pending ()) {
+        if (r.title == t) {
+            result.add (r);
+        }
+    }
+    return result;
+}
+
+void test_notifications () {
+    var lib = Library.get_default ();
+    var settings = new Settings (Config.APPLICATION_ID);
+    var show = make_show (1000, "Returning Series");
+    var s3 = new GenericArray<Episode> ();
+    s3.add (ep (1000, 3, 1, Utils.days_from_today (-10)));
+    s3.add (ep (1000, 3, 2, Utils.days_from_today (-5)));
+    s3.add (ep (1000, 3, 3, Utils.days_from_today (-1)));
+    s3.add (ep (1000, 3, 4, Utils.today ()));
+    s3.add (ep (1000, 3, 5, Utils.days_from_today (1)));
+    try {
+        lib.db.save_episodes (1000, 3, s3);
+    } catch (Error e) {
+        error (e.message);
+    }
+    lib.add (show);
+
+    // The first check only notifies what comes out that day, once
+    var pending = pending_for (show);
+    assert (pending.length == 1 && pending[0].episode.episode_number == 4);
+    assert (pending_for (show).length == 0);
+
+    // After a break, up to a week is caught up on
+    settings.set_string ("notified-until", Utils.days_from_today (-30));
+    pending = pending_for (show);
+    assert (pending.length == 2);
+    assert (pending[0].episode.episode_number == 2 && pending[1].episode.episode_number == 3);
+
+    // Titles with Notify Me off, watched episodes and turned-off kinds are skipped
+    var movie = new Title (MediaType.MOVIE, 1001);
+    movie.name = "Today's Movie";
+    movie.release_date = Utils.today ();
+    movie.refreshed_at = new DateTime.now_utc ().to_unix ();
+    movie = lib.intern (movie);
+    lib.add (movie);
+    lib.set_notify (movie, false);
+    try {
+        lib.db.exec ("DELETE FROM notified WHERE tmdb_id = 1000");
+    } catch (Error e) {
+        error (e.message);
+    }
+    var watched = new GenericArray<Episode> ();
+    watched.add (lib.get_episodes (show, 3)[3]);
+    lib.set_episodes_watched (show, watched, true);
+    settings.set_boolean ("notify-movie-releases", true);
+    assert (pending_for (movie).length == 0);
+    assert (pending_for (show).length == 0);
+
+    lib.set_notify (movie, true);
+    settings.set_boolean ("notify-movie-releases", false);
+    assert (pending_for (movie).length == 0);
+    settings.set_boolean ("notify-movie-releases", true);
+    pending = pending_for (movie);
+    assert (pending.length == 1 && pending[0].episode == null);
+
+    // Notify Me is saved, exported and imported
+    lib.set_notify (show, false);
+    try {
+        assert (!lib.db.load_title (MediaType.TV, 1000).notify_enabled);
+        var data = LibraryTransfer.export_json (lib);
+        lib.remove (show);
+        show.notify_enabled = true;
+        LibraryTransfer.import_json (lib, data);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (show.in_library && !show.notify_enabled);
+
+    MediaType type;
+    int64 id;
+    assert (Title.try_parse_key (show.key, out type, out id) && type == MediaType.TV && id == 1000);
+    assert (!Title.try_parse_key ("tv:abc", out type, out id));
+    assert (!Title.try_parse_key ("person:1", out type, out id));
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -587,5 +673,6 @@ int main (string[] args) {
     Test.add_func ("/library/dropped", test_dropped);
     Test.add_func ("/library/releases", test_releases);
     Test.add_func ("/library/new-badges", test_new_badges);
+    Test.add_func ("/notifier/pending", test_notifications);
     return Test.run ();
 }

@@ -24,6 +24,7 @@ src/services/kodi-client.vala
 src/services/kodi-sync.vala
 src/services/library-transfer.vala
 src/services/library.vala
+src/services/notifier.vala
 src/services/tmdb-client.vala
 src/shortcuts-dialog.blp
 src/title-actions.vala

@@ -13,6 +13,7 @@ namespace Aperture {
                 { "about", on_about_action },
                 { "preferences", on_preferences_action },
                 { "quit", quit },
+                { "show-title", on_show_title, "s" },
             };
             add_action_entries (action_entries, this);
             set_accels_for_action ("app.quit", { "<primary>q" });
@@ -44,6 +45,7 @@ namespace Aperture {
                 start_session ();
                 schedule_refresh ();
                 KodiSync.get_default ().start ();
+                Notifier.get_default ().start ();
             }
         }
 
@@ -68,6 +70,24 @@ namespace Aperture {
                 }
                 return Source.REMOVE;
             });
+        }
+
+        /* Opens a title by key ("tv:1399"), e.g. from a notification */
+        private void on_show_title (SimpleAction action, Variant? param) {
+            MediaType type;
+            int64 id;
+            if (!Title.try_parse_key (param.get_string (), out type, out id)) {
+                return;
+            }
+            var t = Library.get_default ().lookup (type, id);
+            if (t == null) {
+                return;
+            }
+            activate ();
+            var win = active_window as Window;
+            if (win != null) {
+                win.show_title (t);
+            }
         }
 
         private void on_about_action () {

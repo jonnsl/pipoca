@@ -16,6 +16,21 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
     }
 
     Adw.PreferencesGroup {
+      title: _("Notifications");
+      description: _("Titles can be left out with Notify Me on their page");
+
+      Adw.SwitchRow notify_episodes_row {
+        title: _("New Episodes");
+        subtitle: _("When an episode of a show in your library airs");
+      }
+
+      Adw.SwitchRow notify_movies_row {
+        title: _("Movie Releases");
+        subtitle: _("When a movie on your watchlist is released");
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("Kodi");
       description: _("Import movies, shows and watch history from Kodi’s library. Aperture only reads from Kodi and never changes anything there.");
 

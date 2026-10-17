@@ -32,6 +32,18 @@
       <summary>Local date (YYYY-MM-DD) the window was last opened</summary>
       <description>Titles with episodes or releases after this date get a “New” badge</description>
     </key>
+    <key name="notify-new-episodes" type="b">
+      <default>true</default>
+      <summary>Notify about new episodes</summary>
+    </key>
+    <key name="notify-movie-releases" type="b">
+      <default>true</default>
+      <summary>Notify about movie releases</summary>
+    </key>
+    <key name="notified-until" type="s">
+      <default>''</default>
+      <summary>Local date (YYYY-MM-DD) of the last check for releases to notify about</summary>
+    </key>
     <key name="use-custom-api-key" type="b">
       <default>false</default>
       <summary>Use a custom TMDB API key</summary>

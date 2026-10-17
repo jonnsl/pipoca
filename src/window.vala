@@ -107,6 +107,10 @@ namespace Aperture {
             var library = Library.get_default ();
             var t = library.intern (title);
             library.mark_seen (t);
+            var current = navigation_view.visible_page as DetailsPage;
+            if (current != null && current.title_object == t) {
+                return;
+            }
             navigation_view.push (new DetailsPage (t));
         }
 

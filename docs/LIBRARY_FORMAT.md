@@ -63,6 +63,7 @@ identify titles, so `media_type` plus `tmdb_id` must be unique in a file.
 | `poster_path`  | string | no       | TMDB image path of the poster.                                                |
 | `added_at`     | string | no       | When the title was added to the library (timestamp).                          |
 | `dropped_at`   | string | no       | When the user dropped the title (started it, won't finish). Absent otherwise. |
+| `notify`       | bool   | no       | `false` when the user turned off notifications for the title. Default `true`. |
 | `watched`      | array  | no       | Watch events, as *watch event* objects.                                       |
 
 `name`, `release_date` and `poster_path` are only a snapshot so the library
@@ -93,9 +94,9 @@ ISO 8601 date and time. Aperture writes UTC with a `Z` suffix, e.g.
 Importing **merges** the file into the library; it never removes or
 overwrites anything:
 
-- Titles that aren't in the library are added, keeping `added_at` and
-  `dropped_at` when present. Titles already in the library keep their
-  dropped state.
+- Titles that aren't in the library are added, keeping `added_at`,
+  `dropped_at` and `notify` when present. Titles already in the library keep
+  their dropped and notification settings.
 - Watch events are added unless an identical one (same episode and
   `watched_at`) already exists, so importing the same file twice is harmless.
 - Titles with an unknown `media_type` or an invalid `tmdb_id` are skipped.

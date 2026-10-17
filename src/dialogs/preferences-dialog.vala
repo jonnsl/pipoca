@@ -2,6 +2,8 @@ namespace Aperture {
     [GtkTemplate (ui = "/io/github/jonnsl/Aperture/dialogs/preferences-dialog.ui")]
     public class PreferencesDialog : Adw.PreferencesDialog {
         [GtkChild] private unowned Adw.SwitchRow refresh_row;
+        [GtkChild] private unowned Adw.SwitchRow notify_episodes_row;
+        [GtkChild] private unowned Adw.SwitchRow notify_movies_row;
         [GtkChild] private unowned Adw.SwitchRow custom_key_row;
         [GtkChild] private unowned Adw.PasswordEntryRow api_key_row;
         [GtkChild] private unowned Adw.ActionRow cache_row;
@@ -22,6 +24,8 @@ namespace Aperture {
         construct {
             settings = new Settings (Config.APPLICATION_ID);
             settings.bind ("refresh-automatically", refresh_row, "active", SettingsBindFlags.DEFAULT);
+            settings.bind ("notify-new-episodes", notify_episodes_row, "active", SettingsBindFlags.DEFAULT);
+            settings.bind ("notify-movie-releases", notify_movies_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("use-custom-api-key", custom_key_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("custom-api-key", api_key_row, "text", SettingsBindFlags.DEFAULT);
             update_cache_size.begin ();

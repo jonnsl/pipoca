@@ -85,6 +85,8 @@ namespace Aperture {
         public int64 refreshed_at { get; set; }
         /* When the user dropped the title, or 0 */
         public int64 dropped_at { get; set; }
+        /* "Notify Me": send notifications for new episodes or the release */
+        public bool notify_enabled { get; set; default = true; }
 
         public int aired_count { get; set; }
         public int watched_count { get; set; }
@@ -109,6 +111,14 @@ namespace Aperture {
 
         public static string make_key (MediaType media_type, int64 id) {
             return "%s:%lld".printf (media_type.to_api_string (), id);
+        }
+
+        public static bool try_parse_key (string key, out MediaType media_type, out int64 id) {
+            media_type = MediaType.MOVIE;
+            id = 0;
+            var parts = key.split (":");
+            return parts.length == 2 && MediaType.try_parse (parts[0], out media_type)
+                && int64.try_parse (parts[1], out id) && id > 0;
         }
 
         public bool is_movie {

@@ -41,6 +41,9 @@ namespace Aperture {
                 if (t.is_dropped) {
                     b.set_member_name ("dropped_at").add_string_value (format_time (t.dropped_at));
                 }
+                if (!t.notify_enabled) {
+                    b.set_member_name ("notify").add_boolean_value (false);
+                }
                 b.set_member_name ("watched").begin_array ();
                 foreach (var e in library.db.load_watch_events (t.media_type, t.id)) {
                     b.begin_object ();
@@ -145,6 +148,10 @@ namespace Aperture {
                 var added_at = parse_time (JsonUtil.str (o, "added_at"));
                 if (added_at > 0) {
                     t.added_at = added_at;
+                }
+                var notify = o.get_member ("notify");
+                if (notify != null && notify.get_value_type () == typeof (bool)) {
+                    t.notify_enabled = notify.get_boolean ();
                 }
                 library.add (t, false);
                 var dropped_at = parse_time (JsonUtil.str (o, "dropped_at"));

@@ -178,6 +178,19 @@ namespace Aperture {
                 css_classes = { "dim-label", "numeric" },
             };
             add_suffix (date);
+
+            var bell = new Gtk.ToggleButton () {
+                valign = Gtk.Align.CENTER,
+                tooltip_text = _("Notify Me"),
+                css_classes = { "flat", "circular" },
+            };
+            t.bind_property ("notify-enabled", bell, "active", BindingFlags.SYNC_CREATE);
+            bell.toggled.connect (() => Library.get_default ().set_notify (t, bell.active));
+            bell.bind_property ("active", bell, "icon-name", BindingFlags.SYNC_CREATE, (b, from, ref to) => {
+                to = from.get_boolean () ? "preferences-system-notifications-symbolic" : "notifications-disabled-symbolic";
+                return true;
+            });
+            add_suffix (bell);
             add_suffix (new Gtk.Image.from_icon_name ("go-next-symbolic"));
         }
     }

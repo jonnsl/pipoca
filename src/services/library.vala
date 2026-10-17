@@ -297,6 +297,17 @@ namespace Aperture {
             title_changed (t);
         }
 
+        /* Turns "Notify Me" on or off for a title */
+        public void set_notify (Title t, bool enabled) {
+            if (t.notify_enabled == enabled) {
+                return;
+            }
+            t.notify_enabled = enabled;
+            if (t.in_library) {
+                save (t);
+            }
+        }
+
         /* Aired episodes up to and including @episode, for "mark watched up to here" */
         public GenericArray<Episode> get_episodes_up_to (Title show, Episode episode) {
             try {

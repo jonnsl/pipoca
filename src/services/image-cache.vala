@@ -62,6 +62,16 @@ namespace Aperture {
             return dir;
         }
 
+        private string get_file_path (string tmdb_path, string size) {
+            return Path.build_filename (dir, size, tmdb_path.replace ("/", ""));
+        }
+
+        /* The image's file if it's already on disk, without downloading it */
+        public File? get_cached_file (string tmdb_path, string size) {
+            var file = File.new_for_path (get_file_path (tmdb_path, size));
+            return file.query_exists () ? file : null;
+        }
+
         /**
          * Loads a TMDB image. @size is a TMDB size such as "w342".
          * Returns null if the image can't be loaded or @cancellable was cancelled.
@@ -87,7 +97,7 @@ namespace Aperture {
             }
             pending[key] = new GenericArray<Waiter> ();
 
-            var texture = yield fetch (key, Path.build_filename (dir, size, tmdb_path.replace ("/", "")), BASE_URL + size + tmdb_path);
+            var texture = yield fetch (key, get_file_path (tmdb_path, size), BASE_URL + size + tmdb_path);
             if (texture != null) {
                 remember (key, texture);
             }
