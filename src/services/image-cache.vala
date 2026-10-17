@@ -18,6 +18,7 @@ namespace Aperture {
 
         private class Waiter {
             public SourceFunc callback;
+            public Gdk.Texture? texture;
 
             public Waiter (owned SourceFunc callback) {
                 this.callback = (owned) callback;
@@ -77,9 +78,12 @@ namespace Aperture {
 
             var waiters = pending[key];
             if (waiters != null) {
-                waiters.add (new Waiter (load.callback));
+                // Take the texture from the download itself: by the time this
+                // resumes, other loads may have already evicted it from memory
+                var waiter = new Waiter (load.callback);
+                waiters.add (waiter);
                 yield;
-                return cancellable != null && cancellable.is_cancelled () ? null : memory[key];
+                return cancellable != null && cancellable.is_cancelled () ? null : waiter.texture;
             }
             pending[key] = new GenericArray<Waiter> ();
 
@@ -88,6 +92,7 @@ namespace Aperture {
                 remember (key, texture);
             }
             foreach (var w in pending[key]) {
+                w.texture = texture;
                 Idle.add ((owned) w.callback);
             }
             pending.remove (key);
