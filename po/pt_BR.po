@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 03:01-0300\n"
+"POT-Creation-Date: 2026-10-17 03:18-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -376,15 +376,15 @@ msgstr "Adicionar título"
 msgid "Search movies and TV shows…"
 msgstr "Pesquisar filmes e séries…"
 
-#: src/dialogs/search-dialog.blp:39 src/window.blp:88
+#: src/dialogs/search-dialog.blp:39 src/window.blp:94
 msgid "All"
 msgstr "Todos"
 
-#: src/dialogs/search-dialog.blp:44 src/window.blp:93
+#: src/dialogs/search-dialog.blp:44 src/window.blp:99
 msgid "Movies"
 msgstr "Filmes"
 
-#: src/dialogs/search-dialog.blp:49 src/window.blp:98
+#: src/dialogs/search-dialog.blp:49 src/window.blp:104
 msgid "Shows"
 msgstr "Séries"
 
@@ -430,7 +430,7 @@ msgstr "T%d E%d"
 msgid "Season %d"
 msgstr "Temporada %d"
 
-#: src/models/title.vala:35 src/pages/library-view.vala:67
+#: src/models/title.vala:35 src/pages/library-view.vala:70
 msgid "Plan to Watch"
 msgstr "Quero assistir"
 
@@ -522,89 +522,89 @@ msgstr "Marcar como não assistido"
 msgid "Mark %s as Watched"
 msgstr "Marcar %s como assistido"
 
-#: src/pages/details-page.vala:194 src/title-actions.vala:136
+#: src/pages/details-page.vala:195 src/title-actions.vala:136
 msgid "Resu_me Watching"
 msgstr "_Voltar a assistir"
 
-#: src/pages/details-page.vala:196 src/title-actions.vala:138
+#: src/pages/details-page.vala:197 src/title-actions.vala:138
 msgid "_Drop"
 msgstr "_Abandonar"
 
-#: src/pages/details-page.vala:198 src/title-actions.vala:140
+#: src/pages/details-page.vala:199 src/title-actions.vala:140
 msgid "_Remove from Library"
 msgstr "_Remover da biblioteca"
 
-#: src/pages/details-page.vala:202
+#: src/pages/details-page.vala:203
 msgid "In Watchlist"
 msgstr "Na lista"
 
-#: src/pages/details-page.vala:217 src/pages/details-page.vala:222
+#: src/pages/details-page.vala:218 src/pages/details-page.vala:223
 #, c-format
 msgid "Next: %s"
 msgstr "Próximo: %s"
 
-#: src/pages/details-page.vala:223
+#: src/pages/details-page.vala:224
 #, c-format
 msgid "Airs %s"
 msgstr "Estreia em %s"
 
-#: src/pages/details-page.vala:248
+#: src/pages/details-page.vala:249
 msgid "Original Title"
 msgstr "Título original"
 
-#: src/pages/details-page.vala:249
+#: src/pages/details-page.vala:250
 msgid "Original Language"
 msgstr "Idioma original"
 
-#: src/pages/details-page.vala:250
+#: src/pages/details-page.vala:251
 msgid "Status"
 msgstr "Situação"
 
-#: src/pages/details-page.vala:252
+#: src/pages/details-page.vala:253
 msgid "Release Date"
 msgstr "Data de lançamento"
 
-#: src/pages/details-page.vala:253
+#: src/pages/details-page.vala:254
 msgid "Runtime"
 msgstr "Duração"
 
-#: src/pages/details-page.vala:255
+#: src/pages/details-page.vala:256
 msgid "First Aired"
 msgstr "Primeira exibição"
 
-#: src/pages/details-page.vala:256
+#: src/pages/details-page.vala:257
 msgid "Created By"
 msgstr "Criado por"
 
-#: src/pages/details-page.vala:257
+#: src/pages/details-page.vala:258
 msgid "Network"
 msgstr "Emissora"
 
-#: src/pages/details-page.vala:259
+#: src/pages/details-page.vala:260
 msgid "Episodes"
 msgstr "Episódios"
 
-#: src/pages/details-page.vala:261
+#: src/pages/details-page.vala:262
 msgid "Episode Runtime"
 msgstr "Duração do episódio"
 
-#: src/pages/details-page.vala:263
+#: src/pages/details-page.vala:264
 msgid "Genres"
 msgstr "Gêneros"
 
-#: src/pages/details-page.vala:319
+#: src/pages/details-page.vala:320
 #, c-format
 msgid "%d episode"
 msgid_plural "%d episodes"
 msgstr[0] "%d episódio"
 msgstr[1] "%d episódios"
 
-#: src/pages/details-page.vala:324
+#: src/pages/details-page.vala:325
 #, c-format
 msgid "%d/%d"
 msgstr "%d/%d"
 
-#: src/pages/details-page.vala:331 src/widgets/poster-card.vala:93
+#: src/pages/details-page.vala:332 src/widgets/poster-card.vala:93
 #, c-format
 msgid "%d of %d episodes watched"
 msgstr "%d de %d episódios assistidos"
@@ -613,35 +613,35 @@ msgstr "%d de %d episódios assistidos"
 msgid "Try a different search or filter"
 msgstr "Tente uma pesquisa ou filtro diferente"
 
-#: src/pages/library-view.vala:66
+#: src/pages/library-view.vala:69
 msgid "Continue Watching"
 msgstr "Continuar assistindo"
 
-#: src/pages/library-view.vala:69
+#: src/pages/library-view.vala:72
 msgid "Your Watchlist Is Empty"
 msgstr "Sua lista está vazia"
 
-#: src/pages/library-view.vala:70
+#: src/pages/library-view.vala:73
 msgid "Add movies and shows to keep track of what you want to watch"
 msgstr "Adicione filmes e séries para acompanhar o que você quer assistir"
 
-#: src/pages/library-view.vala:71
+#: src/pages/library-view.vala:74
 msgid "_Search Movies & Shows"
 msgstr "_Pesquisar filmes e séries"
 
-#: src/pages/library-view.vala:79
+#: src/pages/library-view.vala:82
 msgid "Nothing Watched Yet"
 msgstr "Nada assistido ainda"
 
-#: src/pages/library-view.vala:80
+#: src/pages/library-view.vala:83
 msgid "Movies and shows you finish show up here"
 msgstr "Os filmes e séries que você terminar aparecem aqui"
 
-#: src/pages/library-view.vala:84
+#: src/pages/library-view.vala:87
 msgid "No Dropped Titles"
 msgstr "Nenhum título abandonado"
 
-#: src/pages/library-view.vala:85
+#: src/pages/library-view.vala:88
 msgid ""
 "Drop movies and shows you won’t finish to keep them out of your watchlist"
 msgstr ""
@@ -743,15 +743,15 @@ msgstr "Sair"
 msgid "Navigation"
 msgstr "Navegação"
 
-#: src/shortcuts-dialog.blp:43 src/window.blp:123
+#: src/shortcuts-dialog.blp:43 src/window.blp:138
 msgid "Watchlist"
 msgstr "Para assistir"
 
-#: src/shortcuts-dialog.blp:48 src/window.blp:131
+#: src/shortcuts-dialog.blp:48 src/window.blp:146
 msgid "Watched"
 msgstr "Assistidos"
 
-#: src/shortcuts-dialog.blp:53 src/window.blp:139
+#: src/shortcuts-dialog.blp:53 src/window.blp:154
 msgid "Dropped"
 msgstr "Abandonados"
 
@@ -862,27 +862,27 @@ msgstr "%d h"
 msgid "%d h %d min"
 msgstr "%d h %d min"
 
-#: src/utils.vala:57
+#: src/utils.vala:57 src/window.blp:215
 msgid "Returning Series"
 msgstr "Em exibição"
 
-#: src/utils.vala:59
+#: src/utils.vala:59 src/window.blp:239
 msgid "Ended"
 msgstr "Finalizada"
 
-#: src/utils.vala:61
+#: src/utils.vala:61 src/window.blp:245
 msgid "Canceled"
 msgstr "Cancelada"
 
-#: src/utils.vala:63
+#: src/utils.vala:63 src/window.blp:221
 msgid "In Production"
 msgstr "Em produção"
 
-#: src/utils.vala:65
+#: src/utils.vala:65 src/window.blp:227
 msgid "Planned"
 msgstr "Planejada"
 
-#: src/utils.vala:67
+#: src/utils.vala:67 src/window.blp:233
 msgid "Pilot"
 msgstr "Piloto"
 
@@ -929,42 +929,63 @@ msgstr "Filtrar biblioteca…"
 msgid "Offline — showing saved data"
 msgstr "Sem conexão — mostrando dados salvos"
 
-#: src/window.blp:108
+#: src/window.blp:111
+msgid "Filter Shows by Status"
+msgstr "Filtrar séries por situação"
+
+#: src/window.blp:122
 msgid "Sort"
 msgstr "Ordenar"
 
-#: src/window.blp:159
+#: src/window.blp:174
 msgid "Sort By"
 msgstr "Ordenar por"
 
-#: src/window.blp:162
+#: src/window.blp:177
 msgid "Date _Added"
 msgstr "Data de _adição"
 
-#: src/window.blp:168
+#: src/window.blp:183
 msgid "_Title"
 msgstr "_Título"
 
-#: src/window.blp:174
+#: src/window.blp:189
 msgid "_Release Date"
 msgstr "Data de _lançamento"
 
-#: src/window.blp:180
+#: src/window.blp:195
 msgid "_Last Watched"
 msgstr "Assistido por ú_ltimo"
 
-#: src/window.blp:190
+#: src/window.blp:204
+msgid "Show Status"
+msgstr "Situação da série"
+
+#: src/window.blp:207
+msgid "_All Statuses"
+msgstr "_Todas as situações"
+
+#: src/window.blp:255
 msgid "Refresh _Library"
 msgstr "Atualizar _biblioteca"
 
-#: src/window.blp:197
+#: src/window.blp:262
 msgid "_Preferences"
 msgstr "_Preferências"
 
-#: src/window.blp:202
+#: src/window.blp:267
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de teclado"
 
-#: src/window.blp:207
+#: src/window.blp:272
 msgid "_About Aperture"
 msgstr "_Sobre o Aperture"
+
+#: src/window.vala:81
+msgid "All Statuses"
+msgstr "Todas as situações"
+
+#: src/window.vala:84
+#, c-format
+msgid "Show status: %s"
+msgstr "Situação da série: %s"

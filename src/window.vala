@@ -7,6 +7,7 @@ namespace Aperture {
         [GtkChild] private unowned Gtk.SearchEntry library_search;
         [GtkChild] private unowned Adw.Banner offline_banner;
         [GtkChild] private unowned Adw.ToggleGroup media_filter;
+        [GtkChild] private unowned Gtk.MenuButton show_status_button;
         [GtkChild] private unowned Adw.ViewStack view_stack;
         [GtkChild] private unowned LibraryView watchlist_view;
         [GtkChild] private unowned LibraryView watched_view;
@@ -36,6 +37,12 @@ namespace Aperture {
             };
             add_action_entries (entries, this);
             add_action (settings.create_action ("sort-order"));
+            var show_status = new SimpleAction.stateful ("show-status", VariantType.STRING, new Variant.string (""));
+            show_status.change_state.connect ((action, value) => {
+                action.set_state (value);
+                update_show_status ();
+            });
+            add_action (show_status);
 
             watchlist_view.setup (LibraryKind.WATCHLIST);
             watched_view.setup (LibraryKind.WATCHED);
@@ -46,6 +53,11 @@ namespace Aperture {
                 settings.bind ("sort-order", view, "sort-order", SettingsBindFlags.GET);
                 view.title_activated.connect (show_title);
             }
+
+            // Show status only means something for finished shows
+            view_stack.notify["visible-child-name"].connect (update_show_status);
+            media_filter.notify["active-name"].connect (update_show_status);
+            update_show_status ();
 
             search_bar.connect_entry (library_search);
             search_bar.key_capture_widget = this;
@@ -62,6 +74,18 @@ namespace Aperture {
             var monitor = NetworkMonitor.get_default ();
             monitor.bind_property ("network-available", offline_banner, "revealed",
                                    BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+        }
+
+        private void update_show_status () {
+            var status = get_action_state ("show-status").get_string ();
+            var label = status == "" ? _("All Statuses") : Utils.tmdb_status_label (status);
+            show_status_button.label = label;
+            show_status_button.update_property (Gtk.AccessibleProperty.LABEL,
+                                                _("Show status: %s").printf (label), -1);
+            show_status_button.visible = view_stack.visible_child_name == "watched";
+            show_status_button.sensitive = media_filter.active_name != "movie";
+            // Movies have no show status, so the filter is off while only movies are listed
+            watched_view.show_status = show_status_button.sensitive ? status : "";
         }
 
         public static Window? of (Gtk.Widget widget) {

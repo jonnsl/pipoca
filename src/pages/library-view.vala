@@ -30,6 +30,8 @@ namespace Aperture {
         /* "all", "movie" or "tv" */
         public string media_filter { get; set; default = "all"; }
         public string search_text { get; set; default = ""; }
+        /* TMDB status, e.g. "Ended", to only list shows with it; "" for any */
+        public string show_status { get; set; default = ""; }
         /* "added", "title", "release" or "watched" */
         public string sort_order { get; set; default = "added"; }
 
@@ -41,6 +43,7 @@ namespace Aperture {
             sorter = new Gtk.CustomSorter ((a, b) => compare ((Object) a, (Object) b));
             notify["media-filter"].connect (refilter);
             notify["search-text"].connect (refilter);
+            notify["show-status"].connect (refilter);
             notify["sort-order"].connect (() => sorter.changed (Gtk.SorterChange.DIFFERENT));
             library.title_changed.connect (on_title_changed);
         }
@@ -151,6 +154,9 @@ namespace Aperture {
                 return false;
             }
             if (media_filter == "tv" && t.is_movie) {
+                return false;
+            }
+            if (show_status != "" && (t.is_movie || t.tmdb_status != show_status)) {
                 return false;
             }
             var text = search_text.strip ();

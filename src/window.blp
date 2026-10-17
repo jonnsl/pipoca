@@ -79,35 +79,50 @@ template $ApertureWindow: Adw.ApplicationWindow {
               margin-start: 12;
               margin-end: 12;
 
-              Adw.ToggleGroup media_filter {
-                active-name: "all";
-                valign: center;
-
-                Adw.Toggle {
-                  name: "all";
-                  label: _("All");
-                }
-
-                Adw.Toggle {
-                  name: "movie";
-                  label: _("Movies");
-                }
-
-                Adw.Toggle {
-                  name: "tv";
-                  label: _("Shows");
-                }
-              }
-
-              Box {
+              // Wraps the status filter onto its own line on narrow windows
+              Adw.WrapBox {
                 hexpand: true;
+                child-spacing: 6;
+                line-spacing: 6;
+
+                Adw.ToggleGroup media_filter {
+                  active-name: "all";
+                  valign: center;
+
+                  Adw.Toggle {
+                    name: "all";
+                    label: _("All");
+                  }
+
+                  Adw.Toggle {
+                    name: "movie";
+                    label: _("Movies");
+                  }
+
+                  Adw.Toggle {
+                    name: "tv";
+                    label: _("Shows");
+                  }
+                }
+
+                MenuButton show_status_button {
+                  always-show-arrow: true;
+                  menu-model: show_status_menu;
+                  tooltip-text: _("Filter Shows by Status");
+                  valign: center;
+
+                  styles [
+                    "flat",
+                  ]
+                }
               }
 
               MenuButton {
                 icon-name: "view-sort-descending-symbolic";
                 tooltip-text: _("Sort");
                 menu-model: sort_menu;
-                valign: center;
+                // Stays on the first line when the filters wrap
+                valign: start;
 
                 styles [
                   "flat",
@@ -180,6 +195,56 @@ menu sort_menu {
       label: _("_Last Watched");
       action: "win.sort-order";
       target: "watched";
+    }
+  }
+}
+
+menu show_status_menu {
+  section {
+    label: _("Show Status");
+
+    item {
+      label: _("_All Statuses");
+      action: "win.show-status";
+      target: "";
+    }
+  }
+
+  section {
+    item {
+      label: _("Returning Series");
+      action: "win.show-status";
+      target: "Returning Series";
+    }
+
+    item {
+      label: _("In Production");
+      action: "win.show-status";
+      target: "In Production";
+    }
+
+    item {
+      label: _("Planned");
+      action: "win.show-status";
+      target: "Planned";
+    }
+
+    item {
+      label: _("Pilot");
+      action: "win.show-status";
+      target: "Pilot";
+    }
+
+    item {
+      label: _("Ended");
+      action: "win.show-status";
+      target: "Ended";
+    }
+
+    item {
+      label: _("Canceled");
+      action: "win.show-status";
+      target: "Canceled";
     }
   }
 }
