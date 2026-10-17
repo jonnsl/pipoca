@@ -9,7 +9,7 @@ namespace Aperture {
      * Watch events for movies use -1 as season and episode number.
      */
     public class Database : Object {
-        private const int SCHEMA_VERSION = 2;
+        private const int SCHEMA_VERSION = 3;
 
         private Sqlite.Database db;
 
@@ -43,6 +43,9 @@ namespace Aperture {
                             PRIMARY KEY (media_type, tmdb_id)
                         );
                     """);
+                }
+                if (version < 3) {
+                    exec ("ALTER TABLE titles ADD COLUMN dropped_at INTEGER NOT NULL DEFAULT 0");
                 }
                 exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
                 commit ();
@@ -166,7 +169,7 @@ namespace Aperture {
             media_type, tmdb_id, name, original_name, original_language, overview,
             poster_path, backdrop_path, release_date, runtime, genres, vote_average,
             tmdb_status, creators, networks, number_of_seasons, number_of_episodes,
-            in_library, added_at, refreshed_at""";
+            in_library, added_at, refreshed_at, dropped_at""";
 
         private static Title title_from_row (Sqlite.Statement stmt) {
             var t = new Title ((MediaType) stmt.column_int (0), stmt.column_int64 (1));
@@ -188,6 +191,7 @@ namespace Aperture {
             t.in_library = stmt.column_int (17) != 0;
             t.added_at = stmt.column_int64 (18);
             t.refreshed_at = stmt.column_int64 (19);
+            t.dropped_at = stmt.column_int64 (20);
             return t;
         }
 
@@ -208,7 +212,7 @@ namespace Aperture {
         }
 
         public void save_title (Title t) throws Error {
-            var stmt = prepare ("INSERT OR REPLACE INTO titles (%s) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20)".printf (TITLE_COLUMNS));
+            var stmt = prepare ("INSERT OR REPLACE INTO titles (%s) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21)".printf (TITLE_COLUMNS));
             stmt.bind_int (1, t.media_type);
             stmt.bind_int64 (2, t.id);
             stmt.bind_text (3, t.name);
@@ -229,6 +233,7 @@ namespace Aperture {
             stmt.bind_int (18, t.in_library ? 1 : 0);
             stmt.bind_int64 (19, t.added_at);
             stmt.bind_int64 (20, t.refreshed_at);
+            stmt.bind_int64 (21, t.dropped_at);
             run (stmt);
         }
 

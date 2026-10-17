@@ -418,6 +418,58 @@ void test_kodi_parsing () {
     assert (KodiClient.parse_time (null) == 0);
 }
 
+void test_dropped () {
+    var lib = Library.get_default ();
+    var show = make_show (700, "Returning Series");
+    lib.add (show);
+    var first = new GenericArray<Episode> ();
+    first.add (lib.get_episodes (show, 1)[0]);
+    lib.set_episodes_watched (show, first, true);
+    assert (show.status == TitleStatus.WATCHING);
+
+    lib.set_dropped (show, true);
+    assert (show.is_dropped && show.status == TitleStatus.DROPPED);
+    assert (!show.status.in_watchlist () && !show.status.is_done ());
+    // Progress is still known, for showing where it was left off
+    assert (show.watched_count == 1 && show.next_episode != null);
+    try {
+        assert (lib.db.load_title (MediaType.TV, 700).dropped_at == show.dropped_at);
+    } catch (Error e) {
+        error (e.message);
+    }
+
+    // Exported and imported along with the title
+    string data;
+    try {
+        data = LibraryTransfer.export_json (lib);
+    } catch (Error e) {
+        error (e.message);
+    }
+    var dropped_at = show.dropped_at;
+    lib.remove (show);
+    assert (!show.is_dropped);
+    try {
+        LibraryTransfer.import_json (lib, data);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (show.in_library && show.dropped_at == dropped_at && show.status == TitleStatus.DROPPED);
+
+    // Watching more picks it back up
+    var second = new GenericArray<Episode> ();
+    second.add (lib.get_episodes (show, 1)[1]);
+    lib.set_episodes_watched (show, second, true);
+    assert (!show.is_dropped && show.status == TitleStatus.WATCHING);
+
+    // Unwatching doesn't
+    lib.set_dropped (show, true);
+    lib.set_episodes_watched (show, second, false);
+    assert (show.status == TitleStatus.DROPPED);
+
+    lib.set_dropped (show, false);
+    assert (show.dropped_at == 0 && show.status == TitleStatus.WATCHING);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -435,5 +487,6 @@ int main (string[] args) {
     Test.add_func ("/transfer/import-errors", test_import_errors);
     Test.add_func ("/kodi/import", test_kodi_import);
     Test.add_func ("/kodi/parsing", test_kodi_parsing);
+    Test.add_func ("/library/dropped", test_dropped);
     return Test.run ();
 }

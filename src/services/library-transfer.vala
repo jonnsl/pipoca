@@ -38,6 +38,9 @@ namespace Aperture {
                     b.set_member_name ("poster_path").add_string_value (t.poster_path);
                 }
                 b.set_member_name ("added_at").add_string_value (format_time (t.added_at));
+                if (t.is_dropped) {
+                    b.set_member_name ("dropped_at").add_string_value (format_time (t.dropped_at));
+                }
                 b.set_member_name ("watched").begin_array ();
                 foreach (var e in library.db.load_watch_events (t.media_type, t.id)) {
                     b.begin_object ();
@@ -144,6 +147,10 @@ namespace Aperture {
                     t.added_at = added_at;
                 }
                 library.add (t, false);
+                var dropped_at = parse_time (JsonUtil.str (o, "dropped_at"));
+                if (dropped_at > 0) {
+                    library.set_dropped (t, true, dropped_at);
+                }
                 result.titles_added++;
             }
 

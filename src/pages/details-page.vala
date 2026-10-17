@@ -44,6 +44,12 @@ namespace Aperture {
             install_action ("details.copy-link", null, (w) => {
                 TitleActions.copy_link (w, ((DetailsPage) w).title_object);
             });
+            install_action ("details.drop", null, (w) => {
+                TitleActions.set_dropped (w, ((DetailsPage) w).title_object, true);
+            });
+            install_action ("details.resume", null, (w) => {
+                TitleActions.set_dropped (w, ((DetailsPage) w).title_object, false);
+            });
             install_action ("details.remove", null, (w) => {
                 TitleActions.remove (w, ((DetailsPage) w).title_object);
             });
@@ -168,6 +174,8 @@ namespace Aperture {
             if (!t.in_library) {
                 primary_button.label = _("Add to Watchlist");
                 primary_button.add_css_class ("suggested-action");
+            } else if (t.is_dropped) {
+                primary_button.label = _("Resume Watching");
             } else if (t.is_movie) {
                 primary_button.label = t.movie_watched ? _("Mark as Unwatched") : _("Mark as Watched");
                 if (!t.movie_watched) {
@@ -181,6 +189,15 @@ namespace Aperture {
             }
 
             library_button.visible = t.in_library;
+            library_button_content.icon_name = t.is_dropped ? "media-playback-stop-symbolic" : "object-select-symbolic";
+            var menu = new Menu ();
+            if (t.is_dropped) {
+                menu.append (_("Resu_me Watching"), "details.resume");
+            } else {
+                menu.append (_("_Drop"), "details.drop");
+            }
+            menu.append (_("_Remove from Library"), "details.remove");
+            library_button.menu_model = menu;
             switch (t.status) {
             case TitleStatus.PLAN_TO_WATCH:
                 library_button_content.label = _("In Watchlist");
@@ -193,7 +210,7 @@ namespace Aperture {
 
         private void update_next () {
             var t = title_object;
-            if (t.is_movie || !t.in_library) {
+            if (t.is_movie || !t.in_library || t.is_dropped) {
                 next_list.visible = false;
                 return;
             }
@@ -266,6 +283,8 @@ namespace Aperture {
             var t = title_object;
             if (!t.in_library) {
                 TitleActions.add (this, t);
+            } else if (t.is_dropped) {
+                TitleActions.set_dropped (this, t, false);
             } else if (t.is_movie) {
                 TitleActions.set_movie_watched (this, t, !t.movie_watched);
             } else {

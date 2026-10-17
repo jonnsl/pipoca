@@ -176,7 +176,6 @@ template $ApertureDetailsPage: Adw.NavigationPage {
 
                         MenuButton library_button {
                           always-show-arrow: true;
-                          menu-model: library_menu;
 
                           child: Adw.ButtonContent library_button_content {
                             icon-name: "object-select-symbolic";
@@ -308,11 +307,3 @@ menu details_menu {
   }
 }
 
-menu library_menu {
-  section {
-    item {
-      label: _("_Remove from Library");
-      action: "details.remove";
-    }
-  }
-}

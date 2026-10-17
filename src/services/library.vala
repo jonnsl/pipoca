@@ -124,6 +124,8 @@ namespace Aperture {
                 return;
             }
             t.in_library = false;
+            // Adding it again later starts fresh; undo restores this itself
+            t.dropped_at = 0;
             save (t);
             uint pos;
             if (titles.find (t, out pos)) {
@@ -162,6 +164,10 @@ namespace Aperture {
                     } else {
                         t.status = TitleStatus.UP_TO_DATE;
                     }
+                }
+                // The user's choice wins over progress
+                if (t.in_library && t.is_dropped) {
+                    t.status = TitleStatus.DROPPED;
                 }
             } catch (Error e) {
                 warning ("Can't compute progress of %s: %s", t.key, e.message);
@@ -229,6 +235,26 @@ namespace Aperture {
                 add (t);
                 return;
             }
+            // ...and as picking a dropped title back up
+            if (watched && t.is_dropped) {
+                t.dropped_at = 0;
+                save (t);
+            }
+            update_progress (t);
+            title_changed (t);
+        }
+
+        /**
+         * Drops a title (started, won't finish) or picks it back up.
+         * @dropped_at is the time to record; 0 means now.
+         */
+        public void set_dropped (Title t, bool dropped, int64 dropped_at = 0) {
+            return_if_fail (t.in_library);
+            if (dropped == t.is_dropped) {
+                return;
+            }
+            t.dropped_at = dropped ? (dropped_at > 0 ? dropped_at : new DateTime.now_utc ().to_unix ()) : 0;
+            save (t);
             update_progress (t);
             title_changed (t);
         }
@@ -373,7 +399,8 @@ namespace Aperture {
             var queue = new GenericArray<Title> ();
             for (uint i = 0; i < titles.get_n_items (); i++) {
                 var t = (Title) titles.get_item (i);
-                if (force || is_stale (t)) {
+                // Nothing to keep up with for dropped titles, unless asked
+                if (force || (is_stale (t) && !t.is_dropped)) {
                     queue.add (t);
                 }
             }

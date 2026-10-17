@@ -10,6 +10,7 @@ namespace Aperture {
         [GtkChild] private unowned Adw.ViewStack view_stack;
         [GtkChild] private unowned LibraryView watchlist_view;
         [GtkChild] private unowned LibraryView watched_view;
+        [GtkChild] private unowned LibraryView dropped_view;
 
         private Settings settings;
 
@@ -38,7 +39,8 @@ namespace Aperture {
 
             watchlist_view.setup (LibraryKind.WATCHLIST);
             watched_view.setup (LibraryKind.WATCHED);
-            foreach (var view in new LibraryView[] { watchlist_view, watched_view }) {
+            dropped_view.setup (LibraryKind.DROPPED);
+            foreach (var view in new LibraryView[] { watchlist_view, watched_view, dropped_view }) {
                 media_filter.bind_property ("active-name", view, "media-filter", BindingFlags.SYNC_CREATE);
                 library_search.bind_property ("text", view, "search-text", BindingFlags.SYNC_CREATE);
                 settings.bind ("sort-order", view, "sort-order", SettingsBindFlags.GET);

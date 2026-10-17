@@ -24,6 +24,12 @@ namespace Aperture {
             install_action ("card.add", null, (w) => {
                 TitleActions.add (w, ((PosterCard) w).title);
             });
+            install_action ("card.drop", null, (w) => {
+                TitleActions.set_dropped (w, ((PosterCard) w).title, true);
+            });
+            install_action ("card.resume", null, (w) => {
+                TitleActions.set_dropped (w, ((PosterCard) w).title, false);
+            });
             install_action ("card.remove", null, (w) => {
                 TitleActions.remove (w, ((PosterCard) w).title);
             });
@@ -69,7 +75,10 @@ namespace Aperture {
         }
 
         private void update () {
-            if (!title.is_movie && title.status == TitleStatus.WATCHING && title.next_episode != null) {
+            if (!title.is_movie && title.status == TitleStatus.DROPPED && title.watched_count > 0) {
+                // Where it was left off
+                subtitle_label.label = _("%d of %d episodes").printf (title.watched_count, title.aired_count);
+            } else if (!title.is_movie && title.status == TitleStatus.WATCHING && title.next_episode != null) {
                 subtitle_label.label = title.next_episode.code;
             } else if (!title.is_movie && title.status == TitleStatus.UP_TO_DATE && title.upcoming_episode != null) {
                 subtitle_label.label = _("%s · %s").printf (title.upcoming_episode.code,
@@ -78,7 +87,8 @@ namespace Aperture {
                 subtitle_label.label = title.describe ();
             }
             var fraction = title.progress_fraction;
-            progress_bar.visible = fraction >= 0 && title.status == TitleStatus.WATCHING;
+            progress_bar.visible = fraction >= 0
+                && (title.status == TitleStatus.WATCHING || title.status == TitleStatus.DROPPED);
             progress_bar.fraction = fraction;
             progress_bar.tooltip_text = _("%d of %d episodes watched").printf (title.watched_count, title.aired_count);
             progress_bar.update_property (Gtk.AccessibleProperty.VALUE_TEXT, progress_bar.tooltip_text, -1);

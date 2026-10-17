@@ -133,6 +133,14 @@ template $ApertureWindow: Adw.ApplicationWindow {
 
                 child: $ApertureLibraryView watched_view {};
               }
+
+              Adw.ViewStackPage {
+                name: "dropped";
+                title: _("Dropped");
+                icon-name: "media-playback-stop-symbolic";
+
+                child: $ApertureLibraryView dropped_view {};
+              }
             }
           };
 

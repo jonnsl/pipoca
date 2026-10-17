@@ -33,26 +33,50 @@ namespace Aperture.TitleActions {
 
     public void remove (Gtk.Widget source, Title t) {
         var library = Library.get_default ();
+        var dropped_at = t.dropped_at;
         library.remove (t);
-        toast (source, undo_toast (_("“%s” removed from library").printf (t.name), () => library.add (t)));
+        toast (source, undo_toast (_("“%s” removed from library").printf (t.name), () => {
+            library.add (t);
+            if (dropped_at > 0) {
+                library.set_dropped (t, true, dropped_at);
+            }
+        }));
+    }
+
+    public void set_dropped (Gtk.Widget source, Title t, bool dropped) {
+        var library = Library.get_default ();
+        var dropped_at = t.dropped_at;
+        library.set_dropped (t, dropped);
+        var title = dropped ? _("“%s” dropped").printf (t.name) : _("“%s” resumed").printf (t.name);
+        toast (source, undo_toast (title, () => library.set_dropped (t, !dropped, dropped_at)));
     }
 
     public void set_movie_watched (Gtk.Widget source, Title t, bool watched) {
         var library = Library.get_default ();
         var was_in_library = t.in_library;
+        var dropped_at = t.dropped_at;
         library.set_movie_watched (t, watched);
         var title = watched ? _("Marked as watched") : _("Marked as unwatched");
         toast (source, undo_toast (title, () => {
             library.set_movie_watched (t, !watched);
-            if (!was_in_library) {
-                library.remove (t);
-            }
+            restore (t, was_in_library, dropped_at);
         }));
+    }
+
+    /* Undoes the side effects of marking something watched: adding and resuming */
+    private void restore (Title t, bool was_in_library, int64 dropped_at) {
+        var library = Library.get_default ();
+        if (!was_in_library) {
+            library.remove (t);
+        } else if (dropped_at > 0) {
+            library.set_dropped (t, true, dropped_at);
+        }
     }
 
     public void mark_episodes (Gtk.Widget source, Title show, GenericArray<Episode> episodes, bool watched) {
         var library = Library.get_default ();
         var was_in_library = show.in_library;
+        var dropped_at = show.dropped_at;
         var changed = library.set_episodes_watched (show, episodes, watched);
         if (changed.length == 0) {
             return;
@@ -67,9 +91,7 @@ namespace Aperture.TitleActions {
         }
         toast (source, undo_toast (title, () => {
             library.set_episodes_watched (show, changed, !watched);
-            if (!was_in_library) {
-                library.remove (show);
-            }
+            restore (show, was_in_library, dropped_at);
         }));
     }
 
@@ -110,6 +132,11 @@ namespace Aperture.TitleActions {
         menu.append_section (null, watch);
         var library = new Menu ();
         if (t.in_library) {
+            if (t.is_dropped) {
+                library.append (_("Resu_me Watching"), prefix + ".resume");
+            } else {
+                library.append (_("_Drop"), prefix + ".drop");
+            }
             library.append (_("_Remove from Library"), prefix + ".remove");
         } else {
             library.append (_("_Add to Watchlist"), prefix + ".add");

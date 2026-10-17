@@ -22,6 +22,7 @@ namespace Aperture {
             set_accels_for_action ("win.refresh", { "F5", "<primary>r" });
             set_accels_for_action ("win.view::watchlist", { "<primary>1" });
             set_accels_for_action ("win.view::watched", { "<primary>2" });
+            set_accels_for_action ("win.view::dropped", { "<primary>3" });
         }
 
         public override void startup () {

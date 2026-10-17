@@ -2,6 +2,7 @@ namespace Aperture {
     public enum LibraryKind {
         WATCHLIST,
         WATCHED,
+        DROPPED,
     }
 
     /* A grid of library titles, split into sections, with empty states */
@@ -72,17 +73,29 @@ namespace Aperture {
                     halign = Gtk.Align.CENTER,
                     css_classes = { "pill", "suggested-action" },
                 };
-            } else {
+            } else if (kind == LibraryKind.WATCHED) {
                 add_section (null, (s) => s.is_done ());
                 empty_page.icon_name = "object-select-symbolic";
                 empty_page.title = _("Nothing Watched Yet");
                 empty_page.description = _("Movies and shows you finish show up here");
+            } else {
+                add_section (null, (s) => s == TitleStatus.DROPPED);
+                empty_page.icon_name = "media-playback-stop-symbolic";
+                empty_page.title = _("No Dropped Titles");
+                empty_page.description = _("Drop movies and shows you won’t finish to keep them out of your watchlist");
             }
             update_page ();
         }
 
         private bool in_view (TitleStatus status) {
-            return kind == LibraryKind.WATCHLIST ? status.in_watchlist () : status.is_done ();
+            switch (kind) {
+            case LibraryKind.WATCHLIST:
+                return status.in_watchlist ();
+            case LibraryKind.WATCHED:
+                return status.is_done ();
+            default:
+                return status == TitleStatus.DROPPED;
+            }
         }
 
         private delegate bool StatusPredicate (TitleStatus status);

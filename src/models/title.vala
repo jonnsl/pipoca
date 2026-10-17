@@ -25,7 +25,9 @@ namespace Aperture {
         PLAN_TO_WATCH,
         WATCHING,
         UP_TO_DATE,
-        WATCHED;
+        WATCHED,
+        /* Set by the user: started but won't finish */
+        DROPPED;
 
         public string to_label () {
             switch (this) {
@@ -37,6 +39,8 @@ namespace Aperture {
                 return _("Up to Date");
             case WATCHED:
                 return C_("title status", "Watched");
+            case DROPPED:
+                return C_("title status", "Dropped");
             default:
                 return "";
             }
@@ -79,6 +83,8 @@ namespace Aperture {
         public bool in_library { get; set; }
         public int64 added_at { get; set; }
         public int64 refreshed_at { get; set; }
+        /* When the user dropped the title, or 0 */
+        public int64 dropped_at { get; set; }
 
         public int aired_count { get; set; }
         public int watched_count { get; set; }
@@ -105,6 +111,10 @@ namespace Aperture {
 
         public bool is_movie {
             get { return media_type == MediaType.MOVIE; }
+        }
+
+        public bool is_dropped {
+            get { return dropped_at > 0; }
         }
 
         public bool has_details {
