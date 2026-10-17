@@ -16,6 +16,21 @@ template $AperturePosterCard: Box {
     };
 
     [overlay]
+    Image library_emblem {
+      icon-name: "object-select-symbolic";
+      tooltip-text: _("In Library");
+      halign: start;
+      valign: start;
+      margin-top: 8;
+      margin-start: 8;
+      visible: false;
+
+      styles [
+        "library-emblem",
+      ]
+    }
+
+    [overlay]
     Label new_badge {
       label: C_("badge", "New");
       halign: end;

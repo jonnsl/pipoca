@@ -171,6 +171,38 @@ namespace Aperture {
                 break;
             }
             var obj = yield get_object (path, { "query=" + Uri.escape_string (text), "include_adult=false" }, cancellable);
+            // /search/multi also returns people; parse_list skips them
+            int total_pages;
+            return parse_list (obj, fallback, out total_pages);
+        }
+
+        /* The country of the metadata language ("BR" for "pt-BR"), for release dates; null if none */
+        public string? region {
+            owned get {
+                var parts = language.split ("-");
+                return parts.length == 2 ? parts[1].up () : null;
+            }
+        }
+
+        /**
+         * Fetches a page (from 1) of a TMDB list such as "/movie/popular".
+         * @fallback is the media type of lists that only have one; @regional
+         * lists get the region so release dates match the user's country.
+         */
+        public async GenericArray<Title> get_list (string path, MediaType? fallback, bool regional, int page,
+                                                   Cancellable? cancellable, out int total_pages) throws Error {
+            string[] query = { "page=%d".printf (page) };
+            if (regional && region != null) {
+                query += "region=" + Uri.escape_string (region);
+            }
+            var obj = yield get_object (path, query, cancellable);
+            return parse_list (obj, fallback, out total_pages);
+        }
+
+        /* The titles of a paged TMDB response; people and malformed entries are skipped */
+        public static GenericArray<Title> parse_list (Json.Object obj, MediaType? fallback, out int total_pages) {
+            // TMDB never serves pages past 500
+            total_pages = (int) JsonUtil.integer (obj, "total_pages").clamp (0, 500);
             var results = new GenericArray<Title> ();
             var arr = JsonUtil.array (obj, "results");
             if (arr != null) {
@@ -178,9 +210,8 @@ namespace Aperture {
                     if (node.get_node_type () != Json.NodeType.OBJECT) {
                         return;
                     }
-                    // /search/multi also returns people; Title.from_json skips them
                     var t = Title.from_json (node.get_object (), fallback);
-                    if (t != null && t.id != 0) {
+                    if (t != null && t.id > 0) {
                         results.add (t);
                     }
                 });

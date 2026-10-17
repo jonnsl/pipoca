@@ -1,0 +1,96 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ApertureShelf: Box {
+  orientation: vertical;
+  spacing: 6;
+
+  Box {
+    spacing: 6;
+    margin-start: 6;
+    margin-end: 6;
+
+    Label title_label {
+      xalign: 0;
+      hexpand: true;
+      ellipsize: end;
+
+      styles [
+        "title-4",
+      ]
+    }
+
+    Button prev_button {
+      icon-name: "go-previous-symbolic";
+      tooltip-text: _("Scroll Back");
+      valign: center;
+      clicked => $on_prev_clicked();
+
+      styles [
+        "flat",
+        "circular",
+      ]
+    }
+
+    Button next_button {
+      icon-name: "go-next-symbolic";
+      tooltip-text: _("Scroll Forward");
+      valign: center;
+      clicked => $on_next_clicked();
+
+      styles [
+        "flat",
+        "circular",
+      ]
+    }
+
+    Button see_all_button {
+      label: _("See _All");
+      use-underline: true;
+      valign: center;
+      clicked => $on_see_all_clicked();
+
+      styles [
+        "flat",
+      ]
+    }
+  }
+
+  Stack stack {
+    transition-type: crossfade;
+
+    StackPage {
+      name: "loading";
+
+      child: Adw.Spinner {
+        // About the height of a row of cards, so the page doesn't jump when it loads
+        height-request: 290;
+        halign: center;
+        width-request: 32;
+      };
+    }
+
+    StackPage {
+      name: "error";
+
+      child: Label error_label {
+        wrap: true;
+        justify: center;
+
+        styles [
+          "dim-label",
+        ]
+      };
+    }
+
+    StackPage {
+      name: "content";
+
+      child: ScrolledWindow scroller {
+        vscrollbar-policy: never;
+
+        child: Box cards_box {};
+      };
+    }
+  }
+}

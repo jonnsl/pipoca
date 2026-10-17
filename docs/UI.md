@@ -228,7 +228,7 @@ Why this shape:
   |-------------------|-------------------------|
   | Ctrl+N            | Add title (search)      |
   | Ctrl+F            | Filter library          |
-  | Ctrl+1…4          | Switch views            |
+  | Ctrl+1…5          | Switch views            |
   | F5 / Ctrl+R       | Refresh                 |
   | Ctrl+,            | Preferences             |
   | Ctrl+?            | Shortcuts               |

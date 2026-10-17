@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aperture\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-17 15:26-0300\n"
+"POT-Creation-Date: 2026-10-17 15:41-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
 "Last-Translator: Jonnathan Soares <jonnsl@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: data/io.github.jonnsl.Aperture.desktop.in.in:2
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:163
+#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:165
 #: src/services/background.vala:103 src/window.blp:5 src/window.blp:21
 msgid "Aperture"
 msgstr "Aperture"
@@ -145,27 +145,27 @@ msgid "When the last successful Kodi sync finished (Unix time)"
 msgstr ""
 "Quando terminou a última sincronização com o Kodi bem-sucedida (horário Unix)"
 
-#: src/application.vala:40
+#: src/application.vala:41
 msgid "Start without a window and keep checking for new releases"
 msgstr "Iniciar sem janela e continuar verificando novos lançamentos"
 
-#: src/application.vala:100
+#: src/application.vala:102
 msgid "Checking for new episodes and releases"
 msgstr "Verificando novos episódios e lançamentos"
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.vala:169
+#: src/application.vala:171
 msgid "translator-credits"
 msgstr "Jonnathan Soares"
 
-#: src/application.vala:172
+#: src/application.vala:174
 msgid ""
 "This product uses the TMDB API but is not endorsed or certified by TMDB."
 msgstr ""
 "Este produto usa a API do TMDB, mas não é endossado nem certificado pelo "
 "TMDB."
 
-#: src/application.vala:174
+#: src/application.vala:176
 msgid "The Movie Database (TMDB)"
 msgstr "The Movie Database (TMDB)"
 
@@ -218,8 +218,8 @@ msgstr "Executar em segundo plano"
 msgid ""
 "Keep checking for new releases when the window is closed, and start at login"
 msgstr ""
-"Continuar verificando novos lançamentos quando a janela for fechada, e iniciar "
-"ao entrar na sessão"
+"Continuar verificando novos lançamentos quando a janela for fechada, e "
+"iniciar ao entrar na sessão"
 
 #: src/dialogs/preferences-dialog.blp:39
 msgid "Kodi"
@@ -495,10 +495,12 @@ msgid "Can’t Search"
 msgstr "Não foi possível pesquisar"
 
 #: src/dialogs/search-dialog.blp:105 src/pages/details-page.blp:64
+#: src/pages/discover-list-page.blp:31 src/pages/discover-view.blp:40
 msgid "_Retry"
 msgstr "_Tentar novamente"
 
-#: src/dialogs/search-dialog.vala:149
+#: src/dialogs/search-dialog.vala:149 src/widgets/poster-card.blp:21
+#: src/widgets/poster-card.vala:52
 msgid "In Library"
 msgstr "Na biblioteca"
 
@@ -694,10 +696,31 @@ msgstr[1] "%d episódios"
 msgid "%d/%d"
 msgstr "%d/%d"
 
-#: src/pages/details-page.vala:353 src/widgets/poster-card.vala:97
+#: src/pages/details-page.vala:353 src/widgets/poster-card.vala:103
 #, c-format
 msgid "%d of %d episodes watched"
 msgstr "%d de %d episódios assistidos"
+
+#: src/pages/discover-list-page.blp:28
+msgid "Can’t Load List"
+msgstr "Não foi possível carregar a lista"
+
+#: src/pages/discover-list-page.vala:96
+msgid "Can’t load more titles"
+msgstr "Não foi possível carregar mais títulos"
+
+#: src/pages/discover-view.blp:35
+msgid "You’re Offline"
+msgstr "Você está offline"
+
+#: src/pages/discover-view.blp:36 src/pages/discover-view.vala:73
+msgid "Connect to the internet to discover movies and shows"
+msgstr "Conecte-se à internet para descobrir filmes e séries"
+
+#. Nothing at all usually means no connection to TMDB
+#: src/pages/discover-view.vala:65
+msgid "Can’t reach TMDB right now"
+msgstr "Não foi possível acessar o TMDB agora"
 
 #: src/pages/library-view.blp:48 src/pages/upcoming-view.blp:50
 msgid "Try a different search or filter"
@@ -900,14 +923,18 @@ msgid "Upcoming"
 msgstr "Em breve"
 
 #: src/shortcuts-dialog.blp:53 src/window.blp:154
+msgid "Discover"
+msgstr "Descobrir"
+
+#: src/shortcuts-dialog.blp:58 src/window.blp:162
 msgid "Watched"
 msgstr "Assistidos"
 
-#: src/shortcuts-dialog.blp:58 src/window.blp:162
+#: src/shortcuts-dialog.blp:63 src/window.blp:170
 msgid "Dropped"
 msgstr "Abandonados"
 
-#: src/shortcuts-dialog.blp:63
+#: src/shortcuts-dialog.blp:68
 msgid "Go Back"
 msgstr "Voltar"
 
@@ -1014,27 +1041,27 @@ msgstr "%d h"
 msgid "%d h %d min"
 msgstr "%d h %d min"
 
-#: src/utils.vala:62 src/window.blp:223
+#: src/utils.vala:62 src/window.blp:231
 msgid "Returning Series"
 msgstr "Em exibição"
 
-#: src/utils.vala:64 src/window.blp:247
+#: src/utils.vala:64 src/window.blp:255
 msgid "Ended"
 msgstr "Finalizada"
 
-#: src/utils.vala:66 src/window.blp:253
+#: src/utils.vala:66 src/window.blp:261
 msgid "Canceled"
 msgstr "Cancelada"
 
-#: src/utils.vala:68 src/window.blp:229
+#: src/utils.vala:68 src/window.blp:237
 msgid "In Production"
 msgstr "Em produção"
 
-#: src/utils.vala:70 src/window.blp:235
+#: src/utils.vala:70 src/window.blp:243
 msgid "Planned"
 msgstr "Planejada"
 
-#: src/utils.vala:72 src/window.blp:241
+#: src/utils.vala:72 src/window.blp:249
 msgid "Pilot"
 msgstr "Piloto"
 
@@ -1058,29 +1085,70 @@ msgstr "Ainda não exibido"
 msgid "Mark Watched _Up to Here"
 msgstr "Marcar como assistido _até aqui"
 
-#: src/widgets/poster-card.blp:20
+#: src/widgets/poster-card.blp:35
 msgctxt "badge"
 msgid "New"
 msgstr "Novo"
 
 #. Where it was left off
-#: src/widgets/poster-card.vala:81
+#: src/widgets/poster-card.vala:86
 #, c-format
 msgid "%d of %d episodes"
 msgstr "%d de %d episódios"
 
-#: src/widgets/poster-card.vala:85
+#: src/widgets/poster-card.vala:90
 #, c-format
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: src/widgets/poster-card.vala:91
+#: src/widgets/poster-card.vala:97
 msgid "Released since you last opened Aperture"
 msgstr "Lançado desde a última vez que você abriu o Aperture"
 
-#: src/widgets/poster-card.vala:92
+#: src/widgets/poster-card.vala:98
 msgid "New episodes since you last opened Aperture"
 msgstr "Novos episódios desde a última vez que você abriu o Aperture"
+
+#: src/widgets/shelf.blp:25
+msgid "Scroll Back"
+msgstr "Voltar"
+
+#: src/widgets/shelf.blp:37
+msgid "Scroll Forward"
+msgstr "Avançar"
+
+#: src/widgets/shelf.blp:48
+msgid "See _All"
+msgstr "Ver _tudo"
+
+#: src/widgets/shelf.vala:20
+msgid "Trending This Week"
+msgstr "Em alta esta semana"
+
+#: src/widgets/shelf.vala:21
+msgid "Popular Movies"
+msgstr "Filmes populares"
+
+#: src/widgets/shelf.vala:22
+msgid "Popular Shows"
+msgstr "Séries populares"
+
+#: src/widgets/shelf.vala:23
+msgid "Now in Theaters"
+msgstr "Em cartaz nos cinemas"
+
+#: src/widgets/shelf.vala:24
+msgid "Upcoming Movies"
+msgstr "Próximos filmes"
+
+#: src/widgets/shelf.vala:25
+msgid "Airing Today"
+msgstr "No ar hoje"
+
+#. Keep what was loaded before, if anything
+#: src/widgets/shelf.vala:112
+msgid "Can’t load this list"
+msgstr "Não foi possível carregar esta lista"
 
 #: src/window.blp:50
 msgid "Main Menu"
@@ -1102,55 +1170,55 @@ msgstr "Filtrar séries por situação"
 msgid "Sort"
 msgstr "Ordenar"
 
-#: src/window.blp:182
+#: src/window.blp:190
 msgid "Sort By"
 msgstr "Ordenar por"
 
-#: src/window.blp:185
+#: src/window.blp:193
 msgid "Date _Added"
 msgstr "Data de _adição"
 
-#: src/window.blp:191
+#: src/window.blp:199
 msgid "_Title"
 msgstr "_Título"
 
-#: src/window.blp:197
+#: src/window.blp:205
 msgid "_Release Date"
 msgstr "Data de _lançamento"
 
-#: src/window.blp:203
+#: src/window.blp:211
 msgid "_Last Watched"
 msgstr "Assistido por ú_ltimo"
 
-#: src/window.blp:212
+#: src/window.blp:220
 msgid "Show Status"
 msgstr "Situação da série"
 
-#: src/window.blp:215
+#: src/window.blp:223
 msgid "_All Statuses"
 msgstr "_Todas as situações"
 
-#: src/window.blp:263
+#: src/window.blp:271
 msgid "Refresh _Library"
 msgstr "Atualizar _biblioteca"
 
-#: src/window.blp:270
+#: src/window.blp:278
 msgid "_Preferences"
 msgstr "_Preferências"
 
-#: src/window.blp:275
+#: src/window.blp:283
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de teclado"
 
-#: src/window.blp:280
+#: src/window.blp:288
 msgid "_About Aperture"
 msgstr "_Sobre o Aperture"
 
-#: src/window.vala:86
+#: src/window.vala:102
 msgid "All Statuses"
 msgstr "Todas as situações"
 
-#: src/window.vala:89
+#: src/window.vala:105
 #, c-format
 msgid "Show status: %s"
 msgstr "Situação da série: %s"

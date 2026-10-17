@@ -38,6 +38,18 @@ flowboxchild.poster-card {
   color: var(--accent-fg-color);
 }
 
+.library-emblem {
+  padding: 4px;
+  border-radius: 999px;
+  background-color: var(--accent-bg-color);
+  color: var(--accent-fg-color);
+}
+
+button.poster-card {
+  padding: 6px;
+  border-radius: 16px;
+}
+
 togglebutton.watched-toggle:checked {
   background-color: var(--accent-bg-color);
   color: var(--accent-fg-color);

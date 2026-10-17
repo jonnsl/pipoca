@@ -32,8 +32,9 @@ namespace Aperture {
             set_accels_for_action ("win.refresh", { "F5", "<primary>r" });
             set_accels_for_action ("win.view::watchlist", { "<primary>1" });
             set_accels_for_action ("win.view::upcoming", { "<primary>2" });
-            set_accels_for_action ("win.view::watched", { "<primary>3" });
-            set_accels_for_action ("win.view::dropped", { "<primary>4" });
+            set_accels_for_action ("win.view::discover", { "<primary>3" });
+            set_accels_for_action ("win.view::watched", { "<primary>4" });
+            set_accels_for_action ("win.view::dropped", { "<primary>5" });
 
             settings = new Settings (Config.APPLICATION_ID);
             add_main_option ("background", 0, OptionFlags.NONE, OptionArg.NONE,
@@ -65,6 +66,7 @@ namespace Aperture {
             typeof (Poster).ensure ();
             typeof (PosterCard).ensure ();
             typeof (UpcomingView).ensure ();
+            typeof (DiscoverView).ensure ();
 
             settings.changed["run-in-background"].connect (update_hold);
             update_hold ();

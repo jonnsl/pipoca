@@ -653,6 +653,30 @@ void test_notifications () {
     assert (!Title.try_parse_key ("person:1", out type, out id));
 }
 
+void test_parse_list () {
+    // Trending mixes movies, shows and people
+    var obj = parse_object ("""{"page": 1, "total_pages": 1000, "results": [
+        {"media_type": "movie", "id": 1, "title": "A Movie", "release_date": "2026-01-02"},
+        {"media_type": "person", "id": 2, "name": "Someone"},
+        {"media_type": "tv", "id": 3, "name": "A Show"},
+        {"media_type": "movie", "id": 0, "title": "No Id"},
+        42]}""");
+    int pages;
+    var titles = TmdbClient.parse_list (obj, null, out pages);
+    assert (pages == 500);  // TMDB serves at most 500 pages
+    assert (titles.length == 2);
+    assert (titles[0].is_movie && titles[0].name == "A Movie" && titles[0].year == "2026");
+    assert (!titles[1].is_movie && titles[1].id == 3);
+
+    // Lists of one type don't say which
+    obj = parse_object ("""{"total_pages": 3, "results": [{"id": 4, "name": "Airing"}]}""");
+    titles = TmdbClient.parse_list (obj, MediaType.TV, out pages);
+    assert (pages == 3 && titles.length == 1 && titles[0].media_type == MediaType.TV);
+
+    titles = TmdbClient.parse_list (parse_object ("{}"), null, out pages);
+    assert (pages == 0 && titles.length == 0);
+}
+
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
@@ -661,6 +685,7 @@ int main (string[] args) {
         FileUtils.remove (path + suffix);
     }
     Test.add_func ("/title/from-json", test_from_json);
+    Test.add_func ("/tmdb/parse-list", test_parse_list);
     Test.add_func ("/library/show-progress", test_show_progress);
     Test.add_func ("/library/ended-show", test_ended_show);
     Test.add_func ("/library/movie", test_movie);

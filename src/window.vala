@@ -3,15 +3,18 @@ namespace Aperture {
     public class Window : Adw.ApplicationWindow {
         [GtkChild] private unowned Adw.ToastOverlay toast_overlay;
         [GtkChild] private unowned Adw.NavigationView navigation_view;
+        [GtkChild] private unowned Gtk.ToggleButton search_button;
         [GtkChild] private unowned Gtk.SearchBar search_bar;
         [GtkChild] private unowned Gtk.SearchEntry library_search;
         [GtkChild] private unowned Adw.Banner offline_banner;
+        [GtkChild] private unowned Gtk.Box filter_bar;
         [GtkChild] private unowned Adw.ToggleGroup media_filter;
         [GtkChild] private unowned Gtk.MenuButton show_status_button;
         [GtkChild] private unowned Gtk.MenuButton sort_button;
         [GtkChild] private unowned Adw.ViewStack view_stack;
         [GtkChild] private unowned LibraryView watchlist_view;
         [GtkChild] private unowned UpcomingView upcoming_view;
+        [GtkChild] private unowned DiscoverView discover_view;
         [GtkChild] private unowned LibraryView watched_view;
         [GtkChild] private unowned LibraryView dropped_view;
 
@@ -58,6 +61,8 @@ namespace Aperture {
             media_filter.bind_property ("active-name", upcoming_view, "media-filter", BindingFlags.SYNC_CREATE);
             library_search.bind_property ("text", upcoming_view, "search-text", BindingFlags.SYNC_CREATE);
             upcoming_view.title_activated.connect (show_title);
+            discover_view.title_activated.connect (show_title);
+            discover_view.list_activated.connect ((list) => navigation_view.push (new DiscoverListPage (list)));
 
             // Show status only means something for finished shows
             view_stack.notify["visible-child-name"].connect (update_show_status);
@@ -65,20 +70,31 @@ namespace Aperture {
             update_show_status ();
 
             search_bar.connect_entry (library_search);
-            search_bar.key_capture_widget = this;
             search_bar.notify["search-mode-enabled"].connect (() => {
                 if (!search_bar.search_mode_enabled) {
                     library_search.text = "";
                 }
             });
-            // Typing should only filter the library from the main page
-            navigation_view.notify["visible-page"].connect (() => {
-                search_bar.key_capture_widget = navigation_view.visible_page.tag == "main" ? this : null;
-            });
+            view_stack.notify["visible-child-name"].connect (update_library_filter);
+            navigation_view.notify["visible-page"].connect (update_library_filter);
+            update_library_filter ();
 
             var monitor = NetworkMonitor.get_default ();
             monitor.bind_property ("network-available", offline_banner, "revealed",
                                    BindingFlags.SYNC_CREATE | BindingFlags.INVERT_BOOLEAN);
+        }
+
+        /* The library filters and search only apply to library views on the main page */
+        private void update_library_filter () {
+            var library_view = view_stack.visible_child_name != "discover";
+            filter_bar.visible = library_view;
+            search_button.visible = library_view;
+            if (!library_view) {
+                search_bar.search_mode_enabled = false;
+            }
+            // Typing filters the library
+            var on_main = navigation_view.visible_page.tag == "main";
+            search_bar.key_capture_widget = on_main && library_view ? this : null;
         }
 
         private void update_show_status () {
@@ -129,6 +145,10 @@ namespace Aperture {
             if (navigation_view.visible_page.tag != "main") {
                 navigation_view.pop_to_tag ("main");
             }
+            // Discover isn't the library; filter the watchlist instead
+            if (view_stack.visible_child_name == "discover") {
+                view_stack.visible_child_name = "watchlist";
+            }
             search_bar.search_mode_enabled = true;
             library_search.grab_focus ();
         }
@@ -137,6 +157,10 @@ namespace Aperture {
             var details = navigation_view.visible_page as DetailsPage;
             if (details != null) {
                 details.refresh ();
+                return;
+            }
+            if (navigation_view.visible_page.tag == "main" && view_stack.visible_child_name == "discover") {
+                discover_view.reload ();
                 return;
             }
             Library.get_default ().refresh_library.begin (true);

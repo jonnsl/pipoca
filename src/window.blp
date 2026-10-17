@@ -72,7 +72,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
           content: Box {
             orientation: vertical;
 
-            Box {
+            Box filter_bar {
               spacing: 6;
               margin-top: 6;
               margin-bottom: 6;
@@ -147,6 +147,14 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 icon-name: "x-office-calendar-symbolic";
 
                 child: $ApertureUpcomingView upcoming_view {};
+              }
+
+              Adw.ViewStackPage {
+                name: "discover";
+                title: _("Discover");
+                icon-name: "starred-symbolic";
+
+                child: $ApertureDiscoverView discover_view {};
               }
 
               Adw.ViewStackPage {

@@ -4,11 +4,14 @@ namespace Aperture {
         [GtkChild] private unowned Poster poster;
         [GtkChild] private unowned Gtk.ProgressBar progress_bar;
         [GtkChild] private unowned Gtk.Label new_badge;
+        [GtkChild] private unowned Gtk.Image library_emblem;
         [GtkChild] private unowned Gtk.Label title_label;
         [GtkChild] private unowned Gtk.Label subtitle_label;
         private Gtk.PopoverMenu context_menu;
 
         public Title title { get; construct; }
+        /* Marks titles in the library, for lists that mix in others */
+        public bool show_library_emblem { get; set; }
 
         public PosterCard (Title title) {
             Object (title: title);
@@ -45,6 +48,8 @@ namespace Aperture {
             title.bind_property ("name", poster, "alternative-text", BindingFlags.SYNC_CREATE);
             title.bind_property ("poster-path", poster, "path", BindingFlags.SYNC_CREATE);
             title.notify.connect (update);
+            notify["show-library-emblem"].connect (update);
+            library_emblem.update_property (Gtk.AccessibleProperty.LABEL, _("In Library"), -1);
             update ();
 
             context_menu = new Gtk.PopoverMenu.from_model (null) { has_arrow = false, halign = Gtk.Align.START };
@@ -87,6 +92,7 @@ namespace Aperture {
             } else {
                 subtitle_label.label = title.describe ();
             }
+            library_emblem.visible = show_library_emblem && title.in_library;
             new_badge.visible = title.has_new;
             new_badge.tooltip_text = title.is_movie ? _("Released since you last opened Aperture")
                                                     : _("New episodes since you last opened Aperture");

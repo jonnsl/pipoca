@@ -12,6 +12,10 @@ src/models/season.vala
 src/models/title.vala
 src/pages/details-page.blp
 src/pages/details-page.vala
+src/pages/discover-list-page.blp
+src/pages/discover-list-page.vala
+src/pages/discover-view.blp
+src/pages/discover-view.vala
 src/pages/library-view.blp
 src/pages/library-view.vala
 src/pages/season-page.blp
@@ -35,5 +39,7 @@ src/widgets/episode-row.vala
 src/widgets/poster-card.blp
 src/widgets/poster-card.vala
 src/widgets/poster.vala
+src/widgets/shelf.blp
+src/widgets/shelf.vala
 src/window.blp
 src/window.vala
