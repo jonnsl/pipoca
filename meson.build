@@ -1,4 +1,4 @@
-project('aperture', ['c', 'vala'],
+project('pipoca', ['c', 'vala'],
           version: '0.1.0',
     meson_version: '>= 1.0.0',
   default_options: ['warning_level=2', 'werror=false'],
@@ -7,7 +7,7 @@ project('aperture', ['c', 'vala'],
 i18n = import('i18n')
 gnome = import('gnome')
 
-base_id = 'io.github.jonnsl.Aperture'
+base_id = 'io.github.jonnsl.Pipoca'
 
 if get_option('profile') == 'development'
   application_id = '@0@.Devel'.format(base_id)
@@ -18,7 +18,7 @@ else
   version_suffix = ''
 endif
 
-resource_path = '/io/github/jonnsl/Aperture'
+resource_path = '/io/github/jonnsl/Pipoca'
 
 conf = configuration_data()
 conf.set_quoted('APPLICATION_ID', application_id)

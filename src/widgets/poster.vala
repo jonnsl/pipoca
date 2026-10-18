@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /**
      * A TMDB image with a fixed size and a placeholder icon until it loads.
      *

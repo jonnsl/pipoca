@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /* A movie release or an episode airing on a given date */
     public class Release : Object {
         public Title title { get; construct; }

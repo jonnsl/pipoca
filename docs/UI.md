@@ -1,4 +1,4 @@
-# Aperture — Screens & UI Plan
+# Pipoca — Screens & UI Plan
 
 The plan follows the [GNOME HIG](https://developer.gnome.org/hig/) and uses
 libadwaita widgets as they're meant to be used. Each screen is a Vala class
@@ -60,7 +60,7 @@ Why this shape:
 
 - **Header bar:** `+` opens the SearchDialog. The search toggle reveals the
   library filter. The primary menu holds Sort options, Preferences, Keyboard
-  Shortcuts and About Aperture.
+  Shortcuts and About Pipoca.
 - **Watchlist** has sections "Continue Watching" (shows in progress or with new
   episodes) and "Plan to Watch". The sections are headers in a `Gtk.GridView`
   (`Gtk.SectionModel`), so there's only one scrollable.

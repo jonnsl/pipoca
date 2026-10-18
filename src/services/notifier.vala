@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /**
      * Sends desktop notifications for new episodes and movie releases of
      * titles with "Notify Me" on. Each release is notified once. After a

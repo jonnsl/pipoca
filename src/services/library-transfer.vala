@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public errordomain TransferError {
         INVALID_FORMAT,
         UNSUPPORTED_VERSION,
@@ -15,7 +15,7 @@ namespace Aperture {
      * docs/LIBRARY_FORMAT.md; keep the two in sync.
      */
     namespace LibraryTransfer {
-        public const string FORMAT = "aperture-library";
+        public const string FORMAT = "pipoca-library";
         public const int VERSION = 1;
 
         public string export_json (Library library) throws Error {
@@ -79,15 +79,15 @@ namespace Aperture {
             parser.load_from_data (data);
             var root = parser.get_root ();
             if (root == null || root.get_node_type () != Json.NodeType.OBJECT) {
-                throw new TransferError.INVALID_FORMAT (_("This isn’t an Aperture library file"));
+                throw new TransferError.INVALID_FORMAT (_("This isn’t an Pipoca library file"));
             }
             var obj = root.get_object ();
             if (JsonUtil.str (obj, "format") != FORMAT) {
-                throw new TransferError.INVALID_FORMAT (_("This isn’t an Aperture library file"));
+                throw new TransferError.INVALID_FORMAT (_("This isn’t an Pipoca library file"));
             }
             var version = JsonUtil.integer (obj, "version");
             if (version < 1 || version > VERSION) {
-                throw new TransferError.UNSUPPORTED_VERSION (_("This library file was made by a newer version of Aperture"));
+                throw new TransferError.UNSUPPORTED_VERSION (_("This library file was made by a newer version of Pipoca"));
             }
             var titles = JsonUtil.array (obj, "titles");
             if (titles == null) {

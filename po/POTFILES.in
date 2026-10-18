@@ -1,6 +1,6 @@
-data/io.github.jonnsl.Aperture.desktop.in.in
-data/io.github.jonnsl.Aperture.metainfo.xml.in.in
-data/io.github.jonnsl.Aperture.gschema.xml.in
+data/io.github.jonnsl.Pipoca.desktop.in.in
+data/io.github.jonnsl.Pipoca.metainfo.xml.in.in
+data/io.github.jonnsl.Pipoca.gschema.xml.in
 src/application.vala
 src/dialogs/preferences-dialog.blp
 src/dialogs/preferences-dialog.vala

@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Aperture
+Name=Pipoca
 Comment=Keep track of your movies and TV shows
-Exec=aperture
+Exec=pipoca
 Icon=@APP_ID@
 Terminal=false
 Type=Application

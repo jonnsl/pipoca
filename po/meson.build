@@ -1,1 +1,1 @@
-i18n.gettext('aperture', preset: 'glib')
+i18n.gettext('pipoca', preset: 'glib')

@@ -1,6 +1,6 @@
-namespace Aperture {
+namespace Pipoca {
     /* Upcoming episodes and movie releases from the library, by date */
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/pages/upcoming-view.ui")]
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/pages/upcoming-view.ui")]
     public class UpcomingView : Adw.Bin {
         [GtkChild] private unowned Gtk.Stack stack;
         [GtkChild] private unowned Gtk.Box sections_box;

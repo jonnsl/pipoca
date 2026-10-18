@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /* What an IMDb CSV export holds */
     public enum ImdbFileKind {
         /* "Your Ratings": titles the user rated, with the date */

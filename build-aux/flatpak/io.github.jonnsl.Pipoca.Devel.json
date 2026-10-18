@@ -1,10 +1,10 @@
 {
-  "id": "io.github.jonnsl.Aperture.Devel",
+  "id": "io.github.jonnsl.Pipoca.Devel",
   "runtime": "org.gnome.Platform",
   "runtime-version": "50",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": ["org.freedesktop.Sdk.Extension.vala"],
-  "command": "aperture",
+  "command": "pipoca",
   "finish-args": [
     "--share=network",
     "--share=ipc",
@@ -34,7 +34,7 @@
       ]
     },
     {
-      "name": "aperture",
+      "name": "pipoca",
       "buildsystem": "meson",
       "config-opts": ["-Dprofile=development"],
       "sources": [

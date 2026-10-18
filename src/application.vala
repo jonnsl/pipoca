@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public class Application : Adw.Application {
         /* Seconds between checks for stale titles; each title is refreshed at most once a day */
         private const uint REFRESH_INTERVAL = 60 * 60;
@@ -83,7 +83,7 @@ namespace Aperture {
                 return;
             }
             if (active_window == null) {
-                new Aperture.Window (this);
+                new Pipoca.Window (this);
                 start_session ();
             }
             active_window.present ();
@@ -162,7 +162,7 @@ namespace Aperture {
 
         private void on_about_action () {
             var about = new Adw.AboutDialog () {
-                application_name = _("Aperture"),
+                application_name = _("Pipoca"),
                 application_icon = Config.APPLICATION_ID,
                 developer_name = "Jonnathan Soares",
                 version = Config.VERSION,

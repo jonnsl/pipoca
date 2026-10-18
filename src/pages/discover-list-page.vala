@@ -1,6 +1,6 @@
-namespace Aperture {
+namespace Pipoca {
     /* A whole TMDB list as a grid, loading more pages as it scrolls */
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/pages/discover-list-page.ui")]
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/pages/discover-list-page.ui")]
     public class DiscoverListPage : Adw.NavigationPage {
         /* Start loading the next page this far (px) from the end */
         private const double PRELOAD_DISTANCE = 800;

@@ -1,5 +1,5 @@
-namespace Aperture {
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/widgets/poster-card.ui")]
+namespace Pipoca {
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/widgets/poster-card.ui")]
     public class PosterCard : Gtk.Box {
         [GtkChild] private unowned Poster poster;
         [GtkChild] private unowned Gtk.ProgressBar progress_bar;
@@ -94,8 +94,8 @@ namespace Aperture {
             }
             library_emblem.visible = show_library_emblem && title.in_library;
             new_badge.visible = title.has_new;
-            new_badge.tooltip_text = title.is_movie ? _("Released since you last opened Aperture")
-                                                    : _("New episodes since you last opened Aperture");
+            new_badge.tooltip_text = title.is_movie ? _("Released since you last opened Pipoca")
+                                                    : _("New episodes since you last opened Pipoca");
             var fraction = title.progress_fraction;
             progress_bar.visible = fraction >= 0
                 && (title.status == TitleStatus.WATCHING || title.status == TitleStatus.DROPPED);

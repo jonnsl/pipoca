@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /* A person in a title's cast or crew */
     public class Credit : Object {
         private const int MAX_CAST = 20;

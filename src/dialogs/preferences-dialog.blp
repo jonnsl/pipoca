@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $AperturePreferencesDialog: Adw.PreferencesDialog {
+template $PipocaPreferencesDialog: Adw.PreferencesDialog {
   Adw.PreferencesPage {
     title: _("General");
     icon-name: "preferences-system-symbolic";
@@ -47,7 +47,7 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
 
     Adw.PreferencesGroup {
       title: _("Kodi");
-      description: _("Import movies, shows and watch history from Kodi’s library. Aperture only reads from Kodi and never changes anything there.");
+      description: _("Import movies, shows and watch history from Kodi’s library. Pipoca only reads from Kodi and never changes anything there.");
 
       Adw.SwitchRow kodi_enabled_row {
         title: _("Sync Automatically");
@@ -108,7 +108,7 @@ template $AperturePreferencesDialog: Adw.PreferencesDialog {
 
     Adw.PreferencesGroup {
       title: _("TMDB");
-      description: _("Aperture comes with an API key. You can use your own key or read access token instead.");
+      description: _("Pipoca comes with an API key. You can use your own key or read access token instead.");
 
       Adw.SwitchRow custom_key_row {
         title: _("Use Custom API Key");

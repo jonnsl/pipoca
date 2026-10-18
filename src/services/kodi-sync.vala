@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public struct KodiSyncResult {
         public int titles_added;
         public int events_added;
@@ -131,7 +131,7 @@ namespace Aperture {
 
         private static unowned Secret.Schema get_schema () {
             if (secret_schema == null) {
-                secret_schema = new Secret.Schema ("io.github.jonnsl.Aperture.Kodi", Secret.SchemaFlags.NONE,
+                secret_schema = new Secret.Schema ("io.github.jonnsl.Pipoca.Kodi", Secret.SchemaFlags.NONE,
                                                    "account", Secret.SchemaAttributeType.STRING);
             }
             return secret_schema;
@@ -146,7 +146,7 @@ namespace Aperture {
                 yield Secret.password_clear (get_schema (), null, "account", "kodi");
                 return;
             }
-            yield Secret.password_store (get_schema (), Secret.COLLECTION_DEFAULT, _("Aperture Kodi password"),
+            yield Secret.password_store (get_schema (), Secret.COLLECTION_DEFAULT, _("Pipoca Kodi password"),
                                          password, null, "account", "kodi");
         }
 

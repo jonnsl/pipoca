@@ -1,5 +1,5 @@
-namespace Aperture {
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/pages/season-page.ui")]
+namespace Pipoca {
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/pages/season-page.ui")]
     public class SeasonPage : Adw.NavigationPage {
         [GtkChild] private unowned Adw.WindowTitle window_title;
         [GtkChild] private unowned Gtk.Label progress_label;

@@ -1,8 +1,8 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ApertureWindow: Adw.ApplicationWindow {
-  title: _("Aperture");
+template $PipocaWindow: Adw.ApplicationWindow {
+  title: _("Pipoca");
   width-request: 360;
   height-request: 294;
 
@@ -18,7 +18,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
   content: Adw.ToastOverlay toast_overlay {
     child: Adw.NavigationView navigation_view {
       Adw.NavigationPage {
-        title: _("Aperture");
+        title: _("Pipoca");
         tag: "main";
 
         child: Adw.ToolbarView {
@@ -138,7 +138,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 title: _("Watchlist");
                 icon-name: "bookmark-new-symbolic";
 
-                child: $ApertureLibraryView watchlist_view {};
+                child: $PipocaLibraryView watchlist_view {};
               }
 
               Adw.ViewStackPage {
@@ -146,7 +146,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 title: _("Upcoming");
                 icon-name: "x-office-calendar-symbolic";
 
-                child: $ApertureUpcomingView upcoming_view {};
+                child: $PipocaUpcomingView upcoming_view {};
               }
 
               Adw.ViewStackPage {
@@ -154,7 +154,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 title: _("Discover");
                 icon-name: "starred-symbolic";
 
-                child: $ApertureDiscoverView discover_view {};
+                child: $PipocaDiscoverView discover_view {};
               }
 
               Adw.ViewStackPage {
@@ -162,7 +162,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 title: _("Watched");
                 icon-name: "object-select-symbolic";
 
-                child: $ApertureLibraryView watched_view {};
+                child: $PipocaLibraryView watched_view {};
               }
 
               Adw.ViewStackPage {
@@ -170,7 +170,7 @@ template $ApertureWindow: Adw.ApplicationWindow {
                 title: _("Dropped");
                 icon-name: "media-playback-stop-symbolic";
 
-                child: $ApertureLibraryView dropped_view {};
+                child: $PipocaLibraryView dropped_view {};
               }
             }
           };
@@ -285,7 +285,7 @@ menu primary_menu {
     }
 
     item {
-      label: _("_About Aperture");
+      label: _("_About Pipoca");
       action: "app.about";
     }
   }

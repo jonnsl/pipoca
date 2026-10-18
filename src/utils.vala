@@ -1,4 +1,4 @@
-namespace Aperture.Utils {
+namespace Pipoca.Utils {
     /* Today's local date as "YYYY-MM-DD", the format TMDB uses */
     public string today () {
         return new DateTime.now_local ().format ("%F");
@@ -133,7 +133,7 @@ namespace Aperture.Utils {
     }
 }
 
-namespace Aperture.JsonUtil {
+namespace Pipoca.JsonUtil {
     /* Null-safe accessors for TMDB's JSON, where most members can be null */
 
     public string? str (global::Json.Object o, string member) {

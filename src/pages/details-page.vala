@@ -1,5 +1,5 @@
-namespace Aperture {
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/pages/details-page.ui")]
+namespace Pipoca {
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/pages/details-page.ui")]
     public class DetailsPage : Adw.NavigationPage {
         /* Room for the header bar when there's no backdrop, and how far the header overlaps it */
         private const int MARGIN_NO_BACKDROP = 60;

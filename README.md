@@ -1,8 +1,8 @@
-# Aperture
+# Pipoca
 
 Keep track of your movies and TV shows.
 
-Aperture lets you build a watchlist of movies and TV shows, keep track of what
+Pipoca lets you build a watchlist of movies and TV shows, keep track of what
 you've watched, and find information about the latest releases. It is written
 in Vala with GTK 4, libadwaita and Blueprint.
 
@@ -26,7 +26,7 @@ Dependencies: `meson`, `valac`, `blueprint-compiler`, `gtk4 >= 4.18`,
 ```sh
 meson setup build -Dprofile=development -Dtmdb_api_key=YOUR_TMDB_READ_TOKEN
 ninja -C build
-GSETTINGS_SCHEMA_DIR=build/data ./build/src/aperture
+GSETTINGS_SCHEMA_DIR=build/data ./build/src/pipoca
 meson test -C build   # validates desktop file, metainfo and schema
 ```
 
@@ -34,7 +34,7 @@ meson test -C build   # validates desktop file, metainfo and schema
 
 ```sh
 flatpak-builder --user --install --force-clean .flatpak/build \
-  build-aux/flatpak/io.github.jonnsl.Aperture.Devel.json
+  build-aux/flatpak/io.github.jonnsl.Pipoca.Devel.json
 ```
 
 ### Arch Linux

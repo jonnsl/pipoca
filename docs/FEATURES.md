@@ -1,6 +1,6 @@
-# Aperture — Feature List
+# Pipoca — Feature List
 
-Aperture is a GNOME app to build a watchlist of movies and TV shows, track what
+Pipoca is a GNOME app to build a watchlist of movies and TV shows, track what
 you've watched, and keep up with new releases. Metadata comes from
 [TMDB](https://www.themoviedb.org/); the app never streams or downloads content.
 

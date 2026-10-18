@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $ApertureDetailsPage: Adw.NavigationPage {
+template $PipocaDetailsPage: Adw.NavigationPage {
   child: Adw.BreakpointBin {
     width-request: 360;
     height-request: 294;
@@ -83,7 +83,7 @@ template $ApertureDetailsPage: Adw.NavigationPage {
               child: Overlay {
                 valign: start;
 
-                child: $AperturePoster backdrop {
+                child: $PipocaPoster backdrop {
                   size: "w1280";
                   image-width: -1;
                   image-height: 320;
@@ -119,7 +119,7 @@ template $ApertureDetailsPage: Adw.NavigationPage {
                   Box header_box {
                     spacing: 24;
 
-                    $AperturePoster poster {
+                    $PipocaPoster poster {
                       valign: start;
 
                       styles [

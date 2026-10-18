@@ -3,18 +3,18 @@
   <id>@APP_ID@</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <name>Aperture</name>
+  <name>Pipoca</name>
   <summary>Keep track of your movies and TV shows</summary>
   <description>
-    <p>Aperture lets you build a watchlist of movies and TV shows, keep track of what you have watched, and find out about the latest releases.</p>
-    <p>Aperture does not let you watch or download content. This app uses the TMDB API but is not endorsed or certified by TMDB.</p>
+    <p>Pipoca lets you build a watchlist of movies and TV shows, keep track of what you have watched, and find out about the latest releases.</p>
+    <p>Pipoca does not let you watch or download content. This app uses the TMDB API but is not endorsed or certified by TMDB.</p>
   </description>
   <developer id="io.github.jonnsl">
     <name>Jonnathan Soares</name>
   </developer>
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
-  <url type="homepage">https://github.com/jonnsl/aperture</url>
-  <url type="bugtracker">https://github.com/jonnsl/aperture/issues</url>
+  <url type="homepage">https://github.com/jonnsl/pipoca</url>
+  <url type="bugtracker">https://github.com/jonnsl/pipoca/issues</url>
   <content_rating type="oars-1.1"/>
   <requires>
     <display_length compare="ge">360</display_length>

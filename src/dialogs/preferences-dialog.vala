@@ -1,5 +1,5 @@
-namespace Aperture {
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/dialogs/preferences-dialog.ui")]
+namespace Pipoca {
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/dialogs/preferences-dialog.ui")]
     public class PreferencesDialog : Adw.PreferencesDialog {
         [GtkChild] private unowned Adw.ComboRow language_row;
         [GtkChild] private unowned Adw.SwitchRow refresh_row;
@@ -157,14 +157,14 @@ namespace Aperture {
             background_row.sensitive = false;
             var allowed = false;
             try {
-                allowed = yield Background.request (_("Aperture checks for new episodes and releases to notify you about"), enabled);
+                allowed = yield Background.request (_("Pipoca checks for new episodes and releases to notify you about"), enabled);
             } catch (IOError.CANCELLED e) {
                 // The user dismissed the request
             } catch (Error e) {
                 warning ("Can't request to run in the background: %s", e.message);
             }
             if (enabled && !allowed) {
-                add_toast (new Adw.Toast (_("Aperture isn’t allowed to run in the background")));
+                add_toast (new Adw.Toast (_("Pipoca isn’t allowed to run in the background")));
             }
             // Turning it off always works; autostart is just left in place if removing it failed
             settings.set_boolean ("run-in-background", enabled && allowed);
@@ -302,7 +302,7 @@ namespace Aperture {
         private async void export_library () {
             var dialog = new Gtk.FileDialog () {
                 title = _("Export Library"),
-                initial_name = "aperture-library-%s.json".printf (new DateTime.now_local ().format ("%F")),
+                initial_name = "pipoca-library-%s.json".printf (new DateTime.now_local ().format ("%F")),
                 default_filter = json_filter (),
             };
             try {

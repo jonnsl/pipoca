@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public enum MediaType {
         MOVIE,
         TV;

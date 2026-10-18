@@ -1,4 +1,4 @@
-namespace Aperture.TitleActions {
+namespace Pipoca.TitleActions {
     /* Actions on titles shared by cards, rows and pages. Reversible ones offer Undo in a toast. */
 
     private void toast (Gtk.Widget source, Adw.Toast toast) {

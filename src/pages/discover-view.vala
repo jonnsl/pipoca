@@ -1,6 +1,6 @@
-namespace Aperture {
+namespace Pipoca {
     /* Shelves of TMDB lists, loaded the first time the view is shown */
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/pages/discover-view.ui")]
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/pages/discover-view.ui")]
     public class DiscoverView : Adw.Bin {
         /* Lists change slowly; reload when shown after this long */
         private const int64 MAX_AGE = TimeSpan.HOUR;

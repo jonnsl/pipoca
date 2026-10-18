@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /**
      * The single source of truth for the user's library.
      *
@@ -57,7 +57,7 @@ namespace Aperture {
         construct {
             tmdb = new TmdbClient ();
             titles = new ListStore (typeof (Title));
-            var path = Path.build_filename (Environment.get_user_data_dir (), "aperture", "library.db");
+            var path = Path.build_filename (Environment.get_user_data_dir (), "pipoca", "library.db");
             try {
                 db = new Database (path);
                 foreach (var t in db.load_library ()) {

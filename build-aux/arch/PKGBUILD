@@ -1,12 +1,12 @@
 # Maintainer: Jonnathan Soares <jonnsl@hotmail.com>
 
-pkgname=aperture-git
-_pkgname=aperture
+pkgname=pipoca-git
+_pkgname=pipoca
 pkgver=0.1.0
 pkgrel=1
 pkgdesc='Keep track of your movies and TV shows'
 arch=('x86_64' 'aarch64')
-url='https://github.com/jonnsl/aperture'
+url='https://github.com/jonnsl/pipoca'
 license=('GPL-3.0-or-later')
 depends=(
   'glib2'

@@ -1,11 +1,11 @@
-# Brazilian Portuguese translation for Aperture.
+# Brazilian Portuguese translation for Pipoca.
 # Copyright (C) 2026 Jonnathan Soares
-# This file is distributed under the same license as the aperture package.
+# This file is distributed under the same license as the pipoca package.
 # Jonnathan Soares <jonnsl@hotmail.com>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aperture\n"
+"Project-Id-Version: pipoca\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-17 16:43-0300\n"
 "PO-Revision-Date: 2026-10-17 02:21-0300\n"
@@ -17,103 +17,103 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: data/io.github.jonnsl.Aperture.desktop.in.in:2
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:6 src/application.vala:165
+#: data/io.github.jonnsl.Pipoca.desktop.in.in:2
+#: data/io.github.jonnsl.Pipoca.metainfo.xml.in.in:6 src/application.vala:165
 #: src/services/background.vala:103 src/window.blp:5 src/window.blp:21
-msgid "Aperture"
-msgstr "Aperture"
+msgid "Pipoca"
+msgstr "Pipoca"
 
-#: data/io.github.jonnsl.Aperture.desktop.in.in:3
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:7
+#: data/io.github.jonnsl.Pipoca.desktop.in.in:3
+#: data/io.github.jonnsl.Pipoca.metainfo.xml.in.in:7
 msgid "Keep track of your movies and TV shows"
 msgstr "Acompanhe seus filmes e séries"
 
 #. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/io.github.jonnsl.Aperture.desktop.in.in:10
+#: data/io.github.jonnsl.Pipoca.desktop.in.in:10
 msgid "movie;film;tv;series;show;episode;watchlist;tracker;"
 msgstr "movie;film;tv;series;show;episode;watchlist;tracker;filme;série;seriado;episódio;lista;assistir;"
 
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:9
+#: data/io.github.jonnsl.Pipoca.metainfo.xml.in.in:9
 msgid ""
-"Aperture lets you build a watchlist of movies and TV shows, keep track of "
+"Pipoca lets you build a watchlist of movies and TV shows, keep track of "
 "what you have watched, and find out about the latest releases."
 msgstr ""
-"O Aperture permite montar uma lista de filmes e séries para assistir, "
+"O Pipoca permite montar uma lista de filmes e séries para assistir, "
 "acompanhar o que você já assistiu e ficar por dentro dos últimos lançamentos."
 
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:10
+#: data/io.github.jonnsl.Pipoca.metainfo.xml.in.in:10
 msgid ""
-"Aperture does not let you watch or download content. This app uses the TMDB "
+"Pipoca does not let you watch or download content. This app uses the TMDB "
 "API but is not endorsed or certified by TMDB."
 msgstr ""
-"O Aperture não permite assistir nem baixar conteúdo. Este aplicativo usa a "
+"O Pipoca não permite assistir nem baixar conteúdo. Este aplicativo usa a "
 "API do TMDB, mas não é endossado nem certificado pelo TMDB."
 
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:13
+#: data/io.github.jonnsl.Pipoca.metainfo.xml.in.in:13
 msgid "Jonnathan Soares"
 msgstr "Jonnathan Soares"
 
-#: data/io.github.jonnsl.Aperture.metainfo.xml.in.in:30
+#: data/io.github.jonnsl.Pipoca.metainfo.xml.in.in:30
 msgid "Initial development release."
 msgstr "Versão inicial de desenvolvimento."
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:6
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:6
 msgid "Window width"
 msgstr "Largura da janela"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:10
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:10
 msgid "Window height"
 msgstr "Altura da janela"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:14
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:14
 msgid "Window maximized state"
 msgstr "Estado maximizado da janela"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:24
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:24
 msgid "Sort order of the library"
 msgstr "Ordem de classificação da biblioteca"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:28
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:28
 #: src/dialogs/preferences-dialog.blp:14
 msgid "Language of titles, overviews and episode names"
 msgstr "Idioma de títulos, sinopses e nomes de episódios"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:29
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:29
 msgid "A TMDB language tag such as “pt-BR”; empty for the system language"
 msgstr ""
 "Uma etiqueta de idioma do TMDB, como “pt-BR”; vazia para o idioma do sistema"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:33
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:33
 msgid "Refresh stale titles from TMDB at startup"
 msgstr "Atualizar títulos desatualizados a partir do TMDB ao iniciar"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:37
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:37
 msgid "Local date (YYYY-MM-DD) the window was last opened"
 msgstr "Data local (AAAA-MM-DD) em que a janela foi aberta pela última vez"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:38
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:38
 msgid "Titles with episodes or releases after this date get a “New” badge"
 msgstr ""
 "Títulos com episódios ou lançamentos após esta data recebem o selo “Novo”"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:42
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:42
 msgid "Notify about new episodes"
 msgstr "Notificar sobre novos episódios"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:46
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:46
 msgid "Notify about movie releases"
 msgstr "Notificar sobre estreias de filmes"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:50
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:50
 msgid "Local date (YYYY-MM-DD) of the last check for releases to notify about"
 msgstr ""
 "Data local (AAAA-MM-DD) da última verificação de lançamentos a notificar"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:54
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:54
 msgid "Keep running when the window is closed"
 msgstr "Continuar executando quando a janela for fechada"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:55
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:55
 msgid ""
 "Keep checking for new episodes and releases, and start at login without a "
 "window"
@@ -121,36 +121,36 @@ msgstr ""
 "Continuar verificando novos episódios e lançamentos, e iniciar sem janela ao "
 "entrar na sessão"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:59
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:59
 msgid "Use a custom TMDB API key"
 msgstr "Usar uma chave de API do TMDB personalizada"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:63
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:63
 msgid "Custom TMDB API key or read access token"
 msgstr "Chave de API do TMDB ou token de acesso de leitura personalizado"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:67
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:67
 msgid "Sync from Kodi"
 msgstr "Sincronizar com o Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:68
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:68
 msgid "Import titles and watch history from Kodi periodically"
 msgstr "Importar títulos e histórico do Kodi periodicamente"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:72
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:72
 msgid "Address of Kodi’s web server, e.g. http://192.168.1.10:8080"
 msgstr ""
 "Endereço do servidor web do Kodi, por exemplo, http://192.168.1.10:8080"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:76
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:76
 msgid "Username for Kodi’s web server"
 msgstr "Nome de usuário do servidor web do Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:81
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:81
 msgid "Minutes between Kodi syncs"
 msgstr "Minutos entre sincronizações com o Kodi"
 
-#: data/io.github.jonnsl.Aperture.gschema.xml.in:85
+#: data/io.github.jonnsl.Pipoca.gschema.xml.in:85
 msgid "When the last successful Kodi sync finished (Unix time)"
 msgstr ""
 "Quando terminou a última sincronização com o Kodi bem-sucedida (horário Unix)"
@@ -245,11 +245,11 @@ msgstr "Kodi"
 
 #: src/dialogs/preferences-dialog.blp:50
 msgid ""
-"Import movies, shows and watch history from Kodi’s library. Aperture only "
+"Import movies, shows and watch history from Kodi’s library. Pipoca only "
 "reads from Kodi and never changes anything there."
 msgstr ""
 "Importa filmes, séries e o histórico do que você assistiu da biblioteca do "
-"Kodi. O Aperture apenas lê do Kodi e nunca altera nada lá."
+"Kodi. O Pipoca apenas lê do Kodi e nunca altera nada lá."
 
 #: src/dialogs/preferences-dialog.blp:53
 msgid "Sync Automatically"
@@ -309,10 +309,10 @@ msgstr "TMDB"
 
 #: src/dialogs/preferences-dialog.blp:111
 msgid ""
-"Aperture comes with an API key. You can use your own key or read access "
+"Pipoca comes with an API key. You can use your own key or read access "
 "token instead."
 msgstr ""
-"O Aperture vem com uma chave de API. Você pode usar sua própria chave ou "
+"O Pipoca vem com uma chave de API. Você pode usar sua própria chave ou "
 "token de acesso de leitura."
 
 #: src/dialogs/preferences-dialog.blp:114
@@ -378,12 +378,12 @@ msgstr ""
 "Os títulos serão atualizados para o novo idioma quando você estiver online"
 
 #: src/dialogs/preferences-dialog.vala:160
-msgid "Aperture checks for new episodes and releases to notify you about"
-msgstr "O Aperture verifica novos episódios e lançamentos para notificar você"
+msgid "Pipoca checks for new episodes and releases to notify you about"
+msgstr "O Pipoca verifica novos episódios e lançamentos para notificar você"
 
 #: src/dialogs/preferences-dialog.vala:167
-msgid "Aperture isn’t allowed to run in the background"
-msgstr "O Aperture não tem permissão para executar em segundo plano"
+msgid "Pipoca isn’t allowed to run in the background"
+msgstr "O Pipoca não tem permissão para executar em segundo plano"
 
 #: src/dialogs/preferences-dialog.vala:214
 msgid "Password saved"
@@ -994,21 +994,21 @@ msgid "Kodi returned an error"
 msgstr "O Kodi retornou um erro"
 
 #: src/services/kodi-sync.vala:149
-msgid "Aperture Kodi password"
-msgstr "Senha do Kodi no Aperture"
+msgid "Pipoca Kodi password"
+msgstr "Senha do Kodi no Pipoca"
 
 #: src/services/kodi-sync.vala:203
 msgid "A sync is already running"
 msgstr "Uma sincronização já está em andamento"
 
 #: src/services/library-transfer.vala:82 src/services/library-transfer.vala:86
-msgid "This isn’t an Aperture library file"
-msgstr "Este não é um arquivo de biblioteca do Aperture"
+msgid "This isn’t an Pipoca library file"
+msgstr "Este não é um arquivo de biblioteca do Pipoca"
 
 #: src/services/library-transfer.vala:90
-msgid "This library file was made by a newer version of Aperture"
+msgid "This library file was made by a newer version of Pipoca"
 msgstr ""
-"Este arquivo de biblioteca foi criado por uma versão mais nova do Aperture"
+"Este arquivo de biblioteca foi criado por uma versão mais nova do Pipoca"
 
 #: src/services/library-transfer.vala:94
 msgid "This library file has no titles"
@@ -1246,12 +1246,12 @@ msgid "%d of %d episodes"
 msgstr "%d de %d episódios"
 
 #: src/widgets/poster-card.vala:97
-msgid "Released since you last opened Aperture"
-msgstr "Lançado desde a última vez que você abriu o Aperture"
+msgid "Released since you last opened Pipoca"
+msgstr "Lançado desde a última vez que você abriu o Pipoca"
 
 #: src/widgets/poster-card.vala:98
-msgid "New episodes since you last opened Aperture"
-msgstr "Novos episódios desde a última vez que você abriu o Aperture"
+msgid "New episodes since you last opened Pipoca"
+msgstr "Novos episódios desde a última vez que você abriu o Pipoca"
 
 #: src/widgets/shelf.blp:25
 msgid "Scroll Back"
@@ -1359,8 +1359,8 @@ msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de teclado"
 
 #: src/window.blp:288
-msgid "_About Aperture"
-msgstr "_Sobre o Aperture"
+msgid "_About Pipoca"
+msgstr "_Sobre o Pipoca"
 
 #: src/window.vala:102
 msgid "All Statuses"

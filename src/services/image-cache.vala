@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /**
      * Downloads TMDB images, keeps them on disk by size and path, and decodes
      * them off the main thread. Recently used textures stay in memory.
@@ -41,9 +41,9 @@ namespace Aperture {
 
         construct {
             session = (Soup.Session) Object.new (typeof (Soup.Session),
-                                                 "user-agent", "Aperture/%s ".printf (Config.VERSION),
+                                                 "user-agent", "Pipoca/%s ".printf (Config.VERSION),
                                                  "max-conns-per-host", 6);
-            dir = Path.build_filename (Environment.get_user_cache_dir (), "aperture", "images");
+            dir = Path.build_filename (Environment.get_user_cache_dir (), "pipoca", "images");
             try {
                 decoder = new ThreadPool<DecodeJob>.with_owned_data ((job) => {
                     try {

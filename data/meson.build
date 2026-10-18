@@ -3,7 +3,7 @@ desktop_conf.set('APP_ID', application_id)
 
 desktop_file = i18n.merge_file(
   input: configure_file(
-    input: 'io.github.jonnsl.Aperture.desktop.in.in',
+    input: 'io.github.jonnsl.Pipoca.desktop.in.in',
     output: '@BASENAME@',
     configuration: desktop_conf,
   ),
@@ -21,7 +21,7 @@ endif
 
 metainfo_file = i18n.merge_file(
   input: configure_file(
-    input: 'io.github.jonnsl.Aperture.metainfo.xml.in.in',
+    input: 'io.github.jonnsl.Pipoca.metainfo.xml.in.in',
     output: '@BASENAME@',
     configuration: desktop_conf,
   ),
@@ -39,7 +39,7 @@ if appstreamcli.found()
 endif
 
 gschema = configure_file(
-  input: 'io.github.jonnsl.Aperture.gschema.xml.in',
+  input: 'io.github.jonnsl.Pipoca.gschema.xml.in',
   output: '@0@.gschema.xml'.format(application_id),
   configuration: desktop_conf,
   install: true,

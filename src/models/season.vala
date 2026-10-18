@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public class Season : Object {
         public int64 show_id { get; construct; }
         public int season_number { get; construct; }

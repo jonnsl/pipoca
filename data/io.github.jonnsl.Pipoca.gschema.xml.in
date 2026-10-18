@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="aperture">
-  <schema id="@APP_ID@" path="/io/github/jonnsl/Aperture/">
+<schemalist gettext-domain="pipoca">
+  <schema id="@APP_ID@" path="/io/github/jonnsl/Pipoca/">
     <key name="window-width" type="i">
       <default>1000</default>
       <summary>Window width</summary>

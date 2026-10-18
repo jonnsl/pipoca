@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public errordomain DatabaseError {
         FAILED,
     }

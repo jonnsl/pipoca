@@ -1,4 +1,4 @@
-using Aperture; // vala-lint=using-directive
+using Pipoca; // vala-lint=using-directive
 
 /* Status and progress derivation, against a temporary database (see tests/meson.build) */
 
@@ -139,7 +139,7 @@ void test_movie () {
 }
 
 void test_persistence () {
-    var path = Path.build_filename (Environment.get_user_data_dir (), "aperture", "library.db");
+    var path = Path.build_filename (Environment.get_user_data_dir (), "pipoca", "library.db");
     try {
         var db = new Database (path);
         var titles = db.load_library ();
@@ -195,7 +195,7 @@ void test_export () {
         error (e.message);
     }
     var root = parse_object (data);
-    assert (root.get_string_member ("format") == "aperture-library");
+    assert (root.get_string_member ("format") == "pipoca-library");
     assert (root.get_int_member ("version") == 1);
     var titles = root.get_array_member ("titles");
     assert (titles.get_length () == lib.titles.get_n_items ());
@@ -240,7 +240,7 @@ void test_export () {
 void test_import () {
     var lib = Library.get_default ();
     var data = """{
-        "format": "aperture-library",
+        "format": "pipoca-library",
         "version": 1,
         "titles": [
             {"media_type": "movie", "tmdb_id": 400, "name": "Imported Movie", "release_date": "1999-03-31",
@@ -285,7 +285,7 @@ void test_import_errors () {
         "not json",
         "[]",
         """{"format": "something-else", "version": 1, "titles": []}""",
-        """{"format": "aperture-library", "version": 1}""",
+        """{"format": "pipoca-library", "version": 1}""",
     };
     foreach (var data in bad) {
         try {
@@ -296,7 +296,7 @@ void test_import_errors () {
         }
     }
     try {
-        LibraryTransfer.import_json (lib, """{"format": "aperture-library", "version": 99, "titles": []}""");
+        LibraryTransfer.import_json (lib, """{"format": "pipoca-library", "version": 99, "titles": []}""");
         assert_not_reached ();
     } catch (TransferError.UNSUPPORTED_VERSION e) {
         // Expected
@@ -338,7 +338,7 @@ void test_kodi_import () {
     var episodes = new GenericArray<KodiItem> ();
     episodes.add (kodi_episode (7, 1, 1, 1, 1700000100));
     episodes.add (kodi_episode (7, 1, 2, 0, 0));
-    episodes.add (kodi_episode (8, 1, 1, 1, 1700000200));  // already watched in Aperture
+    episodes.add (kodi_episode (8, 1, 1, 1, 1700000200));  // already watched in Pipoca
     episodes.add (kodi_episode (99, 1, 1, 1, 1700000300)); // show Kodi didn't list
 
     KodiSyncResult r;
@@ -882,7 +882,7 @@ void test_imdb_apply () {
 int main (string[] args) {
     Test.init (ref args);
     // Start from an empty database
-    var path = Path.build_filename (Environment.get_user_data_dir (), "aperture", "library.db");
+    var path = Path.build_filename (Environment.get_user_data_dir (), "pipoca", "library.db");
     foreach (var suffix in new string[] { "", "-wal", "-shm" }) {
         FileUtils.remove (path + suffix);
     }

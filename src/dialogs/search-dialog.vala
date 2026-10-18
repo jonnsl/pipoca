@@ -1,5 +1,5 @@
-namespace Aperture {
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/dialogs/search-dialog.ui")]
+namespace Pipoca {
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/dialogs/search-dialog.ui")]
     public class SearchDialog : Adw.Dialog {
         [GtkChild] private unowned Gtk.SearchEntry search_entry;
         [GtkChild] private unowned Adw.ToggleGroup filter_group;

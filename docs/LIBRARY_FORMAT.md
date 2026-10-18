@@ -1,6 +1,6 @@
 # Library File Format
 
-Aperture can export your library to a JSON file and import it back
+Pipoca can export your library to a JSON file and import it back
 (Preferences → Advanced → Library). Use it for backups, to move your library
 to another computer, or to read your data with other tools.
 
@@ -10,7 +10,7 @@ The file is UTF-8 JSON. This document describes **version 1**.
 
 ```json
 {
-  "format": "aperture-library",
+  "format": "pipoca-library",
   "version": 1,
   "exported_at": "2026-10-17T05:30:00Z",
   "titles": [
@@ -44,7 +44,7 @@ The file is UTF-8 JSON. This document describes **version 1**.
 
 | Member        | Type   | Required | Description                                          |
 |---------------|--------|----------|------------------------------------------------------|
-| `format`      | string | yes      | Always `"aperture-library"`.                         |
+| `format`      | string | yes      | Always `"pipoca-library"`.                         |
 | `version`     | number | yes      | Format version. Currently `1`.                       |
 | `exported_at` | string | no       | When the file was written (timestamp, see below).    |
 | `titles`      | array  | yes      | The titles in the library, as *title* objects.       |
@@ -67,8 +67,8 @@ identify titles, so `media_type` plus `tmdb_id` must be unique in a file.
 | `watched`      | array  | no       | Watch events, as *watch event* objects.                                       |
 
 `name`, `release_date` and `poster_path` are only a snapshot so the library
-looks right before Aperture downloads the full details from TMDB. Imports
-never use them to overwrite details Aperture already has.
+looks right before Pipoca downloads the full details from TMDB. Imports
+never use them to overwrite details Pipoca already has.
 
 ## Watch event
 
@@ -85,7 +85,7 @@ Movie events have no `season` or `episode`.
 
 ## Timestamps
 
-ISO 8601 date and time. Aperture writes UTC with a `Z` suffix, e.g.
+ISO 8601 date and time. Pipoca writes UTC with a `Z` suffix, e.g.
 `2026-10-17T05:30:00Z`. Imports accept any offset, e.g.
 `2026-10-17T02:30:00-03:00`.
 
@@ -105,5 +105,5 @@ overwrites anything:
 - Unknown members are ignored, so newer files with extra data still import.
 - A file whose `version` is newer than the app supports is rejected.
 
-After an import, Aperture downloads the details of the new titles from TMDB
+After an import, Pipoca downloads the details of the new titles from TMDB
 the next time it's online.

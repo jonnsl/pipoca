@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public errordomain KodiError {
         NOT_CONFIGURED,
         UNAUTHORIZED,

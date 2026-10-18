@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /* A cast or crew member: photo, name and role. Opens the person on TMDB. */
     public class PersonCard : Gtk.Button {
         private const int AVATAR_SIZE = 96;

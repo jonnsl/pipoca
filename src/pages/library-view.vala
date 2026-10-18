@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public enum LibraryKind {
         WATCHLIST,
         WATCHED,
@@ -6,7 +6,7 @@ namespace Aperture {
     }
 
     /* A grid of library titles, split into sections, with empty states */
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/pages/library-view.ui")]
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/pages/library-view.ui")]
     public class LibraryView : Adw.Bin {
         [GtkChild] private unowned Gtk.Stack stack;
         [GtkChild] private unowned Gtk.Box sections_box;

@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     /* One TMDB list on the Discover view */
     public class DiscoverList : Object {
         public string title;
@@ -51,7 +51,7 @@ namespace Aperture {
     }
 
     /* A header and a horizontal row of posters from a DiscoverList */
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/widgets/shelf.ui")]
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/widgets/shelf.ui")]
     public class Shelf : Gtk.Box {
         [GtkChild] private unowned Gtk.Label title_label;
         [GtkChild] private unowned Gtk.Button prev_button;

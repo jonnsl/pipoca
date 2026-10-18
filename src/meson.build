@@ -21,9 +21,9 @@ blueprints = custom_target('blueprints',
   ],
 )
 
-resources = gnome.compile_resources('aperture-resources',
-  'aperture.gresource.xml',
-  c_name: 'aperture',
+resources = gnome.compile_resources('pipoca-resources',
+  'pipoca.gresource.xml',
+  c_name: 'pipoca',
   dependencies: blueprints,
 )
 
@@ -38,7 +38,7 @@ deps = [
 ]
 
 # Models and services, without UI, shared with the tests
-core_lib = static_library('aperture-core',
+core_lib = static_library('pipoca-core',
   files(
     'models/credit.vala',
     'models/episode.vala',
@@ -87,7 +87,7 @@ sources = files(
   'window.vala',
 )
 
-executable('aperture', sources, resources,
+executable('pipoca', sources, resources,
   dependencies: [deps, core_dep],
   include_directories: config_inc,
   vala_args: [

@@ -1,4 +1,4 @@
-namespace Aperture {
+namespace Pipoca {
     public errordomain TmdbError {
         NO_API_KEY,
         HTTP,
@@ -40,7 +40,7 @@ namespace Aperture {
 
         construct {
             session = (Soup.Session) Object.new (typeof (Soup.Session),
-                                                 "user-agent", "Aperture/%s ".printf (Config.VERSION),
+                                                 "user-agent", "Pipoca/%s ".printf (Config.VERSION),
                                                  "max-conns-per-host", MAX_ACTIVE,
                                                  "timeout", 30);
             settings = new Settings (Config.APPLICATION_ID);

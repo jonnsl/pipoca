@@ -1,5 +1,5 @@
-namespace Aperture {
-    [GtkTemplate (ui = "/io/github/jonnsl/Aperture/widgets/episode-row.ui")]
+namespace Pipoca {
+    [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/widgets/episode-row.ui")]
     public class EpisodeRow : Gtk.ListBoxRow {
         [GtkChild] private unowned Poster still;
         [GtkChild] private unowned Gtk.Label title_label;

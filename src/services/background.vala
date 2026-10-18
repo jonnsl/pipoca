@@ -1,4 +1,4 @@
-namespace Aperture.Background {
+namespace Pipoca.Background {
     /* Command line for starting at login without a window */
     private const string BACKGROUND_OPTION = "--background";
 
@@ -22,7 +22,7 @@ namespace Aperture.Background {
         var options = new VariantBuilder (new VariantType ("a{sv}"));
         options.add ("{sv}", "reason", new Variant.string (reason));
         options.add ("{sv}", "autostart", new Variant.boolean (autostart));
-        options.add ("{sv}", "commandline", new Variant.strv ({ "aperture", BACKGROUND_OPTION }));
+        options.add ("{sv}", "commandline", new Variant.strv ({ "pipoca", BACKGROUND_OPTION }));
         options.add ("{sv}", "dbus-activatable", new Variant.boolean (false));
         var results = yield call_portal_request ("org.freedesktop.portal.Background", "RequestBackground", options);
         bool allowed;
@@ -52,7 +52,7 @@ namespace Aperture.Background {
      */
     private async Variant call_portal_request (string iface, string method, VariantBuilder options) throws Error {
         var bus = yield GLib.Bus.get (BusType.SESSION);
-        var token = "aperture%u".printf (Random.next_int ());
+        var token = "pipoca%u".printf (Random.next_int ());
         options.add ("{sv}", "handle_token", new Variant.string (token));
         var sender = bus.unique_name.substring (1).replace (".", "_");
         var handle = "/org/freedesktop/portal/desktop/request/%s/%s".printf (sender, token);
@@ -100,7 +100,7 @@ namespace Aperture.Background {
         var exe = FileUtils.read_link ("/proc/self/exe");
         var entry = new KeyFile ();
         entry.set_string ("Desktop Entry", "Type", "Application");
-        entry.set_string ("Desktop Entry", "Name", _("Aperture"));
+        entry.set_string ("Desktop Entry", "Name", _("Pipoca"));
         entry.set_string ("Desktop Entry", "Exec", "%s %s".printf (Shell.quote (exe), BACKGROUND_OPTION));
         entry.set_string ("Desktop Entry", "Icon", Config.APPLICATION_ID);
         entry.set_boolean ("Desktop Entry", "X-GNOME-Autostart-enabled", true);
