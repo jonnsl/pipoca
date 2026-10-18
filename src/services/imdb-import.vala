@@ -215,7 +215,9 @@ namespace Aperture {
          */
         public async void find_all (TmdbClient tmdb, GenericArray<ImdbItem> items, ProgressFunc? progress,
                                     Cancellable? cancellable) throws Error {
-            var lookups = new Lookups () { items = items };
+            var lookups = new Lookups () {
+                items = items,
+            };
             lookups.progressed.connect (() => {
                 if (progress != null) {
                     progress (lookups.done, items.length);

@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    env:
+      # vala-lint has no releases; pin the upstream commit
+      VALA_LINT_COMMIT: 34124fb326f63d9f24339175818425c310ca747c
+    steps:
+      - name: Install dependencies
+        run: pacman -Syu --noconfirm --needed gcc pkgconf git meson vala json-glib uncrustify
+
+      - uses: actions/checkout@v4
+
+      - name: Build vala-lint
+        run: |
+          git clone https://github.com/vala-lang/vala-lint.git /tmp/vala-lint
+          git -C /tmp/vala-lint checkout "$VALA_LINT_COMMIT"
+          meson setup /tmp/vala-lint/build /tmp/vala-lint --prefix=/usr -Dbuildtype=release
+          meson install -C /tmp/vala-lint/build
+
+      - name: Check style
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          build-aux/check-style.sh
+
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install dependencies
+        run: >
+          pacman -Syu --noconfirm --needed
+          gcc pkgconf git meson vala blueprint-compiler
+          glib2 gtk4 libadwaita libsoup3 libsecret json-glib sqlite
+          appstream desktop-file-utils
+
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          meson setup build -Dprofile=development
+          meson compile -C build
+
+      - name: Test
+        run: meson test -C build --print-errorlogs

@@ -118,7 +118,7 @@ namespace Aperture {
             id = 0;
             var parts = key.split (":");
             return parts.length == 2 && MediaType.try_parse (parts[0], out media_type)
-                && int64.try_parse (parts[1], out id) && id > 0;
+                   && int64.try_parse (parts[1], out id) && id > 0;
         }
 
         public bool is_movie {

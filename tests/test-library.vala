@@ -1,4 +1,4 @@
-using Aperture;
+using Aperture; // vala-lint=using-directive
 
 /* Status and progress derivation, against a temporary database (see tests/meson.build) */
 
@@ -814,7 +814,10 @@ void test_imdb_parse () {
 
 void test_imdb_apply () {
     var lib = Library.get_default ();
-    var item = new ImdbItem () { imdb_id = "tt1", date = 1700000000 };
+    var item = new ImdbItem () {
+        imdb_id = "tt1",
+        date = 1700000000,
+    };
     var movie = ImdbImport.match_from_find (item, parse_object ("""{"movie_results": [
         {"id": 1100, "title": "IMDb Movie", "release_date": "2001-01-01", "poster_path": "/p.jpg"}],
         "tv_results": [], "tv_episode_results": []}"""));
@@ -861,7 +864,10 @@ void test_imdb_apply () {
     assert (r.titles_added == 0 && r.events_added == 0);
 
     // A watchlist only adds titles
-    var item2 = new ImdbItem () { imdb_id = "tt2", date = 0 };
+    var item2 = new ImdbItem () {
+        imdb_id = "tt2",
+        date = 0,
+    };
     var listed = new GenericArray<ImdbMatch> ();
     listed.add (ImdbImport.match_from_find (item2, parse_object ("""{"movie_results": [{"id": 1103, "title": "Later"}]}""")));
     try {

@@ -209,7 +209,7 @@ namespace Aperture {
             if (t.is_movie) {
                 var date = t.release_date;
                 return t.status == TitleStatus.PLAN_TO_WATCH && date != null && date.length == 10
-                    && date > new_since && date <= Utils.today ();
+                       && date > new_since && date <= Utils.today ();
             }
             return db.has_new_episodes (t.id, new_since);
         }

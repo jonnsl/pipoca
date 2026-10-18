@@ -165,7 +165,7 @@ namespace Aperture {
             }
             var needle = text.casefold ();
             return t.name.casefold ().contains (needle)
-                || (t.original_name != null && t.original_name.casefold ().contains (needle));
+                   || (t.original_name != null && t.original_name.casefold ().contains (needle));
         }
 
         private int compare (Object a, Object b) {

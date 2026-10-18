@@ -124,7 +124,7 @@ namespace Aperture {
 
             yield acquire ();
             try {
-                for (var attempt = 1;; attempt++) {
+                for (var attempt = 1;; attempt++) { // vala-lint=double-semicolon
                     var msg = new Soup.Message ("GET", uri.str);
                     msg.request_headers.append ("Accept", "application/json");
                     if (is_token) {
@@ -167,6 +167,8 @@ namespace Aperture {
         public async GenericArray<Title> search (string text, SearchFilter filter, Cancellable? cancellable = null) throws Error {
             string path;
             MediaType? fallback = null;
+            // Uncrustify misreads nullable parameter types as ternaries and misindents the last label
+            // *INDENT-OFF*
             switch (filter) {
             case SearchFilter.MOVIES:
                 path = "/search/movie";
@@ -180,6 +182,7 @@ namespace Aperture {
                 path = "/search/multi";
                 break;
             }
+            // *INDENT-ON*
             var obj = yield get_object (path, { "query=" + Uri.escape_string (text), "include_adult=false" }, cancellable);
             // /search/multi also returns people; parse_list skips them
             int total_pages;

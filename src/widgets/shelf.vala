@@ -18,7 +18,7 @@ namespace Aperture {
         }
 
         public static DiscoverList[] get_all () {
-            return {
+            DiscoverList[] lists = {
                 new DiscoverList (_("Trending This Week"), "/trending/all/week", null),
                 new DiscoverList (_("Popular Movies"), "/movie/popular", MediaType.MOVIE),
                 new DiscoverList (_("Popular Shows"), "/tv/popular", MediaType.TV),
@@ -26,6 +26,7 @@ namespace Aperture {
                 new DiscoverList (_("Upcoming Movies"), "/movie/upcoming", MediaType.MOVIE, true),
                 new DiscoverList (_("Airing Today"), "/tv/airing_today", MediaType.TV),
             };
+            return lists;
         }
 
         /* TMDB's recommendations based on @t */

@@ -44,6 +44,16 @@ cd build-aux/arch
 TMDB_API_KEY=YOUR_TMDB_READ_TOKEN makepkg -si   # the token is optional
 ```
 
+### Code style
+
+Vala sources are formatted with [Uncrustify](https://github.com/uncrustify/uncrustify)
+and checked with [vala-lint](https://github.com/vala-lang/vala-lint); CI runs both.
+
+```sh
+build-aux/check-style.sh         # check
+build-aux/check-style.sh --fix   # reformat in place
+```
+
 ## License
 
 GPL-3.0-or-later. See [COPYING](COPYING).
