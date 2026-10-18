@@ -1,12 +1,68 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <rect x="8" y="12" width="112" height="108" rx="20" fill="#241f31"/>
-  <rect x="8" y="8" width="112" height="104" rx="20" fill="#3d3846"/>
-  <circle cx="64" cy="60" r="38" fill="#1c71d8"/>
-  <g fill="#62a0ea">
-    <path d="M64 22 L80 48 L48 48 Z"/>
-    <path d="M100 60 L74 76 L74 44 Z"/>
-    <path d="M64 98 L48 72 L80 72 Z"/>
-    <path d="M28 60 L54 44 L54 76 Z"/>
+  <defs>
+    <linearGradient id="puff" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#fdf9e6"/>
+      <stop offset="1" stop-color="#f9e98a"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="22" y1="0" x2="106" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000" stop-opacity="0.18"/>
+      <stop offset="0.3" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.7" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.22"/>
+    </linearGradient>
+    <clipPath id="bucket"><path d="M22,52 L106,52 L95,108 Q94,114 88,114 L40,114 Q34,114 33,108 Z"/></clipPath>
+  </defs>
+  <!-- popcorn -->
+    <g fill="#deddda"><circle cx="64.0" cy="22.5" r="8.6"/><circle cx="58.5" cy="25.9" r="7.2"/><circle cx="58.8" cy="17.6" r="6.5"/><circle cx="66.9" cy="17.0" r="7.3"/><circle cx="71.1" cy="23.5" r="6.2"/><circle cx="65.4" cy="28.9" r="6.8"/></g>
+  <g fill="url(#puff)"><circle cx="64.0" cy="20.0" r="8.6"/><circle cx="58.5" cy="23.4" r="7.2"/><circle cx="58.8" cy="15.1" r="6.5"/><circle cx="66.9" cy="14.5" r="7.3"/><circle cx="71.1" cy="21.0" r="6.2"/><circle cx="65.4" cy="26.4" r="6.8"/></g>
+  <ellipse cx="66.6" cy="27.1" rx="3.6" ry="2.6" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="44.0" cy="29.5" r="8.6"/><circle cx="49.7" cy="32.7" r="7.2"/><circle cx="42.3" cy="36.4" r="6.5"/><circle cx="37.8" cy="29.6" r="7.3"/><circle cx="41.4" cy="22.8" r="6.2"/><circle cx="48.9" cy="25.2" r="6.8"/></g>
+  <g fill="url(#puff)"><circle cx="44.0" cy="27.0" r="8.6"/><circle cx="49.7" cy="30.2" r="7.2"/><circle cx="42.3" cy="33.9" r="6.5"/><circle cx="37.8" cy="27.1" r="7.3"/><circle cx="41.4" cy="20.3" r="6.2"/><circle cx="48.9" cy="22.7" r="6.8"/></g>
+  <ellipse cx="46.6" cy="34.1" rx="3.6" ry="2.6" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="85.0" cy="30.5" r="8.6"/><circle cx="89.9" cy="26.2" r="7.2"/><circle cx="90.9" cy="34.5" r="6.5"/><circle cx="83.0" cy="36.4" r="7.3"/><circle cx="77.9" cy="30.6" r="6.2"/><circle cx="82.7" cy="24.4" r="6.8"/></g>
+  <g fill="url(#puff)"><circle cx="85.0" cy="28.0" r="8.6"/><circle cx="89.9" cy="23.7" r="7.2"/><circle cx="90.9" cy="32.0" r="6.5"/><circle cx="83.0" cy="33.9" r="7.3"/><circle cx="77.9" cy="28.1" r="6.2"/><circle cx="82.7" cy="21.9" r="6.8"/></g>
+  <ellipse cx="87.6" cy="35.1" rx="3.6" ry="2.6" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="30.0" cy="40.5" r="7.9"/><circle cx="34.9" cy="37.0" r="6.6"/><circle cx="35.1" cy="44.7" r="6.0"/><circle cx="27.7" cy="45.8" r="6.7"/><circle cx="23.4" cy="40.0" r="5.8"/><circle cx="28.3" cy="34.7" r="6.2"/></g>
+  <g fill="url(#puff)"><circle cx="30.0" cy="38.0" r="7.9"/><circle cx="34.9" cy="34.5" r="6.6"/><circle cx="35.1" cy="42.2" r="6.0"/><circle cx="27.7" cy="43.3" r="6.7"/><circle cx="23.4" cy="37.5" r="5.8"/><circle cx="28.3" cy="32.2" r="6.2"/></g>
+  <ellipse cx="32.4" cy="44.6" rx="3.4" ry="2.4" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="55.0" cy="35.5" r="9.2"/><circle cx="51.1" cy="41.3" r="7.7"/><circle cx="47.7" cy="33.0" r="7.0"/><circle cx="55.5" cy="28.8" r="7.8"/><circle cx="62.4" cy="33.4" r="6.7"/><circle cx="59.1" cy="41.2" r="7.3"/></g>
+  <g fill="url(#puff)"><circle cx="55.0" cy="33.0" r="9.2"/><circle cx="51.1" cy="38.8" r="7.7"/><circle cx="47.7" cy="30.5" r="7.0"/><circle cx="55.5" cy="26.3" r="7.8"/><circle cx="62.4" cy="30.9" r="6.7"/><circle cx="59.1" cy="38.7" r="7.3"/></g>
+  <ellipse cx="57.8" cy="40.7" rx="3.9" ry="2.8" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="77.0" cy="36.5" r="9.2"/><circle cx="78.3" cy="29.6" r="7.7"/><circle cx="84.7" cy="36.0" r="7.0"/><circle cx="79.2" cy="42.9" r="7.8"/><circle cx="71.0" cy="41.3" r="6.7"/><circle cx="71.0" cy="32.9" r="7.3"/></g>
+  <g fill="url(#puff)"><circle cx="77.0" cy="34.0" r="9.2"/><circle cx="78.3" cy="27.1" r="7.7"/><circle cx="84.7" cy="33.5" r="7.0"/><circle cx="79.2" cy="40.4" r="7.8"/><circle cx="71.0" cy="38.8" r="6.7"/><circle cx="71.0" cy="30.4" r="7.3"/></g>
+  <ellipse cx="79.8" cy="41.7" rx="3.9" ry="2.8" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="99.0" cy="42.5" r="7.9"/><circle cx="98.7" cy="48.5" r="6.6"/><circle cx="92.5" cy="43.9" r="6.0"/><circle cx="96.4" cy="37.4" r="6.7"/><circle cx="103.5" cy="37.7" r="5.8"/><circle cx="104.5" cy="44.8" r="6.2"/></g>
+  <g fill="url(#puff)"><circle cx="99.0" cy="40.0" r="7.9"/><circle cx="98.7" cy="46.0" r="6.6"/><circle cx="92.5" cy="41.4" r="6.0"/><circle cx="96.4" cy="34.9" r="6.7"/><circle cx="103.5" cy="35.2" r="5.8"/><circle cx="104.5" cy="42.3" r="6.2"/></g>
+  <ellipse cx="101.4" cy="46.6" rx="3.4" ry="2.4" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="24.0" cy="52.5" r="6.6"/><circle cx="27.7" cy="49.2" r="5.5"/><circle cx="28.6" cy="55.5" r="5.0"/><circle cx="22.5" cy="57.1" r="5.6"/><circle cx="18.5" cy="52.7" r="4.8"/><circle cx="22.1" cy="47.9" r="5.2"/></g>
+  <g fill="url(#puff)"><circle cx="24.0" cy="50.0" r="6.6"/><circle cx="27.7" cy="46.7" r="5.5"/><circle cx="28.6" cy="53.0" r="5.0"/><circle cx="22.5" cy="54.6" r="5.6"/><circle cx="18.5" cy="50.2" r="4.8"/><circle cx="22.1" cy="45.4" r="5.2"/></g>
+  <ellipse cx="26.0" cy="55.5" rx="2.8" ry="2.0" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="43.0" cy="49.5" r="8.6"/><circle cx="43.9" cy="55.9" r="7.2"/><circle cx="36.4" cy="52.3" r="6.5"/><circle cx="39.2" cy="44.6" r="7.3"/><circle cx="46.8" cy="43.4" r="6.2"/><circle cx="49.4" cy="50.9" r="6.8"/></g>
+  <g fill="url(#puff)"><circle cx="43.0" cy="47.0" r="8.6"/><circle cx="43.9" cy="53.4" r="7.2"/><circle cx="36.4" cy="49.8" r="6.5"/><circle cx="39.2" cy="42.1" r="7.3"/><circle cx="46.8" cy="40.9" r="6.2"/><circle cx="49.4" cy="48.4" r="6.8"/></g>
+  <ellipse cx="45.6" cy="54.1" rx="3.6" ry="2.6" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="65.0" cy="50.5" r="9.2"/><circle cx="61.4" cy="44.5" r="7.7"/><circle cx="70.3" cy="45.0" r="7.0"/><circle cx="70.9" cy="53.8" r="7.8"/><circle cx="63.8" cy="58.1" r="6.7"/><circle cx="58.1" cy="51.8" r="7.3"/></g>
+  <g fill="url(#puff)"><circle cx="65.0" cy="48.0" r="9.2"/><circle cx="61.4" cy="42.0" r="7.7"/><circle cx="70.3" cy="42.5" r="7.0"/><circle cx="70.9" cy="51.3" r="7.8"/><circle cx="63.8" cy="55.6" r="6.7"/><circle cx="58.1" cy="49.3" r="7.3"/></g>
+  <ellipse cx="67.8" cy="55.7" rx="3.9" ry="2.8" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="87.0" cy="50.5" r="8.6"/><circle cx="92.5" cy="54.0" r="7.2"/><circle cx="84.8" cy="57.3" r="6.5"/><circle cx="80.8" cy="50.2" r="7.3"/><circle cx="84.9" cy="43.7" r="6.2"/><circle cx="92.2" cy="46.6" r="6.8"/></g>
+  <g fill="url(#puff)"><circle cx="87.0" cy="48.0" r="8.6"/><circle cx="92.5" cy="51.5" r="7.2"/><circle cx="84.8" cy="54.8" r="6.5"/><circle cx="80.8" cy="47.7" r="7.3"/><circle cx="84.9" cy="41.2" r="6.2"/><circle cx="92.2" cy="44.1" r="6.8"/></g>
+  <ellipse cx="89.6" cy="55.1" rx="3.6" ry="2.6" fill="#e5a50a"/>
+  <g fill="#deddda"><circle cx="105.0" cy="53.5" r="5.9"/><circle cx="100.6" cy="54.4" r="5.0"/><circle cx="102.8" cy="49.1" r="4.5"/><circle cx="108.2" cy="50.6" r="5.0"/><circle cx="109.4" cy="55.8" r="4.3"/><circle cx="104.4" cy="58.0" r="4.7"/></g>
+  <g fill="url(#puff)"><circle cx="105.0" cy="51.0" r="5.9"/><circle cx="100.6" cy="51.9" r="5.0"/><circle cx="102.8" cy="46.6" r="4.5"/><circle cx="108.2" cy="48.1" r="5.0"/><circle cx="109.4" cy="53.3" r="4.3"/><circle cx="104.4" cy="55.5" r="4.7"/></g>
+  <ellipse cx="106.8" cy="56.0" rx="2.5" ry="1.8" fill="#e5a50a"/>
+  <!-- bucket depth -->
+  <path d="M22,56 L106,56 L95,112 Q94,118 88,118 L40,118 Q34,118 33,112 Z" fill="#a51d2d"/>
+  <!-- bucket body -->
+  <g clip-path="url(#bucket)">
+    <rect x="0" y="0" width="128" height="128" fill="#f6f5f4"/>
+    <g fill="#e01b24">
+      <path d="M19.54,42 L33.14,42 L64,269.0 Z"/><path d="M44.65,42 L58.25,42 L64,269.0 Z"/><path d="M69.75,42 L83.35,42 L64,269.0 Z"/><path d="M94.86,42 L108.46,42 L64,269.0 Z"/>
+    </g>
+    <rect x="0" y="0" width="128" height="128" fill="url(#shade)"/>
+    <rect x="0" y="110" width="128" height="8" fill="#000" opacity="0.12"/>
   </g>
-  <circle cx="64" cy="60" r="12" fill="#1a5fb4"/>
+  <!-- rim -->
+  <rect x="18" y="50" width="92" height="10" rx="3" fill="#a51d2d"/>
+  <rect x="18" y="48" width="92" height="10" rx="3" fill="#c01c28"/>
+  <rect x="20" y="49" width="88" height="2" rx="1" fill="#ffffff" opacity="0.25"/>
 </svg>
