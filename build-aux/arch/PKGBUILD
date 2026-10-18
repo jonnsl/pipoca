@@ -1,0 +1,61 @@
+# Maintainer: Jonnathan Soares <jonnsl@hotmail.com>
+
+pkgname=aperture-git
+_pkgname=aperture
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Keep track of your movies and TV shows'
+arch=('x86_64' 'aarch64')
+url='https://github.com/jonnsl/aperture'
+license=('GPL-3.0-or-later')
+depends=(
+  'glib2'
+  'gtk4'
+  'libadwaita'
+  'libsoup3'
+  'libsecret'
+  'json-glib'
+  'sqlite'
+  'hicolor-icon-theme'
+)
+makedepends=(
+  'git'
+  'meson'
+  'vala'
+  'blueprint-compiler'
+)
+checkdepends=(
+  'appstream'
+  'desktop-file-utils'
+)
+provides=("$_pkgname")
+conflicts=("$_pkgname")
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+# Optional TMDB API read access token to bundle with the build. Without one,
+# users have to enter their own in Preferences. Set it in the environment:
+#   TMDB_API_KEY=... makepkg -si
+: "${TMDB_API_KEY:=}"
+
+pkgver() {
+  cd "$_pkgname"
+  local base
+  base=$(sed -n "s/^ *version: *'\([^']*\)'.*/\1/p" meson.build | head -n1)
+  printf '%s.r%s.g%s' "$base" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+  arch-meson "$_pkgname" build \
+    -Dprofile=default \
+    -Dtmdb_api_key="$TMDB_API_KEY"
+  meson compile -C build
+}
+
+check() {
+  meson test -C build --print-errorlogs
+}
+
+package() {
+  meson install -C build --destdir "$pkgdir"
+}

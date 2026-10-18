@@ -37,6 +37,13 @@ flatpak-builder --user --install --force-clean .flatpak/build \
   build-aux/flatpak/io.github.jonnsl.Aperture.Devel.json
 ```
 
+### Arch Linux
+
+```sh
+cd build-aux/arch
+TMDB_API_KEY=YOUR_TMDB_READ_TOKEN makepkg -si   # the token is optional
+```
+
 ## License
 
 GPL-3.0-or-later. See [COPYING](COPYING).
