@@ -121,6 +121,96 @@ template $PipocaPreferencesDialog: Adw.PreferencesDialog {
         }
       }
     }
+
+    Adw.PreferencesGroup {
+      title: _("Radarr");
+      description: _("Import movies from Radarr. Unless it’s read-only, movies on your watchlist are added to Radarr too, monitored but without starting a search. Nothing is ever removed on either side.");
+
+      Adw.SwitchRow radarr_enabled_row {
+        title: _("Sync Automatically");
+      }
+
+      Adw.ComboRow radarr_interval_row {
+        title: _("Sync Every");
+        sensitive: bind radarr_enabled_row.active;
+
+        model: StringList {
+          strings [
+            _("15 Minutes"),
+            _("Hour"),
+            _("6 Hours"),
+            _("Day"),
+          ]
+        };
+      }
+
+      Adw.SwitchRow radarr_read_only_row {
+        title: _("Read-Only");
+        subtitle: _("Import from Radarr without adding movies to it");
+      }
+
+      Adw.EntryRow radarr_address_row {
+        title: _("Address");
+        input-purpose: url;
+        tooltip-text: _("Radarr’s address, e.g. http://192.168.1.10:7878");
+      }
+
+      Adw.PasswordEntryRow radarr_api_key_row {
+        title: _("API Key");
+        show-apply-button: true;
+        tooltip-text: _("In Radarr, under Settings › General");
+        apply => $on_radarr_api_key_apply();
+      }
+
+      Adw.ExpanderRow {
+        title: _("Web Server");
+        subtitle: _("For a reverse proxy in front of Radarr");
+
+        Adw.EntryRow radarr_username_row {
+          title: _("Username");
+        }
+
+        Adw.PasswordEntryRow radarr_password_row {
+          title: _("Password");
+          show-apply-button: true;
+          apply => $on_radarr_password_apply();
+        }
+
+        Adw.SwitchRow radarr_certificate_row {
+          title: _("Accept Untrusted Certificates");
+          subtitle: _("For servers with a self-signed certificate");
+        }
+      }
+
+      Adw.ComboRow radarr_profile_row {
+        title: _("Quality Profile");
+        subtitle: _("For movies added to Radarr");
+        sensitive: false;
+      }
+
+      Adw.ComboRow radarr_folder_row {
+        title: _("Root Folder");
+        subtitle: _("For movies added to Radarr");
+        sensitive: false;
+      }
+
+      Adw.ActionRow radarr_status_row {
+        title: _("Last Sync");
+
+        [suffix]
+        Adw.Spinner radarr_spinner {
+          visible: false;
+        }
+
+        [suffix]
+        Button radarr_sync_button {
+          label: _("Sync N_ow");
+          use-underline: true;
+          valign: center;
+          clicked => $on_radarr_sync_clicked();
+        }
+      }
+    }
   }
 
   Adw.PreferencesPage {

@@ -112,6 +112,7 @@ namespace Pipoca {
             services_started = true;
             schedule_refresh ();
             KodiSync.get_default ().start ();
+            RadarrSync.get_default ().start ();
             Notifier.get_default ().start ();
         }
 

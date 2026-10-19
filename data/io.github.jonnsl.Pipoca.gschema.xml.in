@@ -97,5 +97,48 @@
       <default>0</default>
       <summary>When the last successful Kodi sync finished (Unix time)</summary>
     </key>
+    <key name="radarr-enabled" type="b">
+      <default>false</default>
+      <summary>Sync with Radarr</summary>
+      <description>Import movies from Radarr periodically, and add watchlist movies to it unless read-only</description>
+    </key>
+    <key name="radarr-read-only" type="b">
+      <default>true</default>
+      <summary>Only import from Radarr</summary>
+      <description>Never add movies to Radarr</description>
+    </key>
+    <key name="radarr-address" type="s">
+      <default>''</default>
+      <summary>Address of Radarr, e.g. http://192.168.1.10:7878</summary>
+    </key>
+    <key name="radarr-username" type="s">
+      <default>''</default>
+      <summary>Username for a web server in front of Radarr</summary>
+      <description>For HTTP Basic auth; Radarr itself only needs the API key</description>
+    </key>
+    <key name="radarr-accept-any-certificate" type="b">
+      <default>false</default>
+      <summary>Accept untrusted certificates from Radarr</summary>
+      <description>For servers with self-signed certificates</description>
+    </key>
+    <key name="radarr-quality-profile" type="x">
+      <default>0</default>
+      <summary>Id of the quality profile for movies added to Radarr</summary>
+      <description>0, or an id Radarr doesn’t have, uses its first profile</description>
+    </key>
+    <key name="radarr-root-folder" type="s">
+      <default>''</default>
+      <summary>Root folder for movies added to Radarr</summary>
+      <description>Empty, or a folder Radarr doesn’t have, uses its first one</description>
+    </key>
+    <key name="radarr-sync-interval" type="i">
+      <range min="5" max="1440"/>
+      <default>60</default>
+      <summary>Minutes between Radarr syncs</summary>
+    </key>
+    <key name="radarr-last-sync" type="x">
+      <default>0</default>
+      <summary>When the last successful Radarr sync finished (Unix time)</summary>
+    </key>
   </schema>
 </schemalist>

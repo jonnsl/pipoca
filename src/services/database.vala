@@ -9,7 +9,7 @@ namespace Pipoca {
      * Watch events for movies use -1 as season and episode number.
      */
     public class Database : Object {
-        private const int SCHEMA_VERSION = 5;
+        private const int SCHEMA_VERSION = 6;
 
         private Sqlite.Database db;
 
@@ -63,6 +63,10 @@ namespace Pipoca {
                 if (version < 5) {
                     // Facts about the stored data, e.g. the language its metadata is in
                     exec ("CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)");
+                }
+                if (version < 6) {
+                    // Movies Radarr has had, so ones removed on either side aren't added back
+                    exec ("CREATE TABLE radarr_seen (tmdb_id INTEGER PRIMARY KEY)");
                 }
                 exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
                 commit ();
@@ -467,6 +471,20 @@ namespace Pipoca {
             stmt.bind_int64 (2, id);
             run (stmt);
             return db.changes () > 0;
+        }
+
+        /* Records that Radarr has had a movie; returns false if it already had */
+        public bool mark_radarr_seen (int64 id) throws Error {
+            var stmt = prepare ("INSERT OR IGNORE INTO radarr_seen (tmdb_id) VALUES (?1)");
+            stmt.bind_int64 (1, id);
+            run (stmt);
+            return db.changes () > 0;
+        }
+
+        public bool radarr_seen (int64 id) throws Error {
+            var stmt = prepare ("SELECT 1 FROM radarr_seen WHERE tmdb_id = ?1");
+            stmt.bind_int64 (1, id);
+            return stmt.step () == Sqlite.ROW;
         }
 
         /* Records that a release was notified; returns false if it already was */

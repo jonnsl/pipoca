@@ -32,6 +32,8 @@ src/services/kodi-sync.vala
 src/services/library-transfer.vala
 src/services/library.vala
 src/services/notifier.vala
+src/services/radarr-client.vala
+src/services/radarr-sync.vala
 src/services/spoilers.vala
 src/services/tmdb-client.vala
 src/shortcuts-dialog.blp

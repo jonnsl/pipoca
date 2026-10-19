@@ -398,6 +398,108 @@ void test_kodi_import () {
     assert (r.events_added == 1 && unwatched.status == TitleStatus.WATCHED);
 }
 
+RadarrMovie radarr_movie (int64 tmdb_id, string title) {
+    return new RadarrMovie () {
+        tmdb_id = tmdb_id,
+        title = title,
+        year = 2021,
+        date_added = 1650000000,
+    };
+}
+
+bool sends (GenericArray<Title> titles, int64 id) {
+    foreach (var t in titles) {
+        if (t.id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void test_radarr_sync () {
+    var lib = Library.get_default ();
+    var watchlist = new Title (MediaType.MOVIE, 1200);
+    watchlist.name = "On the Watchlist";
+    watchlist.refreshed_at = new DateTime.now_utc ().to_unix ();
+    lib.add (watchlist, false);
+    var watched = new Title (MediaType.MOVIE, 1201);
+    watched.name = "Watched";
+    watched.refreshed_at = watchlist.refreshed_at;
+    lib.add (watched, false);
+    lib.set_movie_watched (watched, true);
+
+    var movies = new GenericArray<RadarrMovie> ();
+    movies.add (radarr_movie (700, "Radarr Movie"));
+    movies.add (radarr_movie (0, "No TMDB id"));
+    // Already in both
+    movies.add (radarr_movie (1201, "Watched"));
+
+    RadarrSyncResult r;
+    GenericArray<Title> to_send;
+    try {
+        r = RadarrImport.apply (lib, movies);
+        to_send = RadarrImport.to_send (lib);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 1);
+    var movie = lib.lookup (MediaType.MOVIE, 700);
+    assert (movie.in_library && movie.name == "Radarr Movie" && movie.year == "2021");
+    assert (movie.added_at == 1650000000 && movie.status == TitleStatus.PLAN_TO_WATCH);
+    // Only watchlist movies Radarr doesn't have; never ones it sent us, or watched ones
+    assert (sends (to_send, 1200));
+    assert (!sends (to_send, 700) && !sends (to_send, 1201));
+
+    // Once Radarr has had a movie, it isn't sent again, even after it's removed there
+    try {
+        lib.db.mark_radarr_seen (1200);
+        assert (!sends (RadarrImport.to_send (lib), 1200));
+    } catch (Error e) {
+        error (e.message);
+    }
+
+    // A movie the user removed stays removed
+    lib.remove (movie);
+    try {
+        r = RadarrImport.apply (lib, movies);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 0 && !movie.in_library);
+}
+
+void test_radarr_parsing () {
+    try {
+        assert (RadarrClient.make_base_url ("192.168.1.10:7878") == "http://192.168.1.10:7878/api/v3");
+        assert (RadarrClient.make_base_url (" https://radarr.local/ ") == "https://radarr.local/api/v3");
+        assert (RadarrClient.make_base_url ("https://host/radarr/api/v3") == "https://host/radarr/api/v3");
+    } catch (Error e) {
+        error (e.message);
+    }
+    try {
+        RadarrClient.make_base_url ("");
+        assert_not_reached ();
+    } catch (Error e) {
+        // Expected
+    }
+
+    var parser = new Json.Parser ();
+    try {
+        parser.load_from_data ("""[
+            {"title": "Free Guy", "year": 2021, "tmdbId": 550988, "added": "2022-05-04T18:56:46Z"},
+            {"title": "Unset", "year": 0, "tmdbId": 1, "added": "0001-01-01T00:00:00Z"},
+            "junk"
+        ]""");
+    } catch (Error e) {
+        error (e.message);
+    }
+    var movies = RadarrClient.parse_movies (parser.get_root ().get_array ());
+    assert (movies.length == 2);
+    assert (movies[0].tmdb_id == 550988 && movies[0].title == "Free Guy" && movies[0].year == 2021);
+    assert (movies[0].date_added == new DateTime.utc (2022, 5, 4, 18, 56, 46).to_unix ());
+    assert (movies[1].date_added == 0);
+}
+
 void test_kodi_parsing () {
     try {
         assert (KodiClient.make_endpoint ("192.168.1.151:8080") == "http://192.168.1.151:8080/jsonrpc");
@@ -900,6 +1002,8 @@ int main (string[] args) {
     Test.add_func ("/transfer/import-errors", test_import_errors);
     Test.add_func ("/kodi/import", test_kodi_import);
     Test.add_func ("/kodi/parsing", test_kodi_parsing);
+    Test.add_func ("/radarr/sync", test_radarr_sync);
+    Test.add_func ("/radarr/parsing", test_radarr_parsing);
     Test.add_func ("/library/dropped", test_dropped);
     Test.add_func ("/library/releases", test_releases);
     Test.add_func ("/library/new-badges", test_new_badges);
