@@ -2,6 +2,8 @@ namespace Pipoca {
     [GtkTemplate (ui = "/io/github/jonnsl/Pipoca/dialogs/preferences-dialog.ui")]
     public class PreferencesDialog : Adw.PreferencesDialog {
         [GtkChild] private unowned Adw.ComboRow language_row;
+        [GtkChild] private unowned Adw.SwitchRow spoilers_row;
+        [GtkChild] private unowned Adw.ComboRow spoiler_level_row;
         [GtkChild] private unowned Adw.SwitchRow refresh_row;
         [GtkChild] private unowned Adw.SwitchRow notify_episodes_row;
         [GtkChild] private unowned Adw.SwitchRow notify_movies_row;
@@ -62,6 +64,9 @@ namespace Pipoca {
             "zh-HK", "中文（香港）",
         };
 
+        /* spoiler-level for each spoiler_level_row choice */
+        private const string[] SPOILER_LEVELS = { "images", "details" };
+
         /* Minutes for each kodi_interval_row choice */
         private const int[] KODI_INTERVALS = { 15, 60, 360, 1440 };
 
@@ -74,6 +79,7 @@ namespace Pipoca {
         construct {
             settings = new Settings (Config.APPLICATION_ID);
             setup_language ();
+            setup_spoilers ();
             settings.bind ("refresh-automatically", refresh_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("notify-new-episodes", notify_episodes_row, "active", SettingsBindFlags.DEFAULT);
             settings.bind ("notify-movie-releases", notify_movies_row, "active", SettingsBindFlags.DEFAULT);
@@ -145,6 +151,19 @@ namespace Pipoca {
             } else {
                 add_toast (new Adw.Toast (_("Titles will be updated to the new language when you’re online")));
             }
+        }
+
+        private void setup_spoilers () {
+            settings.bind ("hide-spoilers", spoilers_row, "active", SettingsBindFlags.DEFAULT);
+            var level = settings.get_string ("spoiler-level");
+            for (var i = 0; i < SPOILER_LEVELS.length; i++) {
+                if (SPOILER_LEVELS[i] == level) {
+                    spoiler_level_row.selected = i;
+                }
+            }
+            spoiler_level_row.notify["selected"].connect (() => {
+                settings.set_string ("spoiler-level", SPOILER_LEVELS[spoiler_level_row.selected]);
+            });
         }
 
         private void on_background_toggled () {

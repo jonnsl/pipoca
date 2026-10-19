@@ -59,3 +59,7 @@ togglebutton.watched-toggle:checked {
   background-color: var(--accent-bg-color);
   color: var(--accent-fg-color);
 }
+
+poster.spoiler > picture {
+  filter: blur(8px);
+}

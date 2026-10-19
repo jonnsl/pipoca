@@ -78,6 +78,7 @@ namespace Pipoca {
             title_object.notify.connect (queue_update);
             title_object.notify["notify-enabled"].connect (on_notify_enabled_changed);
             library.episodes_changed.connect (on_episodes_changed);
+            Spoilers.get_default ().notify["level"].connect (update_next);
 
             update ();
             action_set_enabled ("details.trailer", false);
@@ -99,6 +100,7 @@ namespace Pipoca {
             title_object.notify.disconnect (queue_update);
             title_object.notify["notify-enabled"].disconnect (on_notify_enabled_changed);
             library.episodes_changed.disconnect (on_episodes_changed);
+            Spoilers.get_default ().notify["level"].disconnect (update_next);
             if (update_id != 0) {
                 Source.remove (update_id);
                 update_id = 0;
@@ -319,12 +321,12 @@ namespace Pipoca {
                 return;
             }
             if (t.next_episode != null) {
-                next_row.title = _("Next: %s").printf (t.next_episode.describe ());
+                next_row.title = _("Next: %s").printf (Spoilers.get_default ().describe (t.next_episode));
                 next_row.subtitle = Utils.format_date (t.next_episode.air_date);
                 next_button.visible = true;
                 next_list.visible = true;
             } else if (t.upcoming_episode != null) {
-                next_row.title = _("Next: %s").printf (t.upcoming_episode.describe ());
+                next_row.title = _("Next: %s").printf (Spoilers.get_default ().describe (t.upcoming_episode));
                 next_row.subtitle = _("Airs %s").printf (Utils.format_upcoming_date (t.upcoming_episode.air_date));
                 next_button.visible = false;
                 next_list.visible = true;

@@ -6,9 +6,12 @@ namespace Pipoca {
         [GtkChild] private unowned Gtk.Label meta_label;
         [GtkChild] private unowned Gtk.Label overview_label;
         [GtkChild] private unowned Gtk.ToggleButton watched_button;
+        [GtkChild] private unowned Gtk.Button reveal_button;
 
         private Gtk.PopoverMenu? context_menu;
         private bool updating;
+        /* The user chose to see this episode's spoilers */
+        private bool revealed;
 
         public Episode episode { get; construct; }
         public bool expanded { get; set; }
@@ -30,12 +33,11 @@ namespace Pipoca {
         construct {
             var e = episode;
             still.path = e.still_path;
-            still.alternative_text = e.name;
-            title_label.label = "%d. %s".printf (e.episode_number, e.name);
             var date = e.aired ? Utils.format_date (e.air_date) : Utils.format_upcoming_date (e.air_date);
             meta_label.label = Utils.join_dot ({ date, Utils.format_runtime (e.runtime) });
-            overview_label.label = e.overview ?? "";
-            overview_label.visible = e.overview != null && e.overview != "";
+            update_spoilers ();
+            e.notify["watched"].connect (update_spoilers);
+            Spoilers.get_default ().notify["level"].connect (update_spoilers);
 
             if (!e.aired) {
                 add_css_class ("dim-label");
@@ -72,6 +74,8 @@ namespace Pipoca {
 
         public override void dispose () {
             episode.notify["watched"].disconnect (update_watched);
+            episode.notify["watched"].disconnect (update_spoilers);
+            Spoilers.get_default ().notify["level"].disconnect (update_spoilers);
             if (context_menu != null) {
                 context_menu.unparent ();
                 context_menu = null;
@@ -88,6 +92,37 @@ namespace Pipoca {
                 watched_button.tooltip_text = episode.watched ? _("Mark as Unwatched") : _("Mark as Watched");
             }
             watched_button.update_property (Gtk.AccessibleProperty.LABEL, watched_button.tooltip_text, -1);
+        }
+
+        private void update_spoilers () {
+            var e = episode;
+            var spoilers = Spoilers.get_default ();
+            var hide_image = !revealed && spoilers.hides_image (e);
+            var hide_details = !revealed && spoilers.hides_details (e);
+
+            if (hide_image) {
+                still.add_css_class ("spoiler");
+            } else {
+                still.remove_css_class ("spoiler");
+            }
+            reveal_button.visible = hide_image;
+
+            if (hide_details || e.name == "") {
+                title_label.label = _("Episode %d").printf (e.episode_number);
+                still.alternative_text = title_label.label;
+            } else {
+                title_label.label = "%d. %s".printf (e.episode_number, e.name);
+                still.alternative_text = e.name;
+            }
+            overview_label.label = hide_details ? "" : e.overview ?? "";
+            overview_label.visible = overview_label.label != "";
+        }
+
+        [GtkCallback]
+        private void on_reveal_clicked () {
+            revealed = true;
+            update_spoilers ();
+            grab_focus ();
         }
 
         private void show_menu (double x, double y) {

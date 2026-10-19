@@ -119,7 +119,7 @@ namespace Pipoca {
                     ? _("Released today")
                     : _("Released on %s").printf (Utils.format_date (releases[0].date));
             } else if (releases.length == 1) {
-                body = _("New episode: %s").printf (releases[0].episode.describe ());
+                body = _("New episode: %s").printf (Spoilers.get_default ().describe (releases[0].episode));
             } else {
                 body = ngettext ("%d new episode", "%d new episodes", releases.length).printf (releases.length);
             }

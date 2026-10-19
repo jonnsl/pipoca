@@ -37,6 +37,19 @@
       <summary>Local date (YYYY-MM-DD) the window was last opened</summary>
       <description>Titles with episodes or releases after this date get a “New” badge</description>
     </key>
+    <key name="hide-spoilers" type="b">
+      <default>false</default>
+      <summary>Hide spoilers of unwatched episodes</summary>
+    </key>
+    <key name="spoiler-level" type="s">
+      <choices>
+        <choice value="images"/>
+        <choice value="details"/>
+      </choices>
+      <default>'images'</default>
+      <summary>What to hide of unwatched episodes</summary>
+      <description>“images” blurs their stills; “details” also hides their names and overviews</description>
+    </key>
     <key name="notify-new-episodes" type="b">
       <default>true</default>
       <summary>Notify about new episodes</summary>

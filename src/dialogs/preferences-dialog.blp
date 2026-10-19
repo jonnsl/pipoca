@@ -17,6 +17,27 @@ template $PipocaPreferencesDialog: Adw.PreferencesDialog {
     }
 
     Adw.PreferencesGroup {
+      title: _("Spoilers");
+
+      Adw.SwitchRow spoilers_row {
+        title: _("Hide Spoilers");
+        subtitle: _("Of episodes you haven’t watched yet");
+      }
+
+      Adw.ComboRow spoiler_level_row {
+        title: _("Hide");
+        sensitive: bind spoilers_row.active;
+
+        model: StringList {
+          strings [
+            _("Thumbnails"),
+            _("Thumbnails, Titles and Descriptions"),
+          ]
+        };
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("Updates");
 
       Adw.SwitchRow refresh_row {

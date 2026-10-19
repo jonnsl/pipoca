@@ -182,6 +182,11 @@ Why this shape:
   (`.flat .circular`).
 - Context menu: Mark Watched Up to Here, and Watched On… [M4].
 - Unaired episodes are dimmed and their toggle is insensitive.
+- With Hide Spoilers on, unwatched episodes get a blurred still with an eye
+  button (`.osd .circular`) on top; at the second level their title becomes
+  "Episode N" and the overview is hidden. The eye reveals that episode until
+  the page is rebuilt. Episode names are also left out of the Next row,
+  Upcoming and notifications at that level.
 - "Mark Season Watched" asks for confirmation only when it would *unmark*
   episodes (destructive); otherwise it acts right away and offers Undo in a
   toast.
@@ -213,6 +218,8 @@ Why this shape:
 
 - **General**
   - Content: Metadata Language (`Adw.ComboRow`), Region (`Adw.ComboRow`).
+  - Spoilers: Hide Spoilers (`Adw.SwitchRow`) and what to hide
+    (`Adw.ComboRow`: Thumbnails, or Thumbnails, Titles and Descriptions).
   - Updates: Refresh Library Automatically (`Adw.SwitchRow`).
   - Notifications [M2]: New Episodes, Movie Releases, Run in Background.
 - **Advanced**

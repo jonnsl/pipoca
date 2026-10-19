@@ -19,6 +19,7 @@ namespace Pipoca {
             library = Library.get_default ();
             library.title_changed.connect (queue_rebuild);
             library.episodes_changed.connect (queue_rebuild);
+            Spoilers.get_default ().notify["level"].connect (queue_rebuild);
             notify["media-filter"].connect (queue_rebuild);
             notify["search-text"].connect (queue_rebuild);
             rebuild ();
@@ -28,6 +29,7 @@ namespace Pipoca {
         public override void dispose () {
             library.title_changed.disconnect (queue_rebuild);
             library.episodes_changed.disconnect (queue_rebuild);
+            Spoilers.get_default ().notify["level"].disconnect (queue_rebuild);
             if (rebuild_id != 0) {
                 Source.remove (rebuild_id);
                 rebuild_id = 0;
@@ -159,7 +161,8 @@ namespace Pipoca {
             activatable = true;
             use_markup = false;
             title = t.name;
-            subtitle = release.episode != null ? release.episode.describe () : _("Movie release");
+            subtitle = release.episode != null
+                ? Spoilers.get_default ().describe (release.episode) : _("Movie release");
 
             var poster = new Poster () {
                 size = "w154",

@@ -10,16 +10,38 @@ template $PipocaEpisodeRow: ListBoxRow {
     margin-start: 12;
     margin-end: 12;
 
-    $PipocaPoster still {
-      size: "w300";
-      image-width: 120;
-      image-height: 68;
+    Overlay {
       valign: start;
-      icon-name: "video-x-generic-symbolic";
 
-      styles [
-        "still",
-      ]
+      child: $PipocaPoster still {
+        size: "w300";
+        image-width: 120;
+        image-height: 68;
+        icon-name: "video-x-generic-symbolic";
+
+        styles [
+          "still",
+        ]
+      };
+
+      [overlay]
+      Button reveal_button {
+        icon-name: "view-reveal-symbolic";
+        halign: center;
+        valign: center;
+        visible: false;
+        tooltip-text: _("Reveal Spoilers");
+        clicked => $on_reveal_clicked();
+
+        accessibility {
+          label: _("Reveal Spoilers");
+        }
+
+        styles [
+          "osd",
+          "circular",
+        ]
+      }
     }
 
     Box {
