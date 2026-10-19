@@ -66,6 +66,12 @@ template $PipocaPreferencesDialog: Adw.PreferencesDialog {
       }
     }
 
+  }
+
+  Adw.PreferencesPage {
+    title: _("Integrations");
+    icon-name: "network-server-symbolic";
+
     Adw.PreferencesGroup {
       title: _("Kodi");
       description: _("Import movies, shows and watch history from Kodi’s library. Pipoca only reads from Kodi and never changes anything there.");
