@@ -11,6 +11,7 @@
     <file preprocess="xml-stripblanks">pages/library-view.ui</file>
     <file preprocess="xml-stripblanks">pages/season-page.ui</file>
     <file preprocess="xml-stripblanks">pages/upcoming-view.ui</file>
+    <file preprocess="xml-stripblanks">widgets/arr-preferences-group.ui</file>
     <file preprocess="xml-stripblanks">widgets/episode-row.ui</file>
     <file preprocess="xml-stripblanks">widgets/poster-card.ui</file>
     <file preprocess="xml-stripblanks">widgets/shelf.ui</file>

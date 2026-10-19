@@ -90,7 +90,7 @@ milestones are ordered by how much value they add relative to their cost.
 
 ## M5 — Integrations
 
-Both syncs run shortly after startup and then on an interval, and are
+All three syncs run shortly after startup and then on an interval, and are
 additive: nothing is ever removed on either side, and a title the user
 removes from Pipoca isn't added back by a later sync. Passwords and API keys
 live in the keyring.
@@ -106,6 +106,12 @@ live in the keyring.
     and root folder picked in Preferences. A movie the user deletes in Radarr
     isn't sent again. Works behind a reverse proxy with HTTP Basic auth and
     self-signed certificates.
+26. **Sonarr:** the same for shows. Unless read-only, shows the user hasn't
+    finished (*Plan to Watch*, *Watching*, *Up to Date*) are added to Sonarr
+    with every episode monitored except the ones already watched in Pipoca,
+    without starting a search. Episodes are matched by season and episode
+    number, so shows that Sonarr numbers differently from TMDB may need
+    fixing by hand.
 
 ## Preferences
 
@@ -117,8 +123,9 @@ live in the keyring.
 - **Updates:** turn background refresh on/off; turn notifications on/off; run in
   background.
 - **Storage:** cache size, "Clear Image Cache", export/import.
-- **Integrations:** Kodi and Radarr sync, each with its own interval, address
-  and login, plus Radarr's read-only switch, quality profile and root folder.
+- **Integrations:** Kodi, Radarr and Sonarr sync, each with its own interval,
+  address and login, plus a read-only switch, quality profile and root folder
+  for Radarr and Sonarr.
 - No in-app theme switcher. The app follows the system style, as the HIG
   recommends.
 

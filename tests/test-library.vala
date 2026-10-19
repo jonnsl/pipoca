@@ -398,8 +398,8 @@ void test_kodi_import () {
     assert (r.events_added == 1 && unwatched.status == TitleStatus.WATCHED);
 }
 
-RadarrMovie radarr_movie (int64 tmdb_id, string title) {
-    return new RadarrMovie () {
+ArrItem arr_item (int64 tmdb_id, string title) {
+    return new ArrItem () {
         tmdb_id = tmdb_id,
         title = title,
         year = 2021,
@@ -416,7 +416,7 @@ bool sends (GenericArray<Title> titles, int64 id) {
     return false;
 }
 
-void test_radarr_sync () {
+void test_arr_movies () {
     var lib = Library.get_default ();
     var watchlist = new Title (MediaType.MOVIE, 1200);
     watchlist.name = "On the Watchlist";
@@ -428,17 +428,17 @@ void test_radarr_sync () {
     lib.add (watched, false);
     lib.set_movie_watched (watched, true);
 
-    var movies = new GenericArray<RadarrMovie> ();
-    movies.add (radarr_movie (700, "Radarr Movie"));
-    movies.add (radarr_movie (0, "No TMDB id"));
+    var movies = new GenericArray<ArrItem> ();
+    movies.add (arr_item (700, "Radarr Movie"));
+    movies.add (arr_item (0, "No TMDB id"));
     // Already in both
-    movies.add (radarr_movie (1201, "Watched"));
+    movies.add (arr_item (1201, "Watched"));
 
-    RadarrSyncResult r;
+    ArrSyncResult r;
     GenericArray<Title> to_send;
     try {
-        r = RadarrImport.apply (lib, movies);
-        to_send = RadarrImport.to_send (lib);
+        r = ArrImport.apply (lib, MediaType.MOVIE, movies);
+        to_send = ArrImport.to_send (lib, MediaType.MOVIE);
     } catch (Error e) {
         error (e.message);
     }
@@ -446,14 +446,17 @@ void test_radarr_sync () {
     var movie = lib.lookup (MediaType.MOVIE, 700);
     assert (movie.in_library && movie.name == "Radarr Movie" && movie.year == "2021");
     assert (movie.added_at == 1650000000 && movie.status == TitleStatus.PLAN_TO_WATCH);
-    // Only watchlist movies Radarr doesn't have; never ones it sent us, or watched ones
+    // Only watchlist movies Radarr doesn't have; never ones it sent us, watched ones or shows
     assert (sends (to_send, 1200));
     assert (!sends (to_send, 700) && !sends (to_send, 1201));
+    foreach (var t in to_send) {
+        assert (t.is_movie);
+    }
 
     // Once Radarr has had a movie, it isn't sent again, even after it's removed there
     try {
-        lib.db.mark_radarr_seen (1200);
-        assert (!sends (RadarrImport.to_send (lib), 1200));
+        lib.db.mark_arr_seen (MediaType.MOVIE, 1200);
+        assert (!sends (ArrImport.to_send (lib, MediaType.MOVIE), 1200));
     } catch (Error e) {
         error (e.message);
     }
@@ -461,43 +464,111 @@ void test_radarr_sync () {
     // A movie the user removed stays removed
     lib.remove (movie);
     try {
-        r = RadarrImport.apply (lib, movies);
+        r = ArrImport.apply (lib, MediaType.MOVIE, movies);
     } catch (Error e) {
         error (e.message);
     }
     assert (r.titles_added == 0 && !movie.in_library);
 }
 
-void test_radarr_parsing () {
+void test_arr_shows () {
+    var lib = Library.get_default ();
+    // Aired: S1E1-3 and S2E1; S2E2 is in 2099
+    var planned = make_show (1300, "Returning Series");
+    lib.add (planned, false);
+    var watching = make_show (1301, "Returning Series");
+    lib.add (watching, false);
+    var up_to_date = make_show (1302, "Returning Series");
+    lib.add (up_to_date, false);
+    var finished = make_show (1303, "Ended");
+    lib.add (finished, false);
+    var dropped = make_show (1304, "Returning Series");
+    lib.add (dropped, false);
+    lib.set_episodes_watched (watching, lib.get_episodes (watching, 1), true);
+    var aired = lib.get_episodes (up_to_date, 1);
+    aired.add (lib.get_episodes (up_to_date, 2)[0]);
+    lib.set_episodes_watched (up_to_date, aired, true);
+    // Everything has aired and been watched
+    var s2 = lib.get_episodes (finished, 2);
+    s2[1].air_date = "2021-01-08";
     try {
-        assert (RadarrClient.make_base_url ("192.168.1.10:7878") == "http://192.168.1.10:7878/api/v3");
-        assert (RadarrClient.make_base_url (" https://radarr.local/ ") == "https://radarr.local/api/v3");
-        assert (RadarrClient.make_base_url ("https://host/radarr/api/v3") == "https://host/radarr/api/v3");
+        lib.db.save_episodes (finished.id, 2, s2);
+    } catch (Error e) {
+        error (e.message);
+    }
+    var every = lib.get_episodes (finished, 1);
+    every.extend (lib.get_episodes (finished, 2), (e) => e);
+    lib.set_episodes_watched (finished, every, true);
+    lib.set_episodes_watched (dropped, lib.get_episodes (dropped, 1), true);
+    lib.set_dropped (dropped, true);
+    assert (watching.status == TitleStatus.WATCHING);
+    assert (up_to_date.status == TitleStatus.UP_TO_DATE);
+    assert (finished.status == TitleStatus.WATCHED);
+
+    var series = new GenericArray<ArrItem> ();
+    series.add (arr_item (1310, "Sonarr Show"));
+    ArrSyncResult r;
+    GenericArray<Title> to_send;
+    try {
+        r = ArrImport.apply (lib, MediaType.TV, series);
+        to_send = ArrImport.to_send (lib, MediaType.TV);
+    } catch (Error e) {
+        error (e.message);
+    }
+    assert (r.titles_added == 1 && lib.lookup (MediaType.TV, 1310).in_library);
+    // Movies with the same id are a different title
+    assert (!lib.contains (MediaType.MOVIE, 1310));
+    // Unfinished shows go; finished and dropped ones don't
+    assert (sends (to_send, 1300) && sends (to_send, 1301) && sends (to_send, 1302));
+    assert (!sends (to_send, 1303) && !sends (to_send, 1304) && !sends (to_send, 1310));
+    foreach (var t in to_send) {
+        assert (!t.is_movie);
+    }
+
+    // Shows waiting for their watched episodes to be unmonitored
+    try {
+        lib.db.set_sonarr_pending (1301, 41);
+        lib.db.set_sonarr_pending (1302, 42);
+        lib.db.set_sonarr_pending (1301, 43);
+        lib.db.clear_sonarr_pending (1302);
+        var pending = lib.db.load_sonarr_pending ();
+        assert (pending.length == 2 && pending[0] == 1301 && pending[1] == 43);
+        lib.db.clear_sonarr_pending (1301);
+    } catch (Error e) {
+        error (e.message);
+    }
+}
+
+void test_arr_parsing () {
+    try {
+        assert (ArrClient.make_base_url ("Radarr", "192.168.1.10:7878") == "http://192.168.1.10:7878/api/v3");
+        assert (ArrClient.make_base_url ("Radarr", " https://radarr.local/ ") == "https://radarr.local/api/v3");
+        assert (ArrClient.make_base_url ("Sonarr", "https://host/sonarr/api/v3") == "https://host/sonarr/api/v3");
     } catch (Error e) {
         error (e.message);
     }
     try {
-        RadarrClient.make_base_url ("");
+        ArrClient.make_base_url ("Radarr", "");
         assert_not_reached ();
     } catch (Error e) {
-        // Expected
+        assert (e.message.contains ("Radarr"));
     }
 
     var parser = new Json.Parser ();
     try {
         parser.load_from_data ("""[
-            {"title": "Free Guy", "year": 2021, "tmdbId": 550988, "added": "2022-05-04T18:56:46Z"},
-            {"title": "Unset", "year": 0, "tmdbId": 1, "added": "0001-01-01T00:00:00Z"},
+            {"id": 3, "title": "Free Guy", "year": 2021, "tmdbId": 550988, "added": "2022-05-04T18:56:46Z"},
+            {"id": 4, "title": "A Series", "year": 0, "tvdbId": 81189, "added": "0001-01-01T00:00:00Z"},
             "junk"
         ]""");
     } catch (Error e) {
         error (e.message);
     }
-    var movies = RadarrClient.parse_movies (parser.get_root ().get_array ());
-    assert (movies.length == 2);
-    assert (movies[0].tmdb_id == 550988 && movies[0].title == "Free Guy" && movies[0].year == 2021);
-    assert (movies[0].date_added == new DateTime.utc (2022, 5, 4, 18, 56, 46).to_unix ());
-    assert (movies[1].date_added == 0);
+    var items = ArrClient.parse_items (parser.get_root ().get_array ());
+    assert (items.length == 2);
+    assert (items[0].arr_id == 3 && items[0].tmdb_id == 550988 && items[0].title == "Free Guy");
+    assert (items[0].year == 2021 && items[0].date_added == new DateTime.utc (2022, 5, 4, 18, 56, 46).to_unix ());
+    assert (items[1].tmdb_id == 0 && items[1].tvdb_id == 81189 && items[1].date_added == 0);
 }
 
 void test_kodi_parsing () {
@@ -1002,8 +1073,9 @@ int main (string[] args) {
     Test.add_func ("/transfer/import-errors", test_import_errors);
     Test.add_func ("/kodi/import", test_kodi_import);
     Test.add_func ("/kodi/parsing", test_kodi_parsing);
-    Test.add_func ("/radarr/sync", test_radarr_sync);
-    Test.add_func ("/radarr/parsing", test_radarr_parsing);
+    Test.add_func ("/arr/movies", test_arr_movies);
+    Test.add_func ("/arr/shows", test_arr_shows);
+    Test.add_func ("/arr/parsing", test_arr_parsing);
     Test.add_func ("/library/dropped", test_dropped);
     Test.add_func ("/library/releases", test_releases);
     Test.add_func ("/library/new-badges", test_new_badges);

@@ -62,6 +62,7 @@ namespace Pipoca {
         public override void startup () {
             base.startup ();
             // Custom widgets used in templates must be registered before the templates load
+            typeof (ArrPreferencesGroup).ensure ();
             typeof (LibraryView).ensure ();
             typeof (Poster).ensure ();
             typeof (PosterCard).ensure ();
@@ -113,6 +114,7 @@ namespace Pipoca {
             schedule_refresh ();
             KodiSync.get_default ().start ();
             RadarrSync.get_default ().start ();
+            SonarrSync.get_default ().start ();
             Notifier.get_default ().start ();
         }
 

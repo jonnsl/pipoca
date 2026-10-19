@@ -9,7 +9,7 @@ namespace Pipoca {
      * Watch events for movies use -1 as season and episode number.
      */
     public class Database : Object {
-        private const int SCHEMA_VERSION = 6;
+        private const int SCHEMA_VERSION = 7;
 
         private Sqlite.Database db;
 
@@ -26,6 +26,8 @@ namespace Pipoca {
             var stmt = prepare ("PRAGMA user_version");
             stmt.step ();
             var version = stmt.column_int (0);
+            // Left active, it would block the DROP TABLEs below
+            stmt.reset ();
             if (version >= SCHEMA_VERSION) {
                 return;
             }
@@ -67,6 +69,23 @@ namespace Pipoca {
                 if (version < 6) {
                     // Movies Radarr has had, so ones removed on either side aren't added back
                     exec ("CREATE TABLE radarr_seen (tmdb_id INTEGER PRIMARY KEY)");
+                }
+                if (version < 7) {
+                    // Radarr's movies and Sonarr's shows in one table; shows added to Sonarr
+                    // whose watched episodes are still to be unmonitored. Radarr's are movies (0)
+                    exec ("""
+                        CREATE TABLE arr_seen (
+                            media_type INTEGER NOT NULL,
+                            tmdb_id INTEGER NOT NULL,
+                            PRIMARY KEY (media_type, tmdb_id)
+                        );
+                        INSERT INTO arr_seen (media_type, tmdb_id) SELECT 0, tmdb_id FROM radarr_seen;
+                        DROP TABLE radarr_seen;
+                        CREATE TABLE sonarr_pending (
+                            tmdb_id INTEGER PRIMARY KEY,
+                            series_id INTEGER NOT NULL
+                        );
+                    """);
                 }
                 exec ("PRAGMA user_version = %d".printf (SCHEMA_VERSION));
                 commit ();
@@ -473,18 +492,45 @@ namespace Pipoca {
             return db.changes () > 0;
         }
 
-        /* Records that Radarr has had a movie; returns false if it already had */
-        public bool mark_radarr_seen (int64 id) throws Error {
-            var stmt = prepare ("INSERT OR IGNORE INTO radarr_seen (tmdb_id) VALUES (?1)");
-            stmt.bind_int64 (1, id);
+        /* Records that Radarr or Sonarr has had a title; returns false if it already had */
+        public bool mark_arr_seen (MediaType type, int64 id) throws Error {
+            var stmt = prepare ("INSERT OR IGNORE INTO arr_seen (media_type, tmdb_id) VALUES (?1, ?2)");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
             run (stmt);
             return db.changes () > 0;
         }
 
-        public bool radarr_seen (int64 id) throws Error {
-            var stmt = prepare ("SELECT 1 FROM radarr_seen WHERE tmdb_id = ?1");
-            stmt.bind_int64 (1, id);
+        public bool arr_seen (MediaType type, int64 id) throws Error {
+            var stmt = prepare ("SELECT 1 FROM arr_seen WHERE media_type = ?1 AND tmdb_id = ?2");
+            stmt.bind_int (1, type);
+            stmt.bind_int64 (2, id);
             return stmt.step () == Sqlite.ROW;
+        }
+
+        /* A show added to Sonarr as @series_id whose watched episodes are still monitored there */
+        public void set_sonarr_pending (int64 id, int64 series_id) throws Error {
+            var stmt = prepare ("INSERT OR REPLACE INTO sonarr_pending (tmdb_id, series_id) VALUES (?1, ?2)");
+            stmt.bind_int64 (1, id);
+            stmt.bind_int64 (2, series_id);
+            run (stmt);
+        }
+
+        public void clear_sonarr_pending (int64 id) throws Error {
+            var stmt = prepare ("DELETE FROM sonarr_pending WHERE tmdb_id = ?1");
+            stmt.bind_int64 (1, id);
+            run (stmt);
+        }
+
+        /* TMDB id and Sonarr series id, in pairs */
+        public int64[] load_sonarr_pending () throws Error {
+            var stmt = prepare ("SELECT tmdb_id, series_id FROM sonarr_pending");
+            int64[] result = {};
+            while (stmt.step () == Sqlite.ROW) {
+                result += stmt.column_int64 (0);
+                result += stmt.column_int64 (1);
+            }
+            return result;
         }
 
         /* Records that a release was notified; returns false if it already was */

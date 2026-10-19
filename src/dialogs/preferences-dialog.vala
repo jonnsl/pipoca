@@ -19,19 +19,8 @@ namespace Pipoca {
         [GtkChild] private unowned Adw.ActionRow kodi_status_row;
         [GtkChild] private unowned Adw.Spinner kodi_spinner;
         [GtkChild] private unowned Gtk.Button kodi_sync_button;
-        [GtkChild] private unowned Adw.SwitchRow radarr_enabled_row;
-        [GtkChild] private unowned Adw.ComboRow radarr_interval_row;
-        [GtkChild] private unowned Adw.SwitchRow radarr_read_only_row;
-        [GtkChild] private unowned Adw.EntryRow radarr_address_row;
-        [GtkChild] private unowned Adw.PasswordEntryRow radarr_api_key_row;
-        [GtkChild] private unowned Adw.EntryRow radarr_username_row;
-        [GtkChild] private unowned Adw.PasswordEntryRow radarr_password_row;
-        [GtkChild] private unowned Adw.SwitchRow radarr_certificate_row;
-        [GtkChild] private unowned Adw.ComboRow radarr_profile_row;
-        [GtkChild] private unowned Adw.ComboRow radarr_folder_row;
-        [GtkChild] private unowned Adw.ActionRow radarr_status_row;
-        [GtkChild] private unowned Adw.Spinner radarr_spinner;
-        [GtkChild] private unowned Gtk.Button radarr_sync_button;
+        [GtkChild] private unowned ArrPreferencesGroup radarr_group;
+        [GtkChild] private unowned ArrPreferencesGroup sonarr_group;
         [GtkChild] private unowned Adw.ButtonRow imdb_row;
 
         /* TMDB languages with translations, as tag and the language's own name */
@@ -80,7 +69,7 @@ namespace Pipoca {
         /* spoiler-level for each spoiler_level_row choice */
         private const string[] SPOILER_LEVELS = { "images", "details" };
 
-        /* Minutes for each kodi_interval_row and radarr_interval_row choice */
+        /* Minutes for each kodi_interval_row choice */
         private const int[] SYNC_INTERVALS = { 15, 60, 360, 1440 };
 
         private Settings settings;
@@ -88,9 +77,6 @@ namespace Pipoca {
         private bool disposed;
         /* Tag for each language_row choice; "" for the system language */
         private string[] language_tags = {};
-        /* Radarr's quality profile ids and root folders, in the order of their rows' choices */
-        private int64[] radarr_profile_ids = {};
-        private string[] radarr_folders = {};
 
         construct {
             settings = new Settings (Config.APPLICATION_ID);
@@ -106,7 +92,10 @@ namespace Pipoca {
             settings.bind ("custom-api-key", api_key_row, "text", SettingsBindFlags.DEFAULT);
             update_cache_size.begin ();
             setup_kodi ();
-            setup_radarr ();
+            radarr_group.setup (RadarrSync.get_default ());
+            radarr_group.toast.connect (show_toast);
+            sonarr_group.setup (SonarrSync.get_default ());
+            sonarr_group.toast.connect (show_toast);
         }
 
         public override void dispose () {
@@ -114,9 +103,6 @@ namespace Pipoca {
             var kodi = KodiSync.get_default ();
             kodi.notify["syncing"].disconnect (update_kodi_status);
             kodi.notify["last-error"].disconnect (update_kodi_status);
-            var radarr = RadarrSync.get_default ();
-            radarr.notify["syncing"].disconnect (update_radarr_status);
-            radarr.notify["last-error"].disconnect (update_radarr_status);
             dispose_template (typeof (PreferencesDialog));
             base.dispose ();
         }
@@ -301,193 +287,6 @@ namespace Pipoca {
                 add_toast (new Adw.Toast (message));
             } catch (Error e) {
                 // Shown in the status row
-            }
-        }
-
-        private void setup_radarr () {
-            settings.bind ("radarr-enabled", radarr_enabled_row, "active", SettingsBindFlags.DEFAULT);
-            settings.bind ("radarr-read-only", radarr_read_only_row, "active", SettingsBindFlags.DEFAULT);
-            settings.bind ("radarr-address", radarr_address_row, "text", SettingsBindFlags.DEFAULT);
-            settings.bind ("radarr-username", radarr_username_row, "text", SettingsBindFlags.DEFAULT);
-            settings.bind ("radarr-accept-any-certificate", radarr_certificate_row, "active", SettingsBindFlags.DEFAULT);
-
-            var minutes = settings.get_int ("radarr-sync-interval");
-            radarr_interval_row.selected = 1;
-            for (var i = 0; i < SYNC_INTERVALS.length; i++) {
-                if (SYNC_INTERVALS[i] == minutes) {
-                    radarr_interval_row.selected = i;
-                }
-            }
-            radarr_interval_row.notify["selected"].connect (() => {
-                settings.set_int ("radarr-sync-interval", SYNC_INTERVALS[radarr_interval_row.selected]);
-            });
-            radarr_read_only_row.notify["active"].connect (update_radarr_destination_rows);
-
-            var radarr = RadarrSync.get_default ();
-            radarr.notify["syncing"].connect (update_radarr_status);
-            radarr.notify["last-error"].connect (update_radarr_status);
-            update_radarr_status ();
-            load_radarr_secrets.begin ();
-        }
-
-        private async void load_radarr_secrets () {
-            var radarr = RadarrSync.get_default ();
-            try {
-                radarr_api_key_row.text = (yield radarr.get_secret ("api-key")) ?? "";
-                radarr_password_row.text = (yield radarr.get_secret ("password")) ?? "";
-            } catch (Error e) {
-                warning ("Can't read Radarr's secrets from the keyring: %s", e.message);
-            }
-            if (!disposed && radarr_api_key_row.text != "" && radarr_address_row.text != "") {
-                yield load_radarr_destinations ();
-            }
-        }
-
-        /* Fills the quality profile and root folder rows with what Radarr has */
-        private async void load_radarr_destinations () {
-            GenericArray<RadarrQualityProfile> profiles;
-            string[] folders;
-            try {
-                var client = yield RadarrSync.get_default ().make_client ();
-                profiles = yield client.get_quality_profiles ();
-                folders = yield client.get_root_folders ();
-            } catch (Error e) {
-                debug ("Can't load Radarr's quality profiles and root folders: %s", e.message);
-                return;
-            }
-            if (disposed) {
-                return;
-            }
-
-            // Radarr's first one is what a sync uses when the chosen one is gone
-            var names = new Gtk.StringList (null);
-            radarr_profile_ids = {};
-            uint selected = 0;
-            foreach (var p in profiles) {
-                if (p.id == settings.get_int64 ("radarr-quality-profile")) {
-                    selected = radarr_profile_ids.length;
-                }
-                names.append (p.name);
-                radarr_profile_ids += p.id;
-            }
-            radarr_profile_row.notify["selected"].disconnect (on_radarr_profile_selected);
-            radarr_profile_row.model = names;
-            radarr_profile_row.selected = selected;
-            radarr_profile_row.notify["selected"].connect (on_radarr_profile_selected);
-
-            radarr_folders = folders;
-            selected = 0;
-            for (var i = 0; i < folders.length; i++) {
-                if (folders[i] == settings.get_string ("radarr-root-folder")) {
-                    selected = i;
-                }
-            }
-            radarr_folder_row.notify["selected"].disconnect (on_radarr_folder_selected);
-            radarr_folder_row.model = new Gtk.StringList (folders);
-            radarr_folder_row.selected = selected;
-            radarr_folder_row.notify["selected"].connect (on_radarr_folder_selected);
-            update_radarr_destination_rows ();
-        }
-
-        private void on_radarr_profile_selected () {
-            var i = radarr_profile_row.selected;
-            if (i < radarr_profile_ids.length) {
-                settings.set_int64 ("radarr-quality-profile", radarr_profile_ids[i]);
-            }
-        }
-
-        private void on_radarr_folder_selected () {
-            var i = radarr_folder_row.selected;
-            if (i < radarr_folders.length) {
-                settings.set_string ("radarr-root-folder", radarr_folders[i]);
-            }
-        }
-
-        /* They only matter when movies are added to Radarr, and once there's something to pick */
-        private void update_radarr_destination_rows () {
-            var writable = !radarr_read_only_row.active;
-            radarr_profile_row.sensitive = writable && radarr_profile_ids.length > 0;
-            radarr_folder_row.sensitive = writable && radarr_folders.length > 0;
-        }
-
-        [GtkCallback]
-        private void on_radarr_api_key_apply () {
-            save_radarr_secret.begin ("api-key", radarr_api_key_row.text, _("API key saved"));
-        }
-
-        [GtkCallback]
-        private void on_radarr_password_apply () {
-            save_radarr_secret.begin ("password", radarr_password_row.text, _("Password saved"));
-        }
-
-        private async void save_radarr_secret (string account, string secret, string message) {
-            try {
-                yield RadarrSync.get_default ().set_secret (account, secret);
-                add_toast (new Adw.Toast (message));
-            } catch (Error e) {
-                show_error (_("Can’t Save to the Keyring"), e.message);
-                return;
-            }
-            yield load_radarr_destinations ();
-        }
-
-        private void update_radarr_status () {
-            var radarr = RadarrSync.get_default ();
-            radarr_spinner.visible = radarr.syncing;
-            radarr_sync_button.sensitive = !radarr.syncing;
-            if (radarr.syncing) {
-                radarr_status_row.subtitle = _("Syncing…");
-            } else if (radarr.last_error != null) {
-                radarr_status_row.subtitle = _("Failed: %s").printf (radarr.last_error);
-            } else if (radarr.last_sync == 0) {
-                radarr_status_row.subtitle = _("Never");
-            } else {
-                var time = new DateTime.from_unix_local (radarr.last_sync);
-                // xgettext:no-c-format
-                radarr_status_row.subtitle = time.format (_("%b %-d, %Y at %H:%M"));
-            }
-        }
-
-        [GtkCallback]
-        private void on_radarr_sync_clicked () {
-            sync_radarr.begin ();
-        }
-
-        private async void sync_radarr () {
-            // Secrets typed but not applied yet are what the user means to use
-            var radarr = RadarrSync.get_default ();
-            try {
-                if (radarr_api_key_row.text != "") {
-                    yield radarr.set_secret ("api-key", radarr_api_key_row.text);
-                }
-                if (radarr_password_row.text != "") {
-                    yield radarr.set_secret ("password", radarr_password_row.text);
-                }
-            } catch (Error e) {
-                warning ("Can't save Radarr's secrets: %s", e.message);
-            }
-            RadarrSyncResult result;
-            try {
-                result = yield radarr.sync ();
-            } catch (Error e) {
-                // Shown in the status row
-                return;
-            }
-            string[] parts = {};
-            if (result.titles_added > 0) {
-                parts += ngettext ("%d title added", "%d titles added", result.titles_added).printf (result.titles_added);
-            }
-            if (result.titles_sent > 0) {
-                parts += ngettext ("%d sent to Radarr", "%d sent to Radarr", result.titles_sent).printf (result.titles_sent);
-            }
-            if (result.titles_failed > 0) {
-                parts += ngettext ("%d not accepted by Radarr", "%d not accepted by Radarr", result.titles_failed)
-                         .printf (result.titles_failed);
-            }
-            // Translators: separates the counts in "2 titles added, 1 sent to Radarr"
-            show_toast (parts.length > 0 ? string.joinv (_(", "), parts) : _("Library is already up to date"));
-            if (!disposed && radarr_profile_ids.length == 0) {
-                yield load_radarr_destinations ();
             }
         }
 

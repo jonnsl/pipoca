@@ -1,0 +1,84 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $PipocaArrPreferencesGroup: Adw.PreferencesGroup {
+  Adw.SwitchRow enabled_row {
+    title: _("Sync Automatically");
+  }
+
+  Adw.ComboRow interval_row {
+    title: _("Sync Every");
+    sensitive: bind enabled_row.active;
+
+    model: StringList {
+      strings [
+        _("15 Minutes"),
+        _("Hour"),
+        _("6 Hours"),
+        _("Day"),
+      ]
+    };
+  }
+
+  Adw.SwitchRow read_only_row {
+    title: _("Read-Only");
+  }
+
+  Adw.EntryRow address_row {
+    title: _("Address");
+    input-purpose: url;
+  }
+
+  Adw.PasswordEntryRow api_key_row {
+    title: _("API Key");
+    show-apply-button: true;
+    tooltip-text: _("Under Settings › General");
+    apply => $on_api_key_apply();
+  }
+
+  Adw.ExpanderRow {
+    title: _("Web Server");
+    subtitle: _("For a reverse proxy in front");
+
+    Adw.EntryRow username_row {
+      title: _("Username");
+    }
+
+    Adw.PasswordEntryRow password_row {
+      title: _("Password");
+      show-apply-button: true;
+      apply => $on_password_apply();
+    }
+
+    Adw.SwitchRow certificate_row {
+      title: _("Accept Untrusted Certificates");
+      subtitle: _("For servers with a self-signed certificate");
+    }
+  }
+
+  Adw.ComboRow profile_row {
+    title: _("Quality Profile");
+    sensitive: false;
+  }
+
+  Adw.ComboRow folder_row {
+    title: _("Root Folder");
+    sensitive: false;
+  }
+
+  Adw.ActionRow status_row {
+    title: _("Last Sync");
+
+    [suffix]
+    Adw.Spinner spinner {
+      visible: false;
+    }
+
+    [suffix]
+    Button sync_button {
+      label: _("Sync Now");
+      valign: center;
+      clicked => $on_sync_clicked();
+    }
+  }
+}

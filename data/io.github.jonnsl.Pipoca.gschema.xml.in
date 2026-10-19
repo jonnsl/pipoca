@@ -140,5 +140,48 @@
       <default>0</default>
       <summary>When the last successful Radarr sync finished (Unix time)</summary>
     </key>
+    <key name="sonarr-enabled" type="b">
+      <default>false</default>
+      <summary>Sync with Sonarr</summary>
+      <description>Import shows from Sonarr periodically, and add unfinished shows to it unless read-only</description>
+    </key>
+    <key name="sonarr-read-only" type="b">
+      <default>true</default>
+      <summary>Only import from Sonarr</summary>
+      <description>Never add shows to Sonarr</description>
+    </key>
+    <key name="sonarr-address" type="s">
+      <default>''</default>
+      <summary>Address of Sonarr, e.g. http://192.168.1.10:8989</summary>
+    </key>
+    <key name="sonarr-username" type="s">
+      <default>''</default>
+      <summary>Username for a web server in front of Sonarr</summary>
+      <description>For HTTP Basic auth; Sonarr itself only needs the API key</description>
+    </key>
+    <key name="sonarr-accept-any-certificate" type="b">
+      <default>false</default>
+      <summary>Accept untrusted certificates from Sonarr</summary>
+      <description>For servers with self-signed certificates</description>
+    </key>
+    <key name="sonarr-quality-profile" type="x">
+      <default>0</default>
+      <summary>Id of the quality profile for shows added to Sonarr</summary>
+      <description>0, or an id Sonarr doesn’t have, uses its first profile</description>
+    </key>
+    <key name="sonarr-root-folder" type="s">
+      <default>''</default>
+      <summary>Root folder for shows added to Sonarr</summary>
+      <description>Empty, or a folder Sonarr doesn’t have, uses its first one</description>
+    </key>
+    <key name="sonarr-sync-interval" type="i">
+      <range min="5" max="1440"/>
+      <default>60</default>
+      <summary>Minutes between Sonarr syncs</summary>
+    </key>
+    <key name="sonarr-last-sync" type="x">
+      <default>0</default>
+      <summary>When the last successful Sonarr sync finished (Unix time)</summary>
+    </key>
   </schema>
 </schemalist>
