@@ -88,6 +88,25 @@ milestones are ordered by how much value they add relative to their cost.
     and episodes count as watched on the day they were rated; a list can be
     imported as watched or as the watchlist.
 
+## M5 — Integrations
+
+Both syncs run shortly after startup and then on an interval, and are
+additive: nothing is ever removed on either side, and a title the user
+removes from Pipoca isn't added back by a later sync. Passwords and API keys
+live in the keyring.
+
+24. **Kodi:** import movies, shows and watch history from Kodi's video library
+    over its JSON-RPC web server. Titles are matched to TMDB by Kodi's TMDB id,
+    or its IMDb or TVDB id. Movies and episodes Kodi has played are marked
+    watched at the time they were last played. Read-only: nothing is sent to
+    Kodi.
+25. **Radarr:** import the movies in Radarr's library. Unless the sync is
+    read-only (the default), unwatched movies on the watchlist are added to
+    Radarr too, monitored but without starting a search, with a quality profile
+    and root folder picked in Preferences. A movie the user deletes in Radarr
+    isn't sent again. Works behind a reverse proxy with HTTP Basic auth and
+    self-signed certificates.
+
 ## Preferences
 
 - **Metadata language** (TMDB `language`) and **region** (release dates). The
@@ -98,6 +117,8 @@ milestones are ordered by how much value they add relative to their cost.
 - **Updates:** turn background refresh on/off; turn notifications on/off; run in
   background.
 - **Storage:** cache size, "Clear Image Cache", export/import.
+- **Integrations:** Kodi and Radarr sync, each with its own interval, address
+  and login, plus Radarr's read-only switch, quality profile and root folder.
 - No in-app theme switcher. The app follows the system style, as the HIG
   recommends.
 
